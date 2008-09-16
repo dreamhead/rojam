@@ -1,0 +1,7 @@
+require File.dirname(__FILE__) + '/rbits/sequential'
+require File.dirname(__FILE__) + '/rbits/rbits'
+require File.dirname(__FILE__) + '/rbits/type_descriptor'
+require File.dirname(__FILE__) + '/rbits/unsigned_desc'
+require File.dirname(__FILE__) + '/rbits/struct_desc'
+require File.dirname(__FILE__) + '/rbits/switch_desc'
+require File.dirname(__FILE__) + '/rbits/array_desc'
