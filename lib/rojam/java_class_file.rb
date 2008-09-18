@@ -1,3 +1,9 @@
+class CONSTANT_Utf8 < StringDesc
+  size :type => :u2
+  
+  field_type :constant_utf8
+end
+
 class CONSTANT_Class < StructDesc
   u2 :name_index
   
@@ -20,7 +26,11 @@ end
 
 class CpInfo < SwitchDesc
   tag :tag, :type => :u1
-  value :info, :types => {7 => :constant_class, 10 => :constant_methodref}
+  value :info, :types => {
+    1 => :constant_utf8,
+    7 => :constant_class,
+    10 => :constant_methodref,
+  }
   
   field_type :cp_info
 end

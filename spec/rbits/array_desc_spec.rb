@@ -35,10 +35,6 @@ describe ArrayDesc do
   end
   
   describe 'options' do
-    it "raises error without options" do
-      lambda { @desc.options = {} }.should raise_error
-    end
-    
     it 'has difference between size and size reference for read' do
       @desc = SubArrayDescWithReadWriteProc.new
       @io.string = "\x02\x01"
