@@ -1,18 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class SubArrayDesc < ArrayDesc
+class SubArrayDesc < RBits::Array
   size :type => :u1
   values :type => :u1
 end
 
-class SubArrayDescWithReadWriteProc < ArrayDesc
+class SubArrayDescWithReadWriteProc < RBits::Array
   size :type => :u1,
     :read_proc => lambda {|size| size - 1},
     :write_proc => lambda {|size| size + 1}
   values :type => :u1
 end
 
-describe ArrayDesc do
+describe RBits::Array do
   before(:each) do
     @desc = SubArrayDesc.new
     @io = StringIO.new

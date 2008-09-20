@@ -4,12 +4,12 @@ class StructBits
   attr_accessor :bit1, :bit2
 end
 
-class SubStructhDesc < StructDesc
+class SubStructhDesc < RBits::Struct
   u1 :bit1
   u1 :bit2
 end
 
-describe StructDesc do
+describe RBits::Struct do
   before(:each) do
     @desc = SubStructhDesc.new
     @io = StringIO.new

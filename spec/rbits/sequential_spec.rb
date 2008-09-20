@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 class TestSequential
-  include Sequential
+  include RBits::Sequential
 end
 
-class TestFieldDesc < TypeDescriptor
+class TestFieldDesc < RBits::TypeDescriptor
   field_type :desc
   attr_accessor :options
   
@@ -13,8 +13,8 @@ class TestFieldDesc < TypeDescriptor
   end
 end
 
-describe Sequential do
-  include Sequential
+describe RBits::Sequential do
+  include RBits::Sequential
   
   def self.cleaup_fields
     field_descriptors.clear
@@ -30,7 +30,7 @@ describe Sequential do
   
   describe "add_field_desc" do
     before(:each) do
-      @field = UnsignedDesc.new(1)
+      @field = RBits::Unsigned.new(1)
       self.class.add_field_desc(:field, @field)
     end
 
@@ -49,7 +49,7 @@ describe Sequential do
   
   describe "field type" do
     it 'defines new field with test type' do
-      Sequential.define_field_type :desc
+      RBits::Sequential.define_field_type :desc
       self.class.desc :field
       self.class.should have_desc_for(:field)
     end

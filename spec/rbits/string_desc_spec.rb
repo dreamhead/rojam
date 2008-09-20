@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class SubStringDesc < StringDesc
+class SubStringDesc < RBits::String
   size :type => :u2
 end
 
-describe StringDesc do
+describe RBits::String do
   describe "read" do
     it "read string correctly" do
       @io = StringIO.new("\x06\x3C\x69\x6E\x69\x74\x3E")
-      @desc = StringDesc.new
+      @desc = RBits::String.new
       
       @desc.read(@io).should == "<init>"
     end
@@ -17,7 +17,7 @@ describe StringDesc do
   describe "write" do
     it "write string correctly" do
       @io = StringIO.new
-      @desc = StringDesc.new
+      @desc = RBits::String.new
       
       target = "<init>"
       @desc.write(@io, target)
@@ -43,4 +43,3 @@ describe StringDesc do
     end
   end
 end
-

@@ -1,41 +1,43 @@
-class StringDesc < ArrayDesc
-  class << self
-    attr_reader :read_size_proc, :write_size_proc, 
-      :size_descriptor, :value_descriptor
+module RBits
+  class String < Array
+    class << self
+      attr_reader :read_size_proc, :write_size_proc, 
+        :size_descriptor, :value_descriptor
     
-    def values options
-      @value_descriptor = TypeDescriptor.create_field(options[:type])
-    end
+      def values options
+        @value_descriptor = TypeDescriptor.create_field(options[:type])
+      end
     
-    def size options
-      @size_descriptor = TypeDescriptor.create_field(options[:type])
-      @read_size_proc = options[:read_proc]
-      @write_size_proc = options[:write_proc]
-    end
+      def size options
+        @size_descriptor = TypeDescriptor.create_field(options[:type])
+        @read_size_proc = options[:read_proc]
+        @write_size_proc = options[:write_proc]
+      end
     
-    def value_descriptor
-      @value_descriptor ||= TypeDescriptor.create_field(:u1)
-    end
+      def value_descriptor
+        @value_descriptor ||= TypeDescriptor.create_field(:u1)
+      end
     
-    def size_descriptor
-      @size_descriptor ||= TypeDescriptor.create_field(:u1)
-    end
+      def size_descriptor
+        @size_descriptor ||= TypeDescriptor.create_field(:u1)
+      end
     
-    def read_size_proc
-      @read_size_proc ||= lambda{|size| size}
-    end
+      def read_size_proc
+        @read_size_proc ||= lambda{|size| size}
+      end
     
-    def write_size_proc
-      @write_size_proc ||= lambda{|size| size}
+      def write_size_proc
+        @write_size_proc ||= lambda{|size| size}
+      end
     end
-  end
   
-  def read(io)
-    array = super(io)
-    array.pack("c#{array.size}")
-  end
+    def read(io)
+      array = super(io)
+      array.pack("c#{array.size}")
+    end
   
-  def write(io, text)
-    super(io, text.unpack("c#{text.size}"))
+    def write(io, text)
+      super(io, text.unpack("c#{text.size}"))
+    end
   end
 end

@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ClassFile do
+describe Rojam::ClassFile do
   describe 'read' do
     before(:each) do
-      @java_class = ClassFile.new
+      @java_class = Rojam::ClassFile.new
       @class_io = File.new(File.dirname(__FILE__) + "/Blank.class")
       @java_class.read(@class_io)
     end

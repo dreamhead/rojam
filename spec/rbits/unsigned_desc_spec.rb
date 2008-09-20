@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class TestSubForUnsigned < RBits
+class TestSubForUnsigned < RBits::Base
   class << self
     def cleaup_fields
       field_descriptors.clear
@@ -8,9 +8,9 @@ class TestSubForUnsigned < RBits
   end
 end
 
-describe UnsignedDesc do
+describe RBits::Unsigned do
   before(:each) do
-    @desc = UnsignedDesc.new(1)
+    @desc = RBits::Unsigned.new(1)
     @io = StringIO.new
   end
   describe 'write' do
@@ -20,7 +20,7 @@ describe UnsignedDesc do
     end
 
     it 'writes default value if the field is nil' do
-      @desc = UnsignedDesc.new(1, :default => 2)
+      @desc = RBits::Unsigned.new(1, :default => 2)
       @desc.write(@io, nil)
       @io.string.should == "\x02"
     end
@@ -31,7 +31,7 @@ describe UnsignedDesc do
     end
     
     it 'write constant if the constant is set' do
-      @desc = UnsignedDesc.new(1, :const => 1)
+      @desc = RBits::Unsigned.new(1, :const => 1)
       some_value = 2
       @desc.write(@io, some_value)
       @io.string.should == "\x01"
@@ -45,13 +45,13 @@ describe UnsignedDesc do
     end
     
     it "reads constant" do
-      @desc = UnsignedDesc.new(1, :const => 1)
+      @desc = RBits::Unsigned.new(1, :const => 1)
       @io.string = "\x01"
       @desc.read(@io).should == 1
     end
     
     it "raises error if constant is not correct" do
-      @desc = UnsignedDesc.new(1, :const => 1)
+      @desc = RBits::Unsigned.new(1, :const => 1)
       @io.string = "\x02"
       lambda { @desc.read(@io) }.should raise_error
     end

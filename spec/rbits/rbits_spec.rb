@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-class SubRBits < RBits
+class SubRBits < RBits::Base
   u1 :first
   u1 :second
   u1 :third
 end
 
-describe RBits do
+describe RBits::Base do
   before(:each) do
     @bits = SubRBits.new
     @io = StringIO.new
@@ -18,8 +18,6 @@ describe RBits do
   end
   
   describe 'read/write object' do
-    
-    
     it 'write object sequently' do
       @bits.first = 1
       @bits.second = 2

@@ -5,12 +5,12 @@ class SwitchBits
   attr_accessor :switch_value
 end
 
-class SubSwitchDesc < SwitchDesc
+class SubSwitchDesc < RBits::Switch
   tag :switch_tag, :type => :u1
   value :switch_value, :types => {1 => :u1, 2 => :u2}
 end
 
-describe SwitchDesc do
+describe RBits::Switch do
   describe "class options" do
     before(:each) do
       @desc = SubSwitchDesc.new
