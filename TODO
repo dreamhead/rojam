@@ -4,4 +4,7 @@ RBits
 
 Rojam
 * java class file format
+- UTF 8 string besides English
+- More CP info
+
 * class node

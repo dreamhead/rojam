@@ -1,47 +1,61 @@
-class CONSTANT_Utf8 < StringDesc
+class Interfaces < ArrayDesc
   size :type => :u2
+  values :type => :u2
   
-  field_type :constant_utf8
+  field_type :interfaces
 end
 
-class CONSTANT_Class < StructDesc
+class Info < ArrayDesc
+  size :type => :u4
+  values :type => :u1
+  
+  field_type :info
+end
+
+class AttributeInfo < StructDesc
+  u2 :attribute_name_index
+  info :infoes
+  
+  field_type :attribute_info
+end
+
+class Attributes < ArrayDesc
+  size :type => :u2
+  values :type => :attribute_info
+  
+  field_type :attributes
+end
+
+class FieldInfo < StructDesc
+  u2 :access_flags
   u2 :name_index
+  u2 :descriptor_index
+  attributes :attributes
   
-  field_type :constant_class
+  field_type :field_info
 end
 
-class CONSTANT_Fieldref < StructDesc
-  u2 :class_index
-  u2 :name_and_type_index
+class Fileds < ArrayDesc
+  size :type => :u2
+  values :type => :field_info
   
-  field_type :constant_fieldref
+  field_type :fields
 end
 
-class CONSTANT_Methodref < StructDesc
-  u2 :class_index
-  u2 :name_and_type_index
+class MethodInfo < StructDesc
+  u2 :access_flags
+  u2 :name_index
+  u2 :descriptor_index
+  attributes :attributes
   
-  field_type :constant_methodref
+  field_type :method_info
 end
 
-class CpInfo < SwitchDesc
-  tag :tag, :type => :u1
-  value :info, :types => {
-    1 => :constant_utf8,
-    7 => :constant_class,
-    10 => :constant_methodref,
-  }
+class Methods < ArrayDesc
+  size :type => :u2
+  values :type => :method_info
   
-  field_type :cp_info
-end
-
-class CpInfoArray < ArrayDesc
-  size :type => :u2, 
-    :read_proc => lambda {|size| size - 1 }, 
-    :write_proc => lambda {|size| size + 1 }
-  values :type => :cp_info
-  
-  field_type :cp_info_array
+  field_type :methods
 end
 
 class ClassFile < RBits
@@ -49,4 +63,11 @@ class ClassFile < RBits
   u2 :minor_version
   u2 :major_version
   cp_info_array :cp_info
+  u2 :access_flags
+  u2 :this_class
+  u2 :super_class
+  interfaces :interfaces
+  fields :fields
+  methods :methods
+  attributes :attributes
 end

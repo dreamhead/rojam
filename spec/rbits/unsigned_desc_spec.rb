@@ -16,25 +16,25 @@ describe UnsignedDesc do
   describe 'write' do
     it "writes fields correctly" do
       @desc.write(@io, 1)
-      @io.string.should == "\001"
+      @io.string.should == "\x01"
     end
 
     it 'writes default value if the field is nil' do
       @desc = UnsignedDesc.new(1, :default => 2)
       @desc.write(@io, nil)
-      @io.string.should == "\002"
+      @io.string.should == "\x02"
     end
     
     it 'writes zero if the default value is not set' do
       @desc.write(@io, nil)
-      @io.string.should == "\000"
+      @io.string.should == "\x00"
     end
     
     it 'write constant if the constant is set' do
       @desc = UnsignedDesc.new(1, :const => 1)
       some_value = 2
       @desc.write(@io, some_value)
-      @io.string.should == "\001"
+      @io.string.should == "\x01"
     end
   end
   
@@ -46,13 +46,13 @@ describe UnsignedDesc do
     
     it "reads constant" do
       @desc = UnsignedDesc.new(1, :const => 1)
-      @io.string = "\001"
+      @io.string = "\x01"
       @desc.read(@io).should == 1
     end
     
     it "raises error if constant is not correct" do
       @desc = UnsignedDesc.new(1, :const => 1)
-      @io.string = "\002"
+      @io.string = "\x02"
       lambda { @desc.read(@io) }.should raise_error
     end
     

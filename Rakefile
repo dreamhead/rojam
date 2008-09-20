@@ -95,3 +95,34 @@ namespace :spec do
     SpecStatistics.new(*stats_directories).to_s
   end
 end
+
+namespace :svn do
+  task :add do
+    sh %(svn st | grep "^?" | awk -F "      " '{printf "\\"%s\\"\\n", $2}' | xargs svn add)
+  end
+
+  task :commit do
+    sh %(svn stat --ignore-externals)
+    require 'readline'
+    comment = prompt_cached 'Comment'
+    sh %(svn ci -m "#{comment}")
+  end
+
+  def prompt_cached(label)
+    file = ".#{label.gsub(/\W/, '')}"
+    value = File.read(file) if File.exist?(file)
+    new_value = Readline.readline("#{label}#{value ? " [#{value}]" : ''}: ")
+    if new_value.any?
+      value = new_value
+      File.open(file, 'w') {|f| f.write value }
+    end
+    value
+  end
+
+  task :up do
+    ignore_externals = "--ignore-externals" if ENV['IGNORE_EXTERNALS']
+    sh %(svn up #{ignore_externals})
+  end
+end
+
+task :commit => %w(svn:up default svn:add svn:commit)
