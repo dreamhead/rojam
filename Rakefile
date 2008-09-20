@@ -98,25 +98,18 @@ end
 
 namespace :svn do
   task :add do
-    sh %(svn st | grep "^?" | awk -F "      " '{printf "\\"%s\\"\\n", $2}' | xargs svn add)
+    sh %(svn st | grep "^?" | awk -F "      " '{printf "\\"%s\\"\\n", $2}' | xargs -r svn add)
   end
 
   task :commit do
     sh %(svn stat --ignore-externals)
     require 'readline'
-    comment = prompt_cached 'Comment'
+    comment = prompt 'Comment'
     sh %(svn ci -m "#{comment}")
   end
 
-  def prompt_cached(label)
-    file = ".#{label.gsub(/\W/, '')}"
-    value = File.read(file) if File.exist?(file)
-    new_value = Readline.readline("#{label}#{value ? " [#{value}]" : ''}: ")
-    if new_value.any?
-      value = new_value
-      File.open(file, 'w') {|f| f.write value }
-    end
-    value
+  def prompt(label)
+    Readline.readline("[#{label}]: ")
   end
 
   task :up do
