@@ -66,7 +66,7 @@ describe Rojam::ClassFile do
       @java_class.methods[0].descriptor_index.should == 0x05
       @java_class.methods[0].attributes.should have(1).items
       @java_class.methods[0].attributes[0].attribute_name_index.should == 0x06
-      @java_class.methods[0].attributes[0].infoes.size.should == 0x1d
+      @java_class.methods[0].attributes[0].infoes.should have(29).items
       @java_class.methods[0].attributes[0].infoes.should == [
         0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x05, 
         0x2A, 0xB7, 0x00, 0x01, 0xb1, 0x00, 0x00, 0x00,

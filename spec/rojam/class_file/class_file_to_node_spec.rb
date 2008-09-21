@@ -39,6 +39,9 @@ describe Rojam::ClassFile do
     
     it "creates node with methods" do
       @node.methods.should have(1).items
+      @node.methods[0].access.should == 0x00
+      @node.methods[0].name.should == "<init>"
+      @node.methods[0].desc.should == "()V"
     end
   end
 end

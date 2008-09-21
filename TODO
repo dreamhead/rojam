@@ -1,10 +1,28 @@
 RBits
 * unsigned
   endian
+* enum
 
 Rojam
 * java class file format
 - UTF 8 string besides English
 - More CP info
+- Exception handling
+- More REAL java class file tests
+- attribute design?
 
 * class node
+- Complete class node
+- class node to class file
+
+* method node
+* field node
+
+* class writer
+
+* more
+- multi-java version support
+
+Document
+* Rojam Hacking Guide
+* User Guide

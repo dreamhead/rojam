@@ -1,0 +1,21 @@
+Rojam Hacking Guide
+
+Ye Zheng (dreamhead.cn@gmail.com)
+
+Table of Content
+* Introduction
+* Commit Code
+* Reference
+
+Introduction
+The goal of the document is to help developers understand Rojam's internals.
+
+Commit Code
+You should use rake:commit to commit your change to repository. It will
+* update your working copy with svn up.
+* run all tests.
+* prompt you to write comments.
+
+Reference
+* http://asm.objectweb.org/
+* http://java.sun.com/docs/books/jvms/second_edition/ClassFileFormat-Java5.pdf

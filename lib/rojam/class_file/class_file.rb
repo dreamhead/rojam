@@ -1,64 +1,4 @@
 module Rojam
-  class Interfaces < RBits::Array
-    size :type => :u2
-    values :type => :u2
-  
-    field_type :interfaces
-  end
-
-  class Info < RBits::Array
-    size :type => :u4
-    values :type => :u1
-  
-    field_type :info
-  end
-
-  class AttributeInfo < RBits::Struct
-    u2 :attribute_name_index
-    info :infoes
-  
-    field_type :attribute_info
-  end
-
-  class Attributes < RBits::Array
-    size :type => :u2
-    values :type => :attribute_info
-  
-    field_type :attributes
-  end
-
-  class FieldInfo < RBits::Struct
-    u2 :access_flags
-    u2 :name_index
-    u2 :descriptor_index
-    attributes :attributes
-  
-    field_type :field_info
-  end
-
-  class Fileds < RBits::Array
-    size :type => :u2
-    values :type => :field_info
-  
-    field_type :fields
-  end
-
-  class MethodInfo < RBits::Struct
-    u2 :access_flags
-    u2 :name_index
-    u2 :descriptor_index
-    attributes :attributes
-  
-    field_type :method_info
-  end
-
-  class Methods < RBits::Array
-    size :type => :u2
-    values :type => :method_info
-  
-    field_type :methods
-  end
-
   class ClassFile < RBits::Base
     u4 :magic, :const => 0xCAFEBABE
     u2 :minor_version
@@ -79,10 +19,10 @@ module Rojam
       
         node.name = this_class_name
         node.super_name = super_class_name
-        node.interfaces = []
         
-        node.fields = []
-        node.methods = [1]
+        self.methods.each do |m|
+          node.methods << class_method(m)
+        end
       end
     end
     
@@ -102,6 +42,14 @@ module Rojam
     
     def constant_value(index)
       cp_info[index - 1].info
+    end
+    
+    def class_method(m)
+      MethodNode.new do |node|
+        node.access = m.access_flags
+        node.name = constant_value(m.name_index)
+        node.desc = constant_value(m.descriptor_index)
+      end
     end
   end
 end
