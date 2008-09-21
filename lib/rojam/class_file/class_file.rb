@@ -71,5 +71,37 @@ module Rojam
     fields :fields
     methods :methods
     attributes :attributes
+    
+    def to_node
+      ClassNode.new do |node|
+        node.version = self.major_version
+        node.access = self.access_flags
+      
+        node.name = this_class_name
+        node.super_name = super_class_name
+        node.interfaces = []
+        
+        node.fields = []
+        node.methods = [1]
+      end
+    end
+    
+    private
+    def this_class_name
+      class_name(self.this_class)
+    end
+    
+    def super_class_name
+      class_name(self.super_class)
+    end
+    
+    def class_name index
+      name_index = constant_value(index).name_index
+      constant_value(name_index)
+    end
+    
+    def constant_value(index)
+      cp_info[index - 1].info
+    end
   end
 end

@@ -1,14 +1,14 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Rojam::ClassFile do
   describe 'read' do
-    before(:each) do
+    before(:all) do
       @java_class = Rojam::ClassFile.new
       @class_io = File.new(File.dirname(__FILE__) + "/Blank.class")
       @java_class.read(@class_io)
     end
     
-    after(:each) do
+    after(:all) do
       @class_io.close
     end
 
@@ -22,7 +22,7 @@ describe Rojam::ClassFile do
     end
   
     it 'reads constant pool' do
-      @java_class.cp_info.size.should == 12
+      @java_class.cp_info.should have(12).items
       @java_class.cp_info[0].info.class_index.should == 0x03
       @java_class.cp_info[0].info.name_and_type_index.should == 0x0A
       @java_class.cp_info[1].info.name_index.should == 0x0B
@@ -60,11 +60,11 @@ describe Rojam::ClassFile do
     end
 
     it 'reads methods' do
-      @java_class.methods.size.should == 0x01
+      @java_class.methods.should have(1).items
       @java_class.methods[0].access_flags.should == 0x00
       @java_class.methods[0].name_index.should == 0x04
       @java_class.methods[0].descriptor_index.should == 0x05
-      @java_class.methods[0].attributes.size.should == 0x01
+      @java_class.methods[0].attributes.should have(1).items
       @java_class.methods[0].attributes[0].attribute_name_index.should == 0x06
       @java_class.methods[0].attributes[0].infoes.size.should == 0x1d
       @java_class.methods[0].attributes[0].infoes.should == [
@@ -76,9 +76,9 @@ describe Rojam::ClassFile do
     end
     
     it 'reads attributes' do
-      @java_class.attributes.size.should == 0x01
+      @java_class.attributes.should have(1).items
       @java_class.attributes[0].attribute_name_index.should == 0x08
-      @java_class.attributes[0].infoes.size.should == 0x02
+      @java_class.attributes[0].infoes.should have(2).items
       @java_class.attributes[0].infoes.should == [0x00, 0x09]
     end
   end

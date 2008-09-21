@@ -1,3 +1,5 @@
 require File.dirname(__FILE__) + '/rbits'
-require File.dirname(__FILE__) + '/rojam/cp_info'
-require File.dirname(__FILE__) + '/rojam/java_class_file'
+require File.dirname(__FILE__) + '/rojam/class_file/cp_info'
+require File.dirname(__FILE__) + '/rojam/class_file/class_file'
+require File.dirname(__FILE__) + '/rojam/constants'
+require File.dirname(__FILE__) + '/rojam/class_node'
