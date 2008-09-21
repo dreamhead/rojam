@@ -31,6 +31,13 @@ module Rojam
   
     field_type :constant_name_and_type
   end
+  
+  class CONSTANT_InterfaceMethodref < RBits::Struct
+    u2 :class_index
+    u2 :name_and_type_index
+    
+    field_type :constant_interfacemethodref
+  end
 
   class CpInfo < RBits::Switch
     tag :tag, :type => :u1
@@ -38,7 +45,8 @@ module Rojam
       1   => :constant_utf8,
       7   => :constant_class,
       10  => :constant_methodref,
-      12  =>:constant_name_and_type
+      12  => :constant_name_and_type,
+      11  => :constant_interfacemethodref
     }
   
     field_type :cp_info

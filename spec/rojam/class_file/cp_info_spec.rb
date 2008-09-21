@@ -22,13 +22,21 @@ describe "cp_info" do
       :object => Struct.new(:class_index, :name_and_type_index).new(0x03, 0x0A)
     },
     
+    Rojam::CONSTANT_InterfaceMethodref => {
+      :binary => "\x01\x03\x00\x0A",
+      :proc => lambda { |result|
+        result.class_index == 0x0103 && result.name_and_type_index == 0x0A
+      },
+      :object => Struct.new(:class_index, :name_and_type_index).new(0x0103, 0x0A)
+    },
+    
     Rojam::CONSTANT_NameAndType => {
       :binary => "\x00\x04\x00\x05",
       :proc => lambda { |result|
         result.name_index == 0x04 && result.descriptor_index == 0x05
       },
       :object => Struct.new(:name_index, :descriptor_index).new(0x04, 0x05)
-    },
+    }
   }.each do |klass, options|
     describe klass do
       it "read #{klass}" do
