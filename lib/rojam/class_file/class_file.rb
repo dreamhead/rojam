@@ -12,6 +12,9 @@ module Rojam
     methods :methods
     attributes :attributes
     
+    include Rojam::AttributeParser
+    include Rojam::CpParser
+    
     def to_node
       ClassNode.new do |node|
         node.version = self.major_version
@@ -23,6 +26,8 @@ module Rojam
         self.methods.each do |m|
           node.methods << class_method(m)
         end
+        
+        parse_attributes(self.attributes, node)
       end
     end
     
@@ -35,11 +40,6 @@ module Rojam
       class_name(self.super_class)
     end
     
-    def class_name index
-      name_index = constant_value(index).name_index
-      constant_value(name_index)
-    end
-    
     def constant_value(index)
       cp_info[index - 1].info
     end
@@ -49,6 +49,7 @@ module Rojam
         node.access = m.access_flags
         node.name = constant_value(m.name_index)
         node.desc = constant_value(m.descriptor_index)
+        parse_attributes(m.attributes, node)
       end
     end
   end

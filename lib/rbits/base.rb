@@ -19,14 +19,27 @@ module RBits
     end
     
     def write(io)
-      self.class.field_descriptors.each do |fd|
-        fd.descriptor.write(io, @fields[fd.field_id])
-      end
+      write_with_bytes_io(BytesIOWrapper.new(io))
     end
     
     def read(io)
+      read_with_bytes_io(BytesIOWrapper.new(io))
+    end
+    
+    def read_bytes(bytes)
+      read_with_bytes_io(BytesIO.new(bytes))
+    end
+    
+    private
+    def write_with_bytes_io(bytes_io)
       self.class.field_descriptors.each do |fd|
-        @fields[fd.field_id] = fd.descriptor.read(io)
+        fd.descriptor.write(bytes_io, @fields[fd.field_id])
+      end
+    end
+    
+    def read_with_bytes_io(bytes_io)
+      self.class.field_descriptors.each do |fd|
+        @fields[fd.field_id] = fd.descriptor.read(bytes_io)
       end
     end
   end

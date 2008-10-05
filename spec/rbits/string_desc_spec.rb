@@ -7,7 +7,7 @@ end
 describe RBits::String do
   describe "read" do
     it "read string correctly" do
-      @io = StringIO.new("\x06\x3C\x69\x6E\x69\x74\x3E")
+      @io = RBits::BytesIO.new([0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E])
       @desc = RBits::String.new
       
       @desc.read(@io).should == "<init>"
@@ -16,30 +16,30 @@ describe RBits::String do
   
   describe "write" do
     it "write string correctly" do
-      @io = StringIO.new
+      @io = RBits::BytesIO.new
       @desc = RBits::String.new
       
       target = "<init>"
       @desc.write(@io, target)
-      @io.string.should == "\x06\x3C\x69\x6E\x69\x74\x3E"
+      @io.bytes.should == [0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E]
     end
   end
   
   describe "options" do
     it "read string correctly" do
-      @io = StringIO.new("\x00\x06\x3C\x69\x6E\x69\x74\x3E")
+      @io = RBits::BytesIO.new([0x00, 0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E])
       @desc = SubStringDesc.new
       
       @desc.read(@io).should == "<init>"
     end
     
     it "write string correctly" do
-      @io = StringIO.new
+      @io = RBits::BytesIO.new
       @desc = SubStringDesc.new
 
       target = "<init>"
       @desc.write(@io, target)
-      @io.string.should == "\x00\x06\x3C\x69\x6E\x69\x74\x3E"
+      @io.bytes.should == [0x00, 0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E]
     end
   end
 end

@@ -34,5 +34,13 @@ describe RBits::Base do
       @bits.third.should == 6
     end
   end
+  
+  describe 'read object with bytes' do
+    it 'read from bytes' do
+      @bits.read_bytes([0x01, 0x02, 0x06])
+      @bits.first.should == 1
+      @bits.second.should == 2
+      @bits.third.should == 6
+    end
+  end
 end
-

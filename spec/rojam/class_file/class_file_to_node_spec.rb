@@ -42,6 +42,18 @@ describe Rojam::ClassFile do
       @node.methods[0].access.should == 0x00
       @node.methods[0].name.should == "<init>"
       @node.methods[0].desc.should == "()V"
+      @node.methods[0].max_stack.should == 1
+      @node.methods[0].max_locals.should == 1
+      @node.methods[0].line_number.should == 0x01
+      @node.methods[0].instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_0),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
+    
+    it "creates node with attributes" do
+      @node.source_file.should == "Blank.java"
     end
   end
 end

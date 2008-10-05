@@ -14,7 +14,7 @@ describe RBits::Switch do
   describe "class options" do
     before(:each) do
       @desc = SubSwitchDesc.new
-      @io = StringIO.new
+      @io = RBits::BytesIO.new
       @bits = SwitchBits.new
     end
     
@@ -23,14 +23,14 @@ describe RBits::Switch do
         @bits.switch_tag = 1
         @bits.switch_value = 1
         @desc.write @io, @bits
-        @io.string.should == "\x01\x01"
+        @io.bytes.should == [0x01, 0x01]
       end
     
       it "writes switch field for ref 2 correctly" do
         @bits.switch_tag = 2
         @bits.switch_value = 2
         @desc.write @io, @bits
-        @io.string.should == "\x02\x00\x02"
+        @io.bytes.should == [0x02, 0x00, 0x02]
       end
     
       it "raises error without ref value" do
@@ -42,14 +42,14 @@ describe RBits::Switch do
     
     describe "read" do
       it "reads switch field for ref 1 correctly" do
-        @io.string = "\x01\x01"
+        @io.bytes = [0x01, 0x01]
         bits = @desc.read(@io)
         bits.switch_tag.should == 1
         bits.switch_value.should == 1
       end
     
       it "reads switch field for ref 2 correctly" do
-        @io.string = "\x02\x00\x02"
+        @io.bytes = [0x02, 0x00, 0x02]
       
         bits = @desc.read(@io)
         bits.switch_tag.should == 2
@@ -57,7 +57,7 @@ describe RBits::Switch do
       end
     
       it "raises error without ref value" do
-        @io.string = "\x03"
+        @io.bytes = [0x03]
         lambda { @desc.read(@io) }.should raise_error
       end
     end

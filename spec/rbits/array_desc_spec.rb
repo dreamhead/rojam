@@ -15,20 +15,20 @@ end
 describe RBits::Array do
   before(:each) do
     @desc = SubArrayDesc.new
-    @io = StringIO.new
+    @io = RBits::BytesIO.new
   end
   
   describe "write" do
     it "writes array field correctly" do
       @bits = [1, 2]
       @desc.write(@io, @bits)
-      @io.string.should == "\x02\x01\x02"
+      @io.bytes.should == [0x02, 0x01, 0x02]
     end
   end
   
   describe 'read' do
     it 'reads array field correctly' do
-      @io.string = "\x02\x01\x02"
+      @io.bytes = [0x02, 0x01, 0x02]
       bits = @desc.read(@io)
       bits.should == [1, 2]
     end
@@ -37,7 +37,7 @@ describe RBits::Array do
   describe 'options' do
     it 'has difference between size and size reference for read' do
       @desc = SubArrayDescWithReadWriteProc.new
-      @io.string = "\x02\x01"
+      @io.bytes = [0x02, 0x01]
       bits = @desc.read(@io)
       bits.should == [1]
     end
@@ -46,7 +46,7 @@ describe RBits::Array do
       @desc = SubArrayDescWithReadWriteProc.new
       @bits = [1]
       @desc.write(@io, @bits)
-      @io.string.should == "\x02\x01"
+      @io.bytes.should == [0x02, 0x01]
     end
   end
 end

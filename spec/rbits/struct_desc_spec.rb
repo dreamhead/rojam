@@ -12,7 +12,7 @@ end
 describe RBits::Struct do
   before(:each) do
     @desc = SubStructhDesc.new
-    @io = StringIO.new
+    @io = RBits::BytesIO.new
     @bits = StructBits.new
   end
   
@@ -21,13 +21,13 @@ describe RBits::Struct do
       @bits.bit1 = 1
       @bits.bit2 = 2
       @desc.write(@io, @bits)
-      @io.string.should == "\x01\x02"
+      @io.bytes.should == [0x01, 0x02]
     end
   end
   
   describe "read" do
     it "reads struct correctly" do
-      @io.string = "\x01\x02"
+      @io.bytes = [0x01, 0x02]
       @bits = @desc.read(@io)
       @bits.bit1.should == 1
       @bits.bit2.should == 2
