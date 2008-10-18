@@ -4,6 +4,32 @@ module Rojam
   
     field_type :constant_utf8
   end
+  
+  class CONSTANT_Integer < RBits::Struct
+    u4 :bytes
+    
+    field_type :constant_integer
+  end
+  
+  class CONSTANT_Float < RBits::Struct
+    u4 :bytes
+    
+    field_type :constant_float
+  end
+  
+  class CONSTANT_Long < RBits::Struct
+    u4 :high_bytes
+    u4 :low_bytes
+    
+    field_type :constant_long
+  end
+  
+  class CONSTANT_Double < RBits::Struct
+    u4 :high_bytes
+    u4 :low_bytes
+    
+    field_type :constant_double
+  end
 
   class CONSTANT_Class < RBits::Struct
     u2 :name_index
@@ -43,10 +69,14 @@ module Rojam
     tag :tag, :type => :u1
     value :info, :types => {
       1   => :constant_utf8,
+      3   => :constant_integer,
+      4   => :constant_float,
+      5   => :constant_long,
+      6   => :constant_double,
       7   => :constant_class,
       10  => :constant_methodref,
-      12  => :constant_name_and_type,
-      11  => :constant_interfacemethodref
+      11  => :constant_interfacemethodref,
+      12  => :constant_name_and_type
     }
   
     field_type :cp_info

@@ -8,6 +8,34 @@ describe "cp_info" do
       :object => "<init>"
     },
     
+    Rojam::CONSTANT_Integer => {
+      :binary => [0x00, 0x00, 0x00, 0x7B],
+      :proc => lambda {|result| result.bytes == 0x7B},
+      :object => Struct.new(:bytes).new(0x7B)
+    },
+    
+    Rojam::CONSTANT_Float => {
+      :binary => [0x42, 0xF6, 0xA4, 0x5A],
+      :proc => lambda {|result| result.bytes == 0x42F6A45A},
+      :object => Struct.new(:bytes).new(0x42F6A45A)
+    },
+    
+    Rojam::CONSTANT_Long => {
+      :binary => [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7B],
+      :proc => lambda {|result| 
+        result.high_bytes == 0x00 && result.low_bytes == 0x7B
+      },
+      :object => Struct.new(:high_bytes, :low_bytes).new(0x00, 0x7B)
+    },
+    
+    Rojam::CONSTANT_Double => {
+      :binary => [0x40, 0x5E, 0xD4, 0x8B, 0x43, 0x95, 0x81, 0x06],
+      :proc => lambda {|result| 
+        result.high_bytes == 0x405ED48B && result.low_bytes == 0x43958106
+      },
+      :object => Struct.new(:high_bytes, :low_bytes).new(0x405ED48B, 0x43958106)
+    },
+    
     Rojam::CONSTANT_Class => {
       :binary => [0x00, 0x0B],
       :proc => lambda {|result| result.name_index == 0x0B },
@@ -23,11 +51,11 @@ describe "cp_info" do
     },
     
     Rojam::CONSTANT_InterfaceMethodref => {
-      :binary => [0x01, 0x03, 0x00, 0x0A],
+      :binary => [0x00, 0x03, 0x00, 0x1F],
       :proc => lambda { |result|
-        result.class_index == 0x0103 && result.name_and_type_index == 0x0A
+        result.class_index == 0x03 && result.name_and_type_index == 0x1F
       },
-      :object => Struct.new(:class_index, :name_and_type_index).new(0x0103, 0x0A)
+      :object => Struct.new(:class_index, :name_and_type_index).new(0x03, 0x1F)
     },
     
     Rojam::CONSTANT_NameAndType => {
