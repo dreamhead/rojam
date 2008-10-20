@@ -36,6 +36,12 @@ module Rojam
   
     field_type :constant_class
   end
+  
+  class CONSTANT_String < RBits::Struct
+    u2 :string_index
+  
+    field_type :constant_string
+  end
 
   class CONSTANT_Fieldref < RBits::Struct
     u2 :class_index
@@ -74,6 +80,8 @@ module Rojam
       5   => :constant_long,
       6   => :constant_double,
       7   => :constant_class,
+      8   => :constant_string,
+      9   => :constant_fieldref,
       10  => :constant_methodref,
       11  => :constant_interfacemethodref,
       12  => :constant_name_and_type

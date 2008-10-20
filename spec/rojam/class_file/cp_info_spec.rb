@@ -42,6 +42,18 @@ describe "cp_info" do
       :object => Struct.new(:name_index).new(0x0B)
     },
     
+    Rojam::CONSTANT_String => {
+      :binary => [0x00, 0x34],
+      :proc => lambda {|result| result.string_index == 0x34 },
+      :object => Struct.new(:string_index).new(0x34)
+    },
+  
+    Rojam::CONSTANT_Fieldref => {
+      :binary => [0x00, 0x2C, 0x00, 0x2D],
+      :proc => lambda {|result| result.class_index == 0x2C && result.name_and_type_index == 0x2D},
+      :object => Struct.new(:class_index, :name_and_type_index).new(0x2C, 0x2D)
+    },
+    
     Rojam::CONSTANT_Methodref => {
       :binary => [0x00, 0x03, 0x00, 0x0A],
       :proc => lambda { |result|
