@@ -1,8 +1,10 @@
 module Rojam
-  module InstructionParser
-    include CpParser
+  class InstructionParser
+    def initialize constant_pool
+      @pool = constant_pool
+    end
     
-    def parse_instructions(node, instruction_bytes)
+    def parse(node, instruction_bytes)
       current = 0
       
       while (current < instruction_bytes.size)
@@ -19,8 +21,8 @@ module Rojam
     private
     def parse_invokespecial instruction_bytes
       owner_index = instruction_bytes[1..2].to_unsigned
-      owner_name = method_owner_name(owner_index)
-      name, desc = name_and_desc(owner_index)
+      owner_name = @pool.method_owner_name(owner_index)
+      name, desc = @pool.name_and_desc(owner_index)
       MethodInsn.new(instruction_bytes[0], owner_name, name, desc)
     end
   end

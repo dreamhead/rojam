@@ -12,4 +12,3 @@ describe Rojam::ClassReader do
     end
   end
 end
-

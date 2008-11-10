@@ -46,7 +46,7 @@ describe Rojam::ClassFile do
       @node.methods[0].max_locals.should == 1
       @node.methods[0].line_number.should == 0x01
       @node.methods[0].instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_0),
+        Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
