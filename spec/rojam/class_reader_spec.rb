@@ -6,9 +6,11 @@ describe Rojam::ClassReader do
   end
 
   it "reads class node from io" do
-    File.open(File.dirname(__FILE__) + '/class_file/Blank.class') do |f|
-      node = @class_reader.read(f)
-      node.version.should == Rojam::Constants::Versions::V1_6
+    Dir[File.dirname(__FILE__) + '/class_file/fixtures/*.class'].each do |file_name|
+      File.open(file_name) do |f|
+        node = @class_reader.read(f)
+        node.version.should == Rojam::Constants::Versions::V1_6
+      end
     end
   end
 end

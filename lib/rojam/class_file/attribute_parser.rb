@@ -16,7 +16,7 @@ module Rojam
       raise "unknown constant value for index #{attr.attribute_name_index}" unless value
       parser_sym = ATTR_PARSERS[value]
       raise "no handler for #{value}" unless parser_sym
-      self.send(parser_sym, node, attr.infoes)
+      self.send(parser_sym, attr.infoes, node)
     end
     
     ATTR_PARSERS = {
@@ -25,11 +25,11 @@ module Rojam
       'LineNumberTable' => :parse_line_number_table
     }
     
-    def parse_source_file(node, infoes)
+    def parse_source_file(infoes, node)
       node.source_file = @pool.constant_value(infoes.to_unsigned)
     end
     
-    def parse_line_number_table node, infoes
+    def parse_line_number_table infoes, node
       attr = LineNumberTableAttribute.new
       attr.read_bytes(infoes)
       attr.table.each do |info|
@@ -38,7 +38,7 @@ module Rojam
       end
     end
     
-    def parse_code node, infoes
+    def parse_code infoes, node
       code_attr = CodeAttribute.new
       code_attr.read_bytes(infoes)
       

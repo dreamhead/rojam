@@ -4,7 +4,7 @@ describe Rojam::ClassFile do
   describe 'to_node' do
     before(:all) do
       @java_class = Rojam::ClassFile.new
-      @class_io = File.new(File.dirname(__FILE__) + "/Blank.class")
+      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/Blank.class")
       @java_class.read(@class_io)
       @node = @java_class.to_node
     end
@@ -34,7 +34,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should be_empty
+      @node.fields.should be_empty  
     end
     
     it "creates node with methods" do

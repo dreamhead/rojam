@@ -39,7 +39,11 @@ module RBits
     
     def read_with_bytes_io(bytes_io)
       self.class.field_descriptors.each do |fd|
-        @fields[fd.field_id] = fd.descriptor.read(bytes_io)
+        begin
+          @fields[fd.field_id] = fd.descriptor.read(bytes_io)
+        rescue Exception => e
+          raise "Exception for [#{fd.field_id}] with [#{e.message}]"
+        end
       end
     end
   end
