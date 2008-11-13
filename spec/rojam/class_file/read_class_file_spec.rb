@@ -18,7 +18,7 @@ describe Rojam::ClassFile do
   
     it 'reads version' do
       @java_class.minor_version.should == 0x00
-      @java_class.major_version.should == 0x32
+      @java_class.major_version.should == Rojam::Constants::Versions::V1_6
     end
   
     it 'reads constant pool' do
@@ -40,7 +40,7 @@ describe Rojam::ClassFile do
     end
   
     it 'reads access flag' do
-      @java_class.access_flags.should == 0x20
+      @java_class.access_flags.should == Rojam::Constants::Access::ACC_SUPER
     end
   
     it 'reads this class' do

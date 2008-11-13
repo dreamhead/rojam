@@ -10,7 +10,7 @@ module Rojam
       V1_6 = 0x32
     end
     
-    module AccessFlags
+    module Access
       ACC_PUBLIC      = 0x0001
       ACC_FINAL       = 0x0010
       ACC_SUPER       = 0x0020

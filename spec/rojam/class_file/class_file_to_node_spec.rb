@@ -18,7 +18,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with access" do
-      @node.access.should == Rojam::Constants::AccessFlags::ACC_SUPER
+      @node.access.should == Rojam::Constants::Access::ACC_SUPER
     end
     
     it "creates node with name" do

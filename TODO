@@ -6,7 +6,6 @@ RBits
 Rojam
 * java class file format
 - UTF 8 string besides English
-- More CP info
 - Exception handling
 - More REAL java class file tests
 - attribute design?
