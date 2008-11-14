@@ -9,7 +9,7 @@ describe Rojam::ClassReader do
     Dir[File.dirname(__FILE__) + '/class_file/fixtures/*.class'].each do |file_name|
       File.open(file_name) do |f|
         node = @class_reader.read(f)
-        node.version.should == Rojam::Constants::Versions::V1_6
+        node.version.should == Rojam::Java::Versions::V1_6
       end
     end
   end

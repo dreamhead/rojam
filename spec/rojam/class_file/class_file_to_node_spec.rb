@@ -14,11 +14,11 @@ describe Rojam::ClassFile do
     end
 
     it "creates node with version" do
-      @node.version.should == Rojam::Constants::Versions::V1_6
+      @node.version.should == Rojam::Java::Versions::V1_6
     end
     
     it "creates node with access" do
-      @node.access.should == Rojam::Constants::Access::ACC_SUPER
+      @node.access.should == Rojam::Java::Access::ACC_SUPER
     end
     
     it "creates node with name" do

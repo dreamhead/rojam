@@ -1,5 +1,5 @@
 module Rojam
-  module Constants
+  module Java
     module Versions
       V1_0 = 0x2C
       V1_1 = 0x2D
