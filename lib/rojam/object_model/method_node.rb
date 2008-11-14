@@ -1,10 +1,23 @@
 module Rojam
   class MethodNode
-    attr_accessor :access, :name, :desc, :max_stack, :max_locals, :instructions,
-      :start_pc, :line_number
+    include MemberNode
+    
+    attr_accessor :access, :name, :desc, :signature, :annotationDefault, 
+      :max_stack, :max_locals,
+      :start_pc, :line_number # TODO: REMOVED
+    
+    attr_reader :exceptions, 
+      :visible_parameter_annotations, :invisible_parameter_annotations,
+      :instructions, :try_catch_blocks, :local_variables
     
     def initialize
+      @exceptions = []
+      @visible_parameter_annotations = []
+      @invisible_parameter_annotations = []
       @instructions = []
+      @try_catch_blocks = []
+      @local_variables = []
+      
       yield self if block_given?
     end
   end
