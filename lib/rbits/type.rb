@@ -19,20 +19,12 @@ module RBits
         type.new(options)
       end
       
-      def array(name, &block)
-        type(name, RBits::Array, &block)        
-      end
-      
-      def string(name, &block)
-        type(name, RBits::String, &block) 
-      end
-      
-      def struct(name, &block)
-        type(name, RBits::Struct, &block)
-      end
-      
-      def switch(name, &block)
-        type(name, RBits::Switch, &block)
+      [:array, :string, :struct, :switch].each do |type_name|
+        class_eval %Q{
+          def #{type_name}(name, &block)
+            type(name, RBits.const_get(:#{type_name.to_s.capitalize}), &block) 
+          end
+        }
       end
       
       def type(name, super_type, &block)
