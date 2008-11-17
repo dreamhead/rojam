@@ -33,4 +33,25 @@ describe RBits::Struct do
       @bits.bit2.should == 2
     end
   end
+  
+  describe 'struct type' do
+    before(:each) do
+      klass = RBits::Type.struct(:new_struct) do
+        u1 :bit1
+        u1 :bit2
+      end
+      @desc = klass.new
+    end
+    
+    it 'defines struct type' do
+      RBits::Type.should have_field_type(:new_struct)
+    end
+    
+    it 'sets options correctly' do
+      @io.bytes = [0x01, 0x02]
+      @bits = @desc.read(@io)
+      @bits.bit1.should == 1
+      @bits.bit2.should == 2
+    end
+  end
 end

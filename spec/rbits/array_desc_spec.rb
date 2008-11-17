@@ -49,4 +49,24 @@ describe RBits::Array do
       @io.bytes.should == [0x02, 0x01]
     end
   end
+  
+  describe 'array type' do
+    before(:each) do
+      klass = RBits::Type.array(:new_array) do
+        size :type => :u1
+        values :type => :u1
+      end
+      @desc = klass.new
+    end
+    
+    it 'defines array type' do
+      RBits::Type.should have_field_type(:new_array)
+    end
+    
+    it 'sets options correctly' do
+      @bits = [1, 2]
+      @desc.write(@io, @bits)
+      @io.bytes.should == [0x02, 0x01, 0x02]
+    end
+  end
 end

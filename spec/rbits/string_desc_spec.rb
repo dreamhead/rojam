@@ -42,4 +42,20 @@ describe RBits::String do
       @io.bytes.should == [0x00, 0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E]
     end
   end
+  
+  describe 'string type' do
+    before(:each) do
+      klass = RBits::Type.string(:new_string)
+      @desc = klass.new
+    end
+    
+    it 'defines string type' do
+      RBits::Type.should have_field_type(:new_string)
+    end
+    
+    it 'sets options correctly' do
+      @io = RBits::BytesIO.new([0x06, 0x3C, 0x69, 0x6E, 0x69, 0x74, 0x3E])
+      @desc.read(@io).should == "<init>"
+    end
+  end
 end

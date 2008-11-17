@@ -62,4 +62,26 @@ describe RBits::Switch do
       end
     end
   end
+  
+  describe 'struct type' do
+    before(:each) do
+      klass = RBits::Type.switch(:new_switch) do      
+        tag :switch_tag, :type => :u1
+        value :switch_value, :types => {1 => :u1, 2 => :u2}
+      end
+      @desc = klass.new
+    end
+    
+    it 'defines struct type' do
+      RBits::Type.should have_field_type(:new_switch)
+    end
+    
+    it 'sets options correctly' do 
+      @io = RBits::BytesIO.new
+      @io.bytes = [0x01, 0x01]
+      bits = @desc.read(@io)
+      bits.switch_tag.should == 1
+      bits.switch_value.should == 1
+    end
+  end
 end

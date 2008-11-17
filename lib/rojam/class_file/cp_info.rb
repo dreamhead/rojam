@@ -1,77 +1,55 @@
 module Rojam
-  class CONSTANT_Utf8 < RBits::String
+  RBits::Type.string(:constant_utf8) do
     size :type => :u2
-  
-    field_type :constant_utf8
   end
   
-  class CONSTANT_Integer < RBits::Struct
+  RBits::Type.struct(:constant_integer) do
     u4 :bytes
-    
-    field_type :constant_integer
   end
   
-  class CONSTANT_Float < RBits::Struct
+  RBits::Type.struct(:constant_float) do
     u4 :bytes
-    
-    field_type :constant_float
   end
   
-  class CONSTANT_Long < RBits::Struct
+  RBits::Type.struct(:constant_long) do
     u4 :high_bytes
     u4 :low_bytes
-    
-    field_type :constant_long
   end
   
-  class CONSTANT_Double < RBits::Struct
+  RBits::Type.struct(:constant_double) do
     u4 :high_bytes
     u4 :low_bytes
-    
-    field_type :constant_double
   end
-
-  class CONSTANT_Class < RBits::Struct
+  
+  RBits::Type.struct(:constant_class) do
     u2 :name_index
-  
-    field_type :constant_class
   end
   
-  class CONSTANT_String < RBits::Struct
+  RBits::Type.struct(:constant_string) do
     u2 :string_index
-  
-    field_type :constant_string
   end
-
-  class CONSTANT_Fieldref < RBits::Struct
+  
+  RBits::Type.struct(:constant_fieldref) do
     u2 :class_index
     u2 :name_and_type_index
-  
-    field_type :constant_fieldref
   end
-
-  class CONSTANT_Methodref < RBits::Struct
+  
+  RBits::Type.struct(:constant_methodref) do
     u2 :class_index
     u2 :name_and_type_index
-  
-    field_type :constant_methodref
   end
-
-  class CONSTANT_NameAndType < RBits::Struct
+  
+  RBits::Type.struct(:constant_name_and_type) do
     u2 :name_index
     u2 :descriptor_index
-  
-    field_type :constant_name_and_type
   end
   
-  class CONSTANT_InterfaceMethodref < RBits::Struct
+  RBits::Type.struct(:constant_interfacemethodref) do
     u2 :class_index
     u2 :name_and_type_index
-    
-    field_type :constant_interfacemethodref
   end
-
-  class CpInfo < RBits::Switch
+  
+  RBits::Type.switch(:cp_info) do
     tag :tag, :type => :u1
     value :info, :types => {
       1   => :constant_utf8,
@@ -86,16 +64,12 @@ module Rojam
       11  => :constant_interfacemethodref,
       12  => :constant_name_and_type
     }
-  
-    field_type :cp_info
   end
-
-  class CpInfoArray < RBits::Array
+  
+  RBits::Type.array(:cp_info_array) do
     size :type => :u2, 
       :read_proc => lambda {|size| size - 1 }, 
       :write_proc => lambda {|size| size + 1 }
     values :type => :cp_info
-  
-    field_type :cp_info_array
   end
 end
