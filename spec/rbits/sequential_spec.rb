@@ -4,7 +4,7 @@ class TestSequential
   include RBits::Sequential
 end
 
-class TestFieldDesc < RBits::TypeDescriptor
+class TestFieldDesc < RBits::Type
   field_type :desc
   attr_accessor :options
   

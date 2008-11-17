@@ -7,7 +7,7 @@ module RBits
     def self.define_field_type symbol
       ClassMethods.send :define_method, symbol do |field_id, *args|
         options = args[0] || {}
-        type_desc = TypeDescriptor.create_field(symbol, options)
+        type_desc = Type.create_field(symbol, options)
         add_field_desc(field_id, type_desc)
       end
     end

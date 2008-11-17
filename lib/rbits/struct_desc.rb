@@ -1,5 +1,5 @@
 module RBits
-  class Struct < TypeDescriptor
+  class Struct < Type
     include Sequential
   
     def initialize(options = {})

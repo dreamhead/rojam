@@ -1,12 +1,12 @@
 module RBits
-  class Switch < TypeDescriptor
+  class Switch < Type
     class << self
       attr_reader :tag_name, :tag_descriptor, :value_name, :value_types
       attr_accessor :value_descriptors
     
       def tag(name, options)
         @tag_name = name
-        @tag_descriptor = TypeDescriptor.create_field(options[:type])
+        @tag_descriptor = Type.create_field(options[:type])
       end
     
       def value(name, options)
@@ -34,7 +34,7 @@ module RBits
     private
     def value_descriptor(value)
       type = value_type(value)
-      value_descriptors[type] ||= TypeDescriptor.create_field(type)
+      value_descriptors[type] ||= Type.create_field(type)
     end
   
     def value_type(value)

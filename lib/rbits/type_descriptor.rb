@@ -1,10 +1,10 @@
 module RBits
-  class TypeDescriptor
+  class Type
     @@field_types = {}
   
     class << self
-      def field_type name
-        @@field_types[name] = self
+      def field_type name, type_class = self
+        @@field_types[name] = type_class
         Sequential.define_field_type(name)
       end
     

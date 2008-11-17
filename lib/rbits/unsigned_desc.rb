@@ -1,5 +1,5 @@
 module RBits
-  class Unsigned < TypeDescriptor
+  class Unsigned < Type
     def initialize(size, options = {})
       @size = size
       @default_value = options[:default] || 0

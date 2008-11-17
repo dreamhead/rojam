@@ -5,21 +5,21 @@ module RBits
         :size_descriptor, :value_descriptor
     
       def values options
-        @value_descriptor = TypeDescriptor.create_field(options[:type])
+        @value_descriptor = Type.create_field(options[:type])
       end
     
       def size options
-        @size_descriptor = TypeDescriptor.create_field(options[:type])
+        @size_descriptor = Type.create_field(options[:type])
         @read_size_proc = options[:read_proc]
         @write_size_proc = options[:write_proc]
       end
     
       def value_descriptor
-        @value_descriptor ||= TypeDescriptor.create_field(:u1)
+        @value_descriptor ||= Type.create_field(:u1)
       end
     
       def size_descriptor
-        @size_descriptor ||= TypeDescriptor.create_field(:u1)
+        @size_descriptor ||= Type.create_field(:u1)
       end
     
       def read_size_proc
