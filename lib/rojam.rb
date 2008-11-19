@@ -10,7 +10,6 @@ require File.dirname(__FILE__) + '/rojam/object_model/field_node'
 require File.dirname(__FILE__) + '/rojam/object_model/method_insn'
 
 require File.dirname(__FILE__) + '/rojam/class_file/cp_info'
-require File.dirname(__FILE__) + '/rojam/class_file/cp_parser'
 require File.dirname(__FILE__) + '/rojam/class_file/class_info'
 require File.dirname(__FILE__) + '/rojam/class_file/instruction_parser'
 require File.dirname(__FILE__) + '/rojam/class_file/attribute_info'
