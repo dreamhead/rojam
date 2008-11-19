@@ -4,7 +4,7 @@ describe Rojam::ClassFile do
   describe 'read' do
     before(:all) do
       @java_class = Rojam::ClassFile.new
-      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/Blank.class")
+      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/Blank.class", "rb")
       @java_class.read(@class_io)
     end
     
