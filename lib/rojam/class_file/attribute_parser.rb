@@ -24,7 +24,13 @@ module Rojam
     def parse(attr, node)
       value = @pool.constant_value(attr.attribute_name_index)
       raise "unknown constant value for index #{attr.attribute_name_index}" unless value
-      self.send(AttributeParser.attribute_method_name(value), attr.infoes, node)
+      parse_attribute(value, attr.infoes, node)
+    end
+    
+    def parse_attribute(attr, infoes, node)
+      method_name = AttributeParser.attribute_method_name(attr)
+      raise "attribute #{attr} can not be parsed" unless self.respond_to?(method_name)
+      self.send(method_name, infoes, node)
     end
     
     attribute('SourceFile') do |infoes, node|

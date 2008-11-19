@@ -22,7 +22,7 @@ describe Rojam::AttributeParser do
     source_file_index = 0x06
     attr = AttributeClass.new(source_file_index, [0x00, 0x09])
     @pool.constant(source_file_index, "Unknown")
-    lambda { parser.parse(attr, node) }.should raise_error
+    lambda { @parser.parse(attr, node) }.should raise_error
   end
   
   it 'parses SourceFile attribute' do
