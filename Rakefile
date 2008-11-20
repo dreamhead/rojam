@@ -11,12 +11,35 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
 
-require 'code_statistics' #borrow from http://dev.rubyonrails.org/svn/rails/trunk/railties/lib/code_statistics.rb
-class SpecStatistics < CodeStatistics
+#borrow from http://dev.rubyonrails.org/svn/rails/trunk/railties/lib/code_statistics.rb
+#borrow from http://refactormycode.com/codes/91-rake-stats-for-rspec
+class SpecStatistics
+  TEST_TYPES = ["Specs"]
 
-  TEST_TYPES << "Specs"
+  def initialize(*pairs)
+    @pairs      = pairs
+    @statistics = calculate_statistics
+    @total      = calculate_total if pairs.length > 1
+  end
+
+  def to_s
+    print_header
+    @pairs.each { |pair| print_line(pair.first, @statistics[pair.first]) }
+    print_splitter
+
+    if @total
+      print_line("Total", @total)
+      print_splitter
+    end
+
+    print_code_test_stats
+  end
 
   private
+  def calculate_statistics
+    @pairs.inject({}) { |stats, pair| stats[pair.first] = calculate_directory_statistics(pair.last); stats }
+  end
+  
   def calculate_directory_statistics(directory, pattern = /.*\.rb$/)
     stats = { "lines" => 0, "codelines" => 0, "classes" => 0, "methods" => 0, "specs" => 0, "behaviors" => 0 }
 
@@ -50,6 +73,18 @@ class SpecStatistics < CodeStatistics
     total
   end
 
+  def calculate_code
+    code_loc = 0
+    @statistics.each { |k, v| code_loc += v['codelines'] unless TEST_TYPES.include? k }
+    code_loc
+  end
+
+  def calculate_tests
+    test_loc = 0
+    @statistics.each { |k, v| test_loc += v['codelines'] if TEST_TYPES.include? k }
+    test_loc
+  end
+
   def print_header
     print_splitter
     puts "| Name                 | Lines |   LOC | Classes | Methods | Behaviors | Specifications | M/C | LOC/M | S/B |"
@@ -73,15 +108,23 @@ class SpecStatistics < CodeStatistics
     end
 
     puts start + 
-         "| #{statistics["lines"].to_s.rjust(5)} " +
-         "| #{statistics["codelines"].to_s.rjust(5)} " +
-         "| #{statistics["classes"].to_s.rjust(7)} " +
-         "| #{statistics["methods"].to_s.rjust(7)} " +
-         "| #{statistics["behaviors"].to_s.rjust(10)}" +
-         "| #{statistics["specs"].to_s.rjust(15)}" +
-         "| #{m_over_c.to_s.rjust(3)} " +
-         "| #{loc_over_m.to_s.rjust(6)}" +
-         "| #{s_over_b.to_s.rjust(3)} |"
+      "| #{statistics["lines"].to_s.rjust(5)} " +
+      "| #{statistics["codelines"].to_s.rjust(5)} " +
+      "| #{statistics["classes"].to_s.rjust(7)} " +
+      "| #{statistics["methods"].to_s.rjust(7)} " +
+      "| #{statistics["behaviors"].to_s.rjust(10)}" +
+      "| #{statistics["specs"].to_s.rjust(15)}" +
+      "| #{m_over_c.to_s.rjust(3)} " +
+      "| #{loc_over_m.to_s.rjust(6)}" +
+      "| #{s_over_b.to_s.rjust(3)} |"
+  end
+
+  def print_code_test_stats
+    code  = calculate_code
+    tests = calculate_tests
+
+    puts "  Code LOC: #{code}     Test LOC: #{tests}     Code to Test Ratio: 1:#{sprintf("%.1f", tests.to_f/code)}"
+    puts ""
   end
 end
 
@@ -89,9 +132,9 @@ namespace :spec do
   desc "Report code statistics on the application and specs code"
   task :stats do
     stats_directories = {
-        "Specs" => "spec",
-        "Application" => "lib"
-      }.map {|name, dir| [name, "#{Dir.pwd}/#{dir}"]}
+      "Specs" => "spec",
+      "Application" => "lib"
+    }.map {|name, dir| [name, "#{Dir.pwd}/#{dir}"]}
     SpecStatistics.new(*stats_directories).to_s
   end
 end

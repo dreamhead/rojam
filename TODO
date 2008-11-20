@@ -1,45 +1,51 @@
 RBits
-* unsigned
-  endian
-* enum
+* Unsigned
+** endian
+
+* Byte, Signed
+
+* Enum
 
 Rojam
-* java class file format
-- UTF 8 string besides English
-- Exception handling
-- More REAL java class file tests
-- attribute design?
+* Class File Format
+** UTF 8 string besides English
+** Exception handling
+** More REAL java class file tests
+** attribute design?
 
-* signature
+* Signature
 
-* attribute parser
-- ConstantValue
-- Exceptions
-- InnerClasses
-- EnclosingMethod
-- Synthetic
-- Signature
-- SourceDebugExtension
-- LocalVariableTable
-- LocalVariableTypeTable
-- Deprecated
-- RuntimeVisibleAnnotations
-- RuntimeInvisibleAnnotations
-- RuntimeVisibleParameterAnnotations
-- RuntimeInvisibleParameterAnnotations
-- AnnotationsDefault
+* Attribute Parser
+** ConstantValue
+** Exceptions
+** InnerClasses
+** EnclosingMethod
+** Synthetic
+** Signature
+** SourceDebugExtension
+** LocalVariableTable
+** LocalVariableTypeTable
+** Deprecated
+** RuntimeVisibleAnnotations
+** RuntimeInvisibleAnnotations
+** RuntimeVisibleParameterAnnotations
+** RuntimeInvisibleParameterAnnotations
+** AnnotationsDefault
 
-* class node
-- class node to class file
+* Class Node
+** class node to class file
 
-* class writer
+* Class Writer
 
-* more
-- multi-java version support
+* More
+** multi java version support
 
 Developement
-* Organization of require
+* Organization of Require
 
 Document
 * Rojam Hacking Guide
 * User Guide
+
+Release
+* Create GEM package
