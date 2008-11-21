@@ -1,61 +1,45 @@
 module Rojam
-  class Interfaces < RBits::Array
+  RBits::Type.array(:interfaces) do
     size :type => :u2
     values :type => :u2
-  
-    field_type :interfaces
   end
 
-  class Info < RBits::Array
+  RBits::Type.array(:info) do
     size :type => :u4
     values :type => :u1
-  
-    field_type :info
   end
 
-  class AttributeInfo < RBits::Struct
+  RBits::Type.struct(:attribute_info) do
     u2 :attribute_name_index
     info :infoes
-  
-    field_type :attribute_info
   end
 
-  class Attributes < RBits::Array
+  RBits::Type.array(:attributes) do
     size :type => :u2
     values :type => :attribute_info
-  
-    field_type :attributes
   end
 
-  class FieldInfo < RBits::Struct
+  RBits::Type.struct(:field_info) do
     u2 :access_flags
     u2 :name_index
     u2 :descriptor_index
     attributes :attributes
-  
-    field_type :field_info
   end
 
-  class Fileds < RBits::Array
+  RBits::Type.array(:fields) do
     size :type => :u2
     values :type => :field_info
-  
-    field_type :fields
   end
 
-  class MethodInfo < RBits::Struct
+  RBits::Type.struct(:method_info) do
     u2 :access_flags
     u2 :name_index
     u2 :descriptor_index
     attributes :attributes
-  
-    field_type :method_info
   end
 
-  class Methods < RBits::Array
+  RBits::Type.array(:methods) do
     size :type => :u2
     values :type => :method_info
-  
-    field_type :methods
   end
 end
