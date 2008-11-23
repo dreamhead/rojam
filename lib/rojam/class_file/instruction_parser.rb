@@ -1,8 +1,10 @@
 module Rojam
   class InstructionParser
     class << self
-      def instruction(instruction_code, &block)
-        define_method instruction_method_name(instruction_code), &block
+      def instructions(*bytecode, &block)
+        bytecode.each do |single_bytecode|
+          define_method instruction_method_name(single_bytecode), &block
+        end
       end
 
       def instruction_method_name(instruction_code)
@@ -26,19 +28,35 @@ module Rojam
 
     def parse_instruction(instruction_bytes)
       method_name = InstructionParser.instruction_method_name(instruction_bytes[0])
-      if (self.respond_to?(method_name))
-        self.send(method_name, instruction_bytes)
-      else
-        [Instruction.new(instruction_bytes[0]), 1]
-      end
+      raise "Instruction #{instruction_bytes[0]} can not be parsed" unless self.respond_to?(method_name)
+      self.send(method_name, instruction_bytes)
     end
     
     private
-    instruction(Opcode::INVOKESPECIAL) do |instruction_bytes|
+    instructions(Opcode::INVOKESPECIAL, Opcode::INVOKEVIRTUAL) do |instruction_bytes|
       owner_index = instruction_bytes[1..2].to_unsigned
       owner_name = @pool.method_owner_name(owner_index)
       name, desc = @pool.name_and_desc(owner_index)
       [MethodInsn.new(instruction_bytes[0], owner_name, name, desc), 3]
+    end
+
+    instructions(Opcode::ALOAD_0) do |instruction_bytes|
+      [Instruction.new(instruction_bytes[0]), 1]
+    end
+
+    instructions(Opcode::RETURN) do |instruction_bytes|
+      [Instruction.new(instruction_bytes[0]), 1]
+    end
+
+    instructions(Opcode::GETSTATIC) do |instruction_bytes|
+      owner_index = instruction_bytes[1..2].to_unsigned
+      owner_name = @pool.method_owner_name(owner_index)
+      name, desc = @pool.name_and_desc(owner_index)
+      [FieldInsn.new(instruction_bytes[0], owner_name, name, desc), 3]
+    end
+
+    instructions(Opcode::LDC) do |instruction_bytes|
+      [LdcInsn.new(instruction_bytes[0], @pool.string(instruction_bytes[1])), 2]
     end
   end
 end

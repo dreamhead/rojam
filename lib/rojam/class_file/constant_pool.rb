@@ -25,6 +25,14 @@ module Rojam
         end
       end
     end
+
+    def string index
+      cp_value = constant_value(index)
+      if (cp_value)
+        string_index = cp_value.string_index
+        constant_value(string_index)
+      end
+    end
   end
   
   class ConstantPool

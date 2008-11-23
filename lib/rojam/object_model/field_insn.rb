@@ -1,5 +1,5 @@
 module Rojam
-  class MethodInsn < Instruction
+  class FieldInsn < Instruction
     attr_reader :owner, :name, :desc
     
     def initialize(opcode, owner, name, desc)
