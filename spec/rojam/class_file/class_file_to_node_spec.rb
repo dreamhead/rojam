@@ -4,7 +4,7 @@ describe Rojam::ClassFile do
   describe 'to_node' do
     before(:all) do
       @java_class = Rojam::ClassFile.new
-      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/Blank.class", "rb")
+      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb")
       @java_class.read(@class_io)
       @node = @java_class.to_node
     end
@@ -18,11 +18,12 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with access" do
-      @node.access.should == Rojam::Java::Access::ACC_SUPER
+      @node.access.should == 
+        Rojam::Java::Access::ACC_PUBLIC | Rojam::Java::Access::ACC_SUPER
     end
     
     it "creates node with name" do
-      @node.name.should == "Blank"
+      @node.name.should == "CommonClass"
     end
     
     it "creates node with super name" do
@@ -34,12 +35,17 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should be_empty  
+      @node.fields.should have(1).items
+      @node.fields[0].access.should == Rojam::Java::Access::ACC_PRIVATE
+      @node.fields[0].name.should == 'text'
+      @node.fields[0].desc.should == 'Ljava/lang/String;'
+      @node.fields[0].signature.should be_nil
+      @node.fields[0].value.should be_nil
     end
     
     it "creates node with methods" do
       @node.methods.should have(1).items
-      @node.methods[0].access.should == 0x00
+      @node.methods[0].access.should == Rojam::Java::Access::ACC_PUBLIC
       @node.methods[0].name.should == "<init>"
       @node.methods[0].desc.should == "()V"
       @node.methods[0].max_stack.should == 1
@@ -51,9 +57,9 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
-    
+
     it "creates node with attributes" do
-      @node.source_file.should == "Blank.java"
+      @node.source_file.should == "CommonClass.java"
     end
   end
 end

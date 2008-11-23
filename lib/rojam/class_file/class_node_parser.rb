@@ -13,6 +13,10 @@ module Rojam
         class_file.methods.each do |m|
           node.methods << class_method(m)
         end
+
+        class_file.fields.each do |f|
+          node.fields << class_field(f)
+        end
         
         @attribute_parser.parse_attributes(class_file.attributes, node)
       end      
@@ -24,6 +28,15 @@ module Rojam
         node.name = @pool.constant_value(m.name_index)
         node.desc = @pool.constant_value(m.descriptor_index)
         @attribute_parser.parse_attributes(m.attributes, node)
+      end
+    end
+
+    def class_field(f)
+      FieldNode.new do |node|
+        node.access = f.access_flags
+        node.name = @pool.constant_value(f.name_index)
+        node.desc = @pool.constant_value(f.descriptor_index)
+        @attribute_parser.parse_attributes(f.attributes, node)
       end
     end
   end
