@@ -3,7 +3,7 @@ module Rojam
     u4 :magic, :const => 0xCAFEBABE
     u2 :minor_version
     u2 :major_version
-    cp_info_array :cp_info
+    constant_pool :cp_info
     u2 :access_flags
     u2 :this_class
     u2 :super_class

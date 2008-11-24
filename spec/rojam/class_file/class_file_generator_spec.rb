@@ -8,16 +8,26 @@ describe Rojam::ClassFileGenerator do
     end
   end
 
-  it "generates class file with magic number" do
+  it 'generates class file with magic number' do
     @class_file.magic.should == 0xCAFEBABE
   end
 
-  it "generates class file with version" do
+  it 'generates class file with version' do
     @class_file.major_version.should == Rojam::Java::Versions::V1_6
     @class_file.minor_version.should == 0
   end
 
-  it "generates class file with access flags" do
+  it 'generates class file with access flags' do
     @class_file.access_flags.should == Rojam::Java::Access::ACC_PUBLIC | Rojam::Java::Access::ACC_SUPER
+  end
+
+  it 'generates this class in constant pool' do
+    constant_pool = Rojam::ConstantPool.new(@class_file.cp_info)
+    constant_pool.class_name(@class_file.this_class).should == 'CommonClass'
+  end
+
+  it 'generates this class in constant pool' do
+    constant_pool = Rojam::ConstantPool.new(@class_file.cp_info)
+    constant_pool.class_name(@class_file.super_class).should == 'java/lang/Object'
   end
 end

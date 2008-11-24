@@ -2,17 +2,12 @@ module Rojam
   module ConstantPoolHelper
     def class_name index
       cp_value = constant_value(index)
-      if (cp_value)
-        name_index = cp_value.name_index
-        constant_value(name_index)
-      end
+      constant_value(cp_value.name_index) if (cp_value)
     end
       
     def method_owner_name index
       cp_value = constant_value(index)
-      if (cp_value)
-        class_name(cp_value.class_index)
-      end
+      class_name(cp_value.class_index) if (cp_value)
     end
     
     def name_and_desc index
@@ -28,10 +23,7 @@ module Rojam
 
     def string index
       cp_value = constant_value(index)
-      if (cp_value)
-        string_index = cp_value.string_index
-        constant_value(string_index)
-      end
+      constant_value(cp_value.string_index) if (cp_value)
     end
   end
   

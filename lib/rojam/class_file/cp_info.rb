@@ -66,7 +66,7 @@ module Rojam
     }
   end
   
-  RBits::Type.array(:cp_info_array) do
+  RBits::Type.array(:constant_pool) do
     size :type => :u2, 
       :read_proc => lambda {|size| size - 1 }, 
       :write_proc => lambda {|size| size + 1 }
