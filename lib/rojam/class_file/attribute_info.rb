@@ -30,4 +30,8 @@ module Rojam
   class LineNumberTableAttribute < RBits::Base
     line_number_table :table
   end
+
+  class ConstantValueAttribute < RBits::Base
+    u2 :constantvalue_index
+  end
 end

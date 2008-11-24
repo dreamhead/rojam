@@ -30,7 +30,7 @@ describe Rojam::AttributeParser do
       @node.line_number.should == 0x01
     end
 
-    it "parses Code attribute" do
+    it 'parses Code' do
       @pool.constants({
           1 => Struct.new(:class_index, :name_and_type_index).new(0x06, 0x03),
           2 => "java/lang/Object",
@@ -48,13 +48,28 @@ describe Rojam::AttributeParser do
     end
   end
 
+  describe 'Field Attribute' do
+    before(:each) do
+      @node = Rojam::FieldNode.new
+    end
+
+    it 'parses ConstantValue' do
+      @pool.constants({
+          0x07 => Struct.new(:string_index).new(0x12),
+          0x12 => 'constant',
+        })
+      @parser.parse_attribute('ConstantValue', [0x00, 0x07], @node)
+      @node.value.should == 'constant'
+    end
+  end
+
   describe 'Class Attribute' do
     before(:each) do
       @node = Rojam::ClassNode.new
     end
 
-    it 'parses SourceFile attribute' do
-      @pool.constants({0x09 => "Blank.java"})
+    it 'parses SourceFile' do
+      @pool.constants(0x09 => "Blank.java")
       @parser.parse_attribute('SourceFile', [0x00, 0x09], @node)
       @node.source_file.should == 'Blank.java'
     end

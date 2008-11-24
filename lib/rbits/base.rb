@@ -16,6 +16,7 @@ module RBits
     
     def initialize
       @fields = {}
+      yield self if block_given?
     end
     
     def write(io)

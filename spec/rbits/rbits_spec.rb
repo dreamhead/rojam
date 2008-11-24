@@ -48,4 +48,13 @@ describe RBits::Base do
         'Exception for [first] with [nothing read from source]')
     end
   end
+
+  describe 'initialilzation with block' do
+    it 'initializes object with block' do
+      @bits = SubRBits.new { |bits| bits.read_bytes([0x01, 0x02, 0x06]) }
+      @bits.first.should == 1
+      @bits.second.should == 2
+      @bits.third.should == 6
+    end
+  end
 end

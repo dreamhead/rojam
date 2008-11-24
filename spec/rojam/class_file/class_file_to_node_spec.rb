@@ -35,12 +35,21 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should have(1).items
-      @node.fields[0].access.should == Rojam::Java::Access::ACC_PRIVATE
-      @node.fields[0].name.should == 'text'
-      @node.fields[0].desc.should == 'Ljava/lang/String;'
-      @node.fields[0].signature.should be_nil
-      @node.fields[0].value.should be_nil
+      @node.fields.should have(2).items
+      constant_field = @node.fields[0]
+      constant_field.access.should ==
+        Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
+      constant_field.name.should == 'CONSTANT'
+      constant_field.desc.should == 'Ljava/lang/String;'
+      constant_field.signature.should be_nil
+      constant_field.value.should == 'constant'
+
+      instance_field = @node.fields[1]
+      instance_field.access.should == Rojam::Java::Access::ACC_PRIVATE
+      instance_field.name.should == 'text'
+      instance_field.desc.should == 'Ljava/lang/String;'
+      instance_field.signature.should be_nil
+      instance_field.value.should be_nil
     end
     
     it "creates node with methods" do
