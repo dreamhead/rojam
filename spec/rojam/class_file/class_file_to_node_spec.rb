@@ -3,16 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Rojam::ClassFile do
   describe 'to_node' do
     before(:all) do
-      @java_class = Rojam::ClassFile.new
-      @class_io = File.new(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb")
-      @java_class.read(@class_io)
-      @node = @java_class.to_node
+      java_class = Rojam::ClassFile.new
+      File.open(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb") do |f|
+        java_class.read(f)
+      end
+      @node = java_class.to_node
     end
     
-    after(:all) do
-      @class_io.close
-    end
-
     it "creates node with version" do
       @node.version.should == Rojam::Java::Versions::V1_6
     end

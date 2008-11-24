@@ -17,6 +17,7 @@ require File.dirname(__FILE__) + '/rojam/class_file/instruction_parser'
 require File.dirname(__FILE__) + '/rojam/class_file/attribute_info'
 require File.dirname(__FILE__) + '/rojam/class_file/attribute_parser'
 require File.dirname(__FILE__) + '/rojam/class_file/class_node_parser'
+require File.dirname(__FILE__) + '/rojam/class_file/class_file_generator'
 require File.dirname(__FILE__) + '/rojam/class_file/class_file'
 require File.dirname(__FILE__) + '/rojam/class_file/constant_pool'
 
