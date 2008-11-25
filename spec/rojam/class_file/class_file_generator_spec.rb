@@ -5,6 +5,7 @@ describe Rojam::ClassFileGenerator do
     File.open(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb") do |f|
       node = Rojam::ClassReader.new.read(f)
       @class_file = Rojam::ClassFileGenerator.new.generate(node)
+      @reader = Rojam::ConstantPoolReader.new(@class_file.cp_info)
     end
   end
 
@@ -22,12 +23,10 @@ describe Rojam::ClassFileGenerator do
   end
 
   it 'generates this class in constant pool' do
-    constant_pool = Rojam::ConstantPool.new(@class_file.cp_info)
-    constant_pool.class_name(@class_file.this_class).should == 'CommonClass'
+    @reader.class_name(@class_file.this_class).should == 'CommonClass'
   end
 
   it 'generates this class in constant pool' do
-    constant_pool = Rojam::ConstantPool.new(@class_file.cp_info)
-    constant_pool.class_name(@class_file.super_class).should == 'java/lang/Object'
+    @reader.class_name(@class_file.super_class).should == 'java/lang/Object'
   end
 end

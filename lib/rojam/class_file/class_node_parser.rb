@@ -1,7 +1,7 @@
 module Rojam
   class ClassNodeParser    
     def parse class_file
-      @pool = ConstantPool.new(class_file.cp_info)
+      @pool = ConstantPoolReader.new(class_file.cp_info)
       @attribute_parser = AttributeParser.new(@pool)
       ClassNode.new do |node|
         node.version = class_file.major_version

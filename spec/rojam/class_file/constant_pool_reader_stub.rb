@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-class ConstantPoolStub
-  include Rojam::ConstantPoolHelper
+class ConstantPoolReaderStub
+  include Rojam::ConstantPoolReaderHelper
   
   def constant(index, value)
     cp_table[index] = value

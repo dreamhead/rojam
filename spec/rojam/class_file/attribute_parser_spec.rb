@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/constant_pool_stub')
+require File.expand_path(File.dirname(__FILE__) + '/constant_pool_reader_stub')
 
 describe Rojam::AttributeParser do
   before(:each) do
-    @pool = ConstantPoolStub.new
+    @pool = ConstantPoolReaderStub.new
     @parser = Rojam::AttributeParser.new(@pool)
   end
 

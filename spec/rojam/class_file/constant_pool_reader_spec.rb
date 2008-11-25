@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/constant_pool_stub')
+require File.expand_path(File.dirname(__FILE__) + '/constant_pool_reader_stub')
 
-describe Rojam::ConstantPool do
+describe Rojam::ConstantPoolReader do
   describe 'Constant pool for Blank' do
     before(:all) do
       CpInfoClass = Struct.new(:info)
@@ -19,19 +19,19 @@ describe Rojam::ConstantPool do
         CpInfoClass.new('Blank'),
         CpInfoClass.new('java/lang/Object')
       ]
-      @constant_pool = Rojam::ConstantPool.new(constant_info_array)
+      @reader = Rojam::ConstantPoolReader.new(constant_info_array)
     end
 
     it "retrives class name" do
-      @constant_pool.class_name(0x02).should == 'Blank'
+      @reader.class_name(0x02).should == 'Blank'
     end
   
     it "retrives method owner name" do
-      @constant_pool.method_owner_name(0x01).should == 'java/lang/Object'
+      @reader.method_owner_name(0x01).should == 'java/lang/Object'
     end
   
     it "retrives name and desc" do
-      name, desc = @constant_pool.name_and_desc(0x01)
+      name, desc = @reader.name_and_desc(0x01)
       name.should == '<init>'
       desc.should == '()V'
     end
@@ -39,7 +39,7 @@ describe Rojam::ConstantPool do
 
   describe 'constant pool helper with stub' do
     before(:each) do
-      @pool = ConstantPoolStub.new
+      @pool = ConstantPoolReaderStub.new
     end
 
     it 'parses string' do

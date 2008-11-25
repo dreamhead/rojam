@@ -1,5 +1,5 @@
 module Rojam
-  module ConstantPoolHelper
+  module ConstantPoolReaderHelper
     def class_name index
       cp_value = constant_value(index)
       constant_value(cp_value.name_index) if (cp_value)
@@ -27,8 +27,8 @@ module Rojam
     end
   end
   
-  class ConstantPool
-    include ConstantPoolHelper
+  class ConstantPoolReader
+    include ConstantPoolReaderHelper
     
     def initialize cp_info_list
       @cp_info_list = cp_info_list
@@ -38,5 +38,22 @@ module Rojam
       cp_info = @cp_info_list[index - 1]
       cp_info.info if cp_info
     end
+  end
+
+  class ConstantPoolWriter
+    attr_reader :cp_info
+    
+    def initialize
+      @cp_info = []
+    end
+    
+    def class_name(name)
+      @cp_info << CpClass.new(name)
+      @cp_info << CpClass.new(Struct.new(:name_index).new(cp_info.size))
+      @cp_info.size
+    end
+
+    private
+    CpClass = Struct.new(:info)
   end
 end
