@@ -66,4 +66,40 @@ describe Rojam::InstructionParser do
     consumed_byte_size.should == 2
     instruction.constant.should == 'Hello, World!'
   end
+
+  it 'parses GETFIELD' do
+    @pool.constants({
+        4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),
+        0x13 => Struct.new(:name_index).new(0x1A),
+        0x14 => Struct.new(:name_index, :descriptor_index).new(0x1B, 0x1C),
+        0x1A => 'CommonClass',
+        0x1B => 'text',
+        0x1C => 'Ljava/lang/String;'
+    })
+
+    instruction, consumed_byte_size = @parser.parse_instruction([0xB4, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::GETFIELD
+    consumed_byte_size.should == 3
+    instruction.owner.should == 'CommonClass'
+    instruction.name.should == 'text'
+    instruction.desc.should == 'Ljava/lang/String;'
+  end
+
+  it 'parses GETSTATIC' do
+    @pool.constants({
+        4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),
+        0x13 => Struct.new(:name_index).new(0x1A),
+        0x14 => Struct.new(:name_index, :descriptor_index).new(0x1B, 0x1C),
+        0x1A => 'java/lang/System',
+        0x1B => 'out',
+        0x1C => 'Ljava/io/PrintStream;'
+    })
+
+    instruction, consumed_byte_size = @parser.parse_instruction([0xB2, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::GETSTATIC
+    consumed_byte_size.should == 3
+    instruction.owner.should == 'java/lang/System'
+    instruction.name.should == 'out'
+    instruction.desc.should == 'Ljava/io/PrintStream;'
+  end
 end

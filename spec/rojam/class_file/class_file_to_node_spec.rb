@@ -28,7 +28,8 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with interfaces" do
-      @node.interfaces.should be_empty
+      @node.interfaces.should have(1).items
+      @node.interfaces[0].should == 'CommonInterface'
     end
     
     it "creates node with fields" do

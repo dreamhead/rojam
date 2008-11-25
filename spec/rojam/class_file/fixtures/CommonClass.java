@@ -1,4 +1,4 @@
-public class CommonClass {
+public class CommonClass implements CommonInterface {
 	private static final String CONSTANT = "constant";
 	private String text;
 

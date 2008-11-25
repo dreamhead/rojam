@@ -9,6 +9,10 @@ module Rojam
       
         node.name = @pool.class_name(class_file.this_class)
         node.super_name = @pool.class_name(class_file.super_class)
+
+        class_file.interfaces.each do |i|
+          node.interfaces << @pool.class_name(i)
+        end
         
         class_file.methods.each do |m|
           node.methods << class_method(m)
