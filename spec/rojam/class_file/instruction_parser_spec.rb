@@ -38,24 +38,6 @@ describe Rojam::InstructionParser do
     instruction.desc.should == "()V"
   end
 
-  it 'parses INVOKESPECIAL' do
-    @pool.constants({
-        1 => Struct.new(:class_index, :name_and_type_index).new(0x06, 0x03),
-        2 => "java/lang/Object",
-        3 => Struct.new(:name_index, :descriptor_index).new(0x04, 0x05),
-        4 => "<init>",
-        5 => "()V",
-        6 => Struct.new(:name_index).new(0x02)
-    })
-
-    instruction, consumed_byte_size = @parser.parse_instruction([0xB7, 0x00, 0x01])
-    instruction.opcode.should == Rojam::Opcode::INVOKESPECIAL
-    consumed_byte_size.should == 3
-    instruction.owner.should == "java/lang/Object"
-    instruction.name.should == "<init>"
-    instruction.desc.should == "()V"
-  end
-
   it 'parses INVOKEVIRTUAL' do
     @pool.constants({
         4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),

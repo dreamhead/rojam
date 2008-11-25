@@ -8,5 +8,9 @@ module Rojam
       @name = name
       @desc = desc
     end
+
+    def ==(insn)
+      super(insn) && @owner == insn.owner && @name == insn.name && @desc == insn.desc
+    end
   end
 end
