@@ -1,13 +1,13 @@
 module Rojam
   module ConstantPoolReaderHelper
-    def class_name index
+    def type_name index
       cp_value = constant_value(index)
       constant_value(cp_value.name_index) if (cp_value)
     end
       
     def method_owner_name index
       cp_value = constant_value(index)
-      class_name(cp_value.class_index) if (cp_value)
+      type_name(cp_value.class_index) if (cp_value)
     end
     
     def name_and_desc index
@@ -47,7 +47,7 @@ module Rojam
       @cp_info = []
     end
     
-    def class_name(name)
+    def type_name name
       @cp_info << CpClass.new(name)
       @cp_info << CpClass.new(Struct.new(:name_index).new(cp_info.size))
       @cp_info.size

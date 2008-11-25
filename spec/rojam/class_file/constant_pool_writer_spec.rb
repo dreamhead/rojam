@@ -6,8 +6,8 @@ describe Rojam::ConstantPoolWriter do
   end
 
   it "generates class name" do
-    index = @writer.class_name('CommonClass')
+    index = @writer.type_name('CommonClass')
     reader = Rojam::ConstantPoolReader.new(@writer.cp_info)
-    reader.class_name(index).should == 'CommonClass'
+    reader.type_name(index).should == 'CommonClass'
   end
 end

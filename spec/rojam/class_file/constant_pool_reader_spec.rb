@@ -23,7 +23,7 @@ describe Rojam::ConstantPoolReader do
     end
 
     it "retrives class name" do
-      @reader.class_name(0x02).should == 'Blank'
+      @reader.type_name(0x02).should == 'Blank'
     end
   
     it "retrives method owner name" do

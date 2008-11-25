@@ -7,20 +7,12 @@ module Rojam
         node.version = class_file.major_version
         node.access = class_file.access_flags
       
-        node.name = @pool.class_name(class_file.this_class)
-        node.super_name = @pool.class_name(class_file.super_class)
+        node.name = @pool.type_name(class_file.this_class)
+        node.super_name = @pool.type_name(class_file.super_class)
 
-        class_file.interfaces.each do |i|
-          node.interfaces << @pool.class_name(i)
-        end
-        
-        class_file.methods.each do |m|
-          node.methods << class_method(m)
-        end
-
-        class_file.fields.each do |f|
-          node.fields << class_field(f)
-        end
+        class_file.interfaces.each {|i| node.interfaces << @pool.type_name(i) }
+        class_file.methods.each {|m| node.methods << class_method(m) }
+        class_file.fields.each {|f| node.fields << class_field(f) }
         
         @attribute_parser.parse_attributes(class_file.attributes, node)
       end      

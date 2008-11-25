@@ -23,10 +23,14 @@ describe Rojam::ClassFileGenerator do
   end
 
   it 'generates this class in constant pool' do
-    @reader.class_name(@class_file.this_class).should == 'CommonClass'
+    @reader.type_name(@class_file.this_class).should == 'CommonClass'
   end
 
   it 'generates super class in constant pool' do
-    @reader.class_name(@class_file.super_class).should == 'java/lang/Object'
+    @reader.type_name(@class_file.super_class).should == 'java/lang/Object'
+  end
+
+  it 'generates interfaces' do
+    @reader.type_name(@class_file.interfaces[0]).should == 'CommonInterface'
   end
 end
