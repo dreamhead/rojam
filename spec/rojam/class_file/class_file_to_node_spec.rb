@@ -50,17 +50,30 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with methods" do
-      @node.methods.should have(1).items
-      @node.methods[0].access.should == Rojam::Java::Access::ACC_PUBLIC
-      @node.methods[0].name.should == "<init>"
-      @node.methods[0].desc.should == "()V"
-      @node.methods[0].max_stack.should == 1
-      @node.methods[0].max_locals.should == 1
-      @node.methods[0].line_number.should == 0x01
-      @node.methods[0].instructions.should == [
+      @node.methods.should have(2).items
+      constructor = @node.methods[0]
+      constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
+      constructor.name.should == '<init>'
+      constructor.desc.should == '()V'
+      constructor.max_stack.should == 1
+      constructor.max_locals.should == 1
+      constructor.line_number.should == 0x01
+      constructor.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+
+      getter = @node.methods[1]
+      getter.access.should == Rojam::Java::Access::ACC_PUBLIC
+      getter.name.should == 'getText'
+      getter.desc.should == '()Ljava/lang/String;'
+      getter.max_stack.should == 1
+      getter.max_locals.should == 1
+      getter.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
+        Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;"),
+        Rojam::Instruction.new(Rojam::Opcode::ARETURN)
       ]
     end
 

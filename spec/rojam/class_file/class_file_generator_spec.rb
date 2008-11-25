@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Rojam::ClassFileGenerator do
-  before(:each) do
+  before(:all) do
     File.open(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb") do |f|
       node = Rojam::ClassReader.new.read(f)
       @class_file = Rojam::ClassFileGenerator.new.generate(node)
@@ -26,7 +26,7 @@ describe Rojam::ClassFileGenerator do
     @reader.class_name(@class_file.this_class).should == 'CommonClass'
   end
 
-  it 'generates this class in constant pool' do
+  it 'generates super class in constant pool' do
     @reader.class_name(@class_file.super_class).should == 'java/lang/Object'
   end
 end

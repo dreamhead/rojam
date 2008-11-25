@@ -28,7 +28,7 @@ module Rojam
 
     def parse_instruction(instruction_bytes)
       method_name = InstructionParser.instruction_method_name(instruction_bytes[0])
-      raise "Instruction #{instruction_bytes[0]} can not be parsed" unless self.respond_to?(method_name)
+      raise "Instruction #{instruction_bytes[0]}(0x%x) can not be parsed" % instruction_bytes[0] unless self.respond_to?(method_name)
       self.send(method_name, instruction_bytes)
     end
     
@@ -44,11 +44,11 @@ module Rojam
       [Instruction.new(instruction_bytes[0]), 1]
     end
 
-    instructions(Opcode::RETURN) do |instruction_bytes|
+    instructions(Opcode::RETURN, Opcode::ARETURN) do |instruction_bytes|
       [Instruction.new(instruction_bytes[0]), 1]
     end
 
-    instructions(Opcode::GETSTATIC) do |instruction_bytes|
+    instructions(Opcode::GETSTATIC, Opcode::GETFIELD) do |instruction_bytes|
       owner_index = instruction_bytes[1..2].to_unsigned
       owner_name = @pool.method_owner_name(owner_index)
       name, desc = @pool.name_and_desc(owner_index)
