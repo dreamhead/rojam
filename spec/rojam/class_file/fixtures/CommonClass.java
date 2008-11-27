@@ -6,4 +6,9 @@ public class CommonClass implements CommonInterface {
 	public String getText() {
 		return this.text;
 	}
+
+	public void assignment() {
+		int i = 1;
+		int j = i;
+	}
 }

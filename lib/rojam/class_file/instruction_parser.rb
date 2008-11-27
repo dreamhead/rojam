@@ -40,11 +40,10 @@ module Rojam
       [MethodInsn.new(instruction_bytes[0], owner_name, name, desc), 3]
     end
 
-    instructions(Opcode::ALOAD_0) do |instruction_bytes|
-      [Instruction.new(instruction_bytes[0]), 1]
-    end
-
-    instructions(Opcode::RETURN, Opcode::ARETURN) do |instruction_bytes|
+    instructions(Opcode::ICONST_1,
+      Opcode::ILOAD_1, Opcode::ALOAD_0,
+      Opcode::ISTORE_1, Opcode::ISTORE_2,
+      Opcode::RETURN, Opcode::ARETURN) do |instruction_bytes|
       [Instruction.new(instruction_bytes[0]), 1]
     end
 

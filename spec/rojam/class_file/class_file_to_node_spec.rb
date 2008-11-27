@@ -59,7 +59,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with methods" do
-      @node.methods.should have(2).items
+      @node.methods.should have(3).items
       constructor = @node.methods[0]
       constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
       constructor.name.should == '<init>'
@@ -83,6 +83,20 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
         Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;"),
         Rojam::Instruction.new(Rojam::Opcode::ARETURN)
+      ]
+
+      assignment = @node.methods[2]
+      assignment.access.should == Rojam::Java::Access::ACC_PUBLIC
+      assignment.name.should == 'assignment'
+      assignment.desc.should == '()V'
+      assignment.max_stack.should == 1
+      assignment.max_locals.should == 3
+      assignment.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
 
