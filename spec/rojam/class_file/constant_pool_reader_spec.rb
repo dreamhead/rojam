@@ -48,7 +48,16 @@ describe Rojam::ConstantPoolReader do
           0x12 => 'Hello, World!'
         })
 
-      @pool.string(3).should == 'Hello, World!'
+      @pool.string_value(3).should == 'Hello, World!'
+      @pool.value(3).should == 'Hello, World!'
+    end
+
+    it 'parses int' do
+      @pool.infoes({
+          0x07 => Struct.new(:tag, :info).new(3, Struct.new(:bytes).new(0x05)),
+        })
+      @pool.int_value(0x07).should == 5
+      @pool.value(0x07).should == 5
     end
   end
 end

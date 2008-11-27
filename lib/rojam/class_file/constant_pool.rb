@@ -21,22 +21,42 @@ module Rojam
       end
     end
 
-    def string index
+    def string_value index
       cp_value = constant_value(index)
       constant_value(cp_value.string_index) if (cp_value)
+    end
+
+    def int_value index
+      value = constant_value(index)
+      value.bytes if value
+    end
+
+    def value index
+      info = constant_info(index)
+      case info.tag
+      when 3
+        int_value(index)
+      else
+        string_value(index)
+      end
     end
   end
   
   class ConstantPoolReader
     include ConstantPoolReaderHelper
     
-    def initialize cp_info_list
-      @cp_info_list = cp_info_list
+    def initialize cp_infoes
+      @cp_infoes = cp_infoes
     end
     
     def constant_value index
-      cp_info = @cp_info_list[index - 1]
+      cp_info = constant_info(index)
       cp_info.info if cp_info
+    end
+
+    private
+    def constant_info index
+      @cp_infoes[index - 1]
     end
   end
 

@@ -56,7 +56,7 @@ module Rojam
     end
 
     instructions(Opcode::LDC) do |instruction_bytes|
-      [LdcInsn.new(instruction_bytes[0], @pool.string(instruction_bytes[1])), 2]
+      [LdcInsn.new(instruction_bytes[0], @pool.string_value(instruction_bytes[1])), 2]
     end
   end
 end

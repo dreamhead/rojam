@@ -53,13 +53,21 @@ describe Rojam::AttributeParser do
       @node = Rojam::FieldNode.new
     end
 
-    it 'parses ConstantValue' do
+    it 'parses string ConstantValue' do
       @pool.constants({
           0x07 => Struct.new(:string_index).new(0x12),
           0x12 => 'constant',
         })
       @parser.parse_attribute('ConstantValue', [0x00, 0x07], @node)
       @node.value.should == 'constant'
+    end
+
+    it 'parses int ConstantValue' do
+      @pool.infoes({
+          0x07 => Struct.new(:tag, :info).new(3, Struct.new(:bytes).new(0x05)),
+        })
+      @parser.parse_attribute('ConstantValue', [0x00, 0x07], @node)
+      @node.value.should == 5
     end
   end
 

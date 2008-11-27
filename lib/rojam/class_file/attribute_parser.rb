@@ -60,7 +60,7 @@ module Rojam
 
     attribute('ConstantValue') do |infoes, node|
       attr = attribute_from_bytes(infoes, ConstantValueAttribute)
-      node.value = @pool.string(attr.constantvalue_index)
+      node.value = @pool.value(attr.constantvalue_index)
     end
 
     def attribute_from_bytes(bytes, klass)

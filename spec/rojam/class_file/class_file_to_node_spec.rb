@@ -33,16 +33,24 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should have(2).items
-      constant_field = @node.fields[0]
-      constant_field.access.should ==
+      @node.fields.should have(3).items
+      string_constant_field = @node.fields[0]
+      string_constant_field.access.should ==
         Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
-      constant_field.name.should == 'CONSTANT'
-      constant_field.desc.should == 'Ljava/lang/String;'
-      constant_field.signature.should be_nil
-      constant_field.value.should == 'constant'
+      string_constant_field.name.should == 'CONSTANT'
+      string_constant_field.desc.should == 'Ljava/lang/String;'
+      string_constant_field.signature.should be_nil
+      string_constant_field.value.should == 'constant'
 
-      instance_field = @node.fields[1]
+      int_constant_field = @node.fields[1]
+      int_constant_field.access.should ==
+        Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
+      int_constant_field.name.should == 'INT'
+      int_constant_field.desc.should == 'I'
+      int_constant_field.signature.should be_nil
+      int_constant_field.value.should == 5
+
+      instance_field = @node.fields[2]
       instance_field.access.should == Rojam::Java::Access::ACC_PRIVATE
       instance_field.name.should == 'text'
       instance_field.desc.should == 'Ljava/lang/String;'
