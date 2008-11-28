@@ -41,7 +41,7 @@ module Rojam
       [MethodInsn.new(instruction_bytes[0], owner_name, name, desc), 3]
     end
 
-    instructions(Opcode::ICONST_1,
+    instructions(Opcode::ICONST_1, Opcode::ICONST_2, Opcode::ICONST_3, Opcode::ICONST_4,
       Opcode::ILOAD_1, Opcode::ALOAD_0,
       Opcode::ISTORE_1, Opcode::ISTORE_2,
       Opcode::RETURN, Opcode::ARETURN) do |instruction_bytes, current|
@@ -59,7 +59,7 @@ module Rojam
       [LdcInsn.new(instruction_bytes[0], @pool.string_value(instruction_bytes[1])), 2]
     end
 
-    instructions(Opcode::IF_ICMPNE) do |instruction_bytes, current|
+    instructions(Opcode::IF_ICMPNE, Opcode::GOTO) do |instruction_bytes, current|
       offset = instruction_bytes[1..2].to_unsigned
       [JumpInsn.new(instruction_bytes[0], @labels[current + offset]), 3]
     end

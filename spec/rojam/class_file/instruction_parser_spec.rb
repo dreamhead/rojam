@@ -17,7 +17,7 @@ describe Rojam::InstructionParser do
   end
 
   it 'parses unary instruction' do
-    [Rojam::Opcode::ICONST_1,
+    [Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
       Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
@@ -116,5 +116,13 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::IF_ICMPNE
     instruction.label.should_not be_nil
     instruction.label.line.should == 19
+  end
+
+  it 'parses GOTO' do
+    @labels[14].line = 22
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GOTO, 0x00, 0x05], 9)
+    instruction.opcode.should == Rojam::Opcode::GOTO
+    instruction.label.should_not be_nil
+    instruction.label.line.should == 22
   end
 end

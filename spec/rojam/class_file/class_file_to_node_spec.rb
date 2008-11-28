@@ -57,10 +57,9 @@ describe Rojam::ClassFile do
       instance_field.signature.should be_nil
       instance_field.value.should be_nil
     end
-    
-    it "creates node with methods" do
-      @node.methods.should have(4).items
-      constructor = @node.methods[0]
+
+    def compare_constructor constructor
+
       constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
       constructor.name.should == '<init>'
       constructor.desc.should == '()V'
@@ -71,8 +70,9 @@ describe Rojam::ClassFile do
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
+    end
 
-      getter = @node.methods[1]
+    def compare_getter getter
       getter.access.should == Rojam::Java::Access::ACC_PUBLIC
       getter.name.should == 'getText'
       getter.desc.should == '()Ljava/lang/String;'
@@ -83,8 +83,9 @@ describe Rojam::ClassFile do
         Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;"),
         Rojam::Instruction.new(Rojam::Opcode::ARETURN)
       ]
+    end
 
-      assignment = @node.methods[2]
+    def compare_assignment assignment
       assignment.access.should == Rojam::Java::Access::ACC_PUBLIC
       assignment.name.should == 'assignment'
       assignment.desc.should == '()V'
@@ -97,22 +98,49 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
+    end
 
-      conditional = @node.methods[3]
+    def compare_conditional conditional
       conditional.name.should == 'conditional'
       conditional.desc.should == '()V'
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
       jump_label = Rojam::Label.new
       jump_label.line = 19
+      goto_label = Rojam::Label.new
+      goto_label.line = 24
+      second_jump_label = Rojam::Label.new
+      second_jump_label.line = 22
+      second_goto_label = Rojam::Label.new
+      second_goto_label.line = 24
+
       conditional.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
         Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, jump_label),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, goto_label),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, second_jump_label),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_3),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, second_goto_label),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_4),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
+    end
+    
+    it "creates node with methods" do
+      @node.methods.should have(4).items
+      compare_constructor(@node.methods[0])
+      compare_getter(@node.methods[1])
+      compare_assignment(@node.methods[2])
+      compare_conditional(@node.methods[3])
     end
 
     it "creates node with attributes" do

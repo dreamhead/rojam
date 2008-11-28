@@ -15,6 +15,11 @@ public class CommonClass implements CommonInterface {
 	public void conditional() {
 		int i = 1;
 		if (i == 1) {
+			i = 2;
+		} else if (i == 2) {
+			i = 3;
+		} else {
+			i = 4;
 		}
 	}
 }
