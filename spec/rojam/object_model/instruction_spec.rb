@@ -57,5 +57,25 @@ describe Rojam::Instruction do
     another_field_insn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 4)
     first_field_insn.should_not == another_field_insn
   end
+
+  it 'compares int instruction' do
+    first_field_insn = Rojam::IntInsn.new(Rojam::Opcode::LDC, 3)
+    second_field_insn = Rojam::IntInsn.new(Rojam::Opcode::LDC, 3)
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
+
+    another_field_insn = Rojam::IntInsn.new(Rojam::Opcode::LDC, 4)
+    first_field_insn.should_not == another_field_insn
+  end
+
+  it 'compares iinc instruction' do
+    first_field_insn = Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1)
+    second_field_insn = Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1)
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
+
+    another_field_insn = Rojam::IincInsn.new(Rojam::Opcode::IINC, 2, 1)
+    first_field_insn.should_not == another_field_insn
+  end
 end
 

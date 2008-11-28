@@ -134,13 +134,37 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
+
+    def compare_loop loop
+      loop.access.should == Rojam::Java::Access::ACC_PUBLIC
+      loop.name.should == 'loop'
+      loop.desc.should == '()V'
+      loop.max_stack.should == 2
+      loop.max_locals.should == 2
+
+      jump_label = Rojam::Label.new
+      jump_label.line = 29
+      goto_label = Rojam::Label.new
+
+      loop.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::IntInsn.new(Rojam::Opcode::BIPUSH, 10),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, jump_label),
+        Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, goto_label),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(4).items
+      @node.methods.should have(5).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
       compare_conditional(@node.methods[3])
+      compare_loop(@node.methods[4])
     end
 
     it "creates node with attributes" do

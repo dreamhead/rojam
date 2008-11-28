@@ -17,7 +17,7 @@ describe Rojam::InstructionParser do
   end
 
   it 'parses unary instruction' do
-    [Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
+    [Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
       Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
@@ -117,6 +117,14 @@ describe Rojam::InstructionParser do
     instruction.label.should_not be_nil
     instruction.label.line.should == 19
   end
+  
+  it 'parses IF_ICMPGE' do
+    @labels[7].line = 19
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPGE, 0x00, 0x03], 4)
+    instruction.opcode.should == Rojam::Opcode::IF_ICMPGE
+    instruction.label.should_not be_nil
+    instruction.label.line.should == 19
+  end
 
   it 'parses GOTO' do
     @labels[14].line = 22
@@ -124,5 +132,20 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::GOTO
     instruction.label.should_not be_nil
     instruction.label.line.should == 22
+  end
+
+  it 'parses BIPUSH' do
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::BIPUSH, 0x0A])
+    instruction.opcode.should == Rojam::Opcode::BIPUSH
+    consumed_byte_size.should == 2
+    instruction.operand.should == 0x0A
+  end
+
+  it 'parses IINC' do
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IINC, 0x01, 0x01])
+    instruction.opcode.should == Rojam::Opcode::IINC
+    consumed_byte_size.should == 3
+    instruction.var.should == 0x01
+    instruction.incr.should == 0x01
   end
 end
