@@ -26,8 +26,7 @@ describe Rojam::AttributeParser do
     
     it 'parses LineNumberTable' do
       @parser.parse_attribute('LineNumberTable', [0x00, 0x01, 0x00, 0x00, 0x00, 0x01], @node)
-      @node.start_pc.should == 0x00
-      @node.line_number.should == 0x01
+      @parser.labels[0].line.should == 0x01
     end
 
     it 'parses Code' do

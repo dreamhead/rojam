@@ -66,7 +66,6 @@ describe Rojam::ClassFile do
       constructor.desc.should == '()V'
       constructor.max_stack.should == 1
       constructor.max_locals.should == 1
-      constructor.line_number.should == 0x01
       constructor.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
@@ -104,12 +103,14 @@ describe Rojam::ClassFile do
       conditional.desc.should == '()V'
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
+      jump_label = Rojam::Label.new
+      jump_label.line = 19
       conditional.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
         Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, jump_label),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

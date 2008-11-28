@@ -9,10 +9,12 @@ module Rojam
         "__#{name}__"
       end
     end
+
+    attr_reader :labels
     
-    def initialize constant_pool
-      @pool = constant_pool
-      @instruction_parser = InstructionParser.new(@pool)
+    def initialize constant_pool_reader
+      @pool = constant_pool_reader
+      @labels = LabelManager.new
     end
     
     def parse_attributes(attributes, node)
@@ -42,8 +44,9 @@ module Rojam
       
       node.max_stack = code_attr.max_stack
       node.max_locals = code_attr.max_locals
-      
-      @instruction_parser.parse(node, code_attr.code)
+
+      instruction_parser = InstructionParser.new(@pool, @labels)
+      instruction_parser.parse(node, code_attr.code)
       
       code_attr.attributes.each do |attr|
         parse(attr, node)
@@ -53,8 +56,7 @@ module Rojam
     attribute('LineNumberTable') do |infoes, node|
       attr = attribute_from_bytes(infoes, LineNumberTableAttribute)
       attr.table.each do |info|
-        node.start_pc = info.start_pc
-        node.line_number = info.line_number
+        @labels[info.start_pc].line = info.line_number
       end
     end
 

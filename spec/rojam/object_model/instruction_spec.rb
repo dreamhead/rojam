@@ -2,57 +2,60 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Rojam::Instruction do
   it 'compares instruction with opcode' do
-    firstReturnInstruction = Rojam::Instruction.new(Rojam::Opcode::RETURN)
-    secondReturnInstruction = Rojam::Instruction.new(Rojam::Opcode::RETURN)
-    firstReturnInstruction.should == firstReturnInstruction
-    firstReturnInstruction.should == secondReturnInstruction
+    first_insn = Rojam::Instruction.new(Rojam::Opcode::RETURN)
+    second_insn = Rojam::Instruction.new(Rojam::Opcode::RETURN)
+    first_insn.should == first_insn
+    first_insn.should == second_insn
+
+    another_insn = Rojam::Instruction.new(Rojam::Opcode::ICONST_1)
+    another_insn.should_not == first_insn
   end
 
   it 'fails to compare instruction with another kind of instruction' do
-    methodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+    method_insn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
     instruction = Rojam::Instruction.new(Rojam::Opcode::INVOKESPECIAL)
     
-    instruction.should_not == methodInsn
+    instruction.should_not == method_insn
   end
 
   it 'compares method instruction' do
-    firstMethodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
-    secondMethodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
-    firstMethodInsn.should == firstMethodInsn
-    secondMethodInsn.should == secondMethodInsn
+    first_method_insn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+    second_method_insn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+    first_method_insn.should == first_method_insn
+    second_method_insn.should == second_method_insn
 
     anotherMethodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/String", "<init>", "()V")
-    firstMethodInsn.should_not == anotherMethodInsn
+    first_method_insn.should_not == anotherMethodInsn
   end
 
   it 'compares field instruction' do
-    firstFieldInsn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;")
-    secondFieldInsn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;")
-    firstFieldInsn.should == firstFieldInsn
-    secondFieldInsn.should == secondFieldInsn
+    first_field_insn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;")
+    second_field_insn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;")
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
 
-    anotherFieldInsn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "BasicClass", "text", "Ljava/lang/String;")
-    firstFieldInsn.should_not == anotherFieldInsn
+    another_field_insn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "BasicClass", "text", "Ljava/lang/String;")
+    first_field_insn.should_not == another_field_insn
   end
 
   it 'compares jump instruction' do
-    firstFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
-    secondFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
-    firstFieldInsn.should == firstFieldInsn
-    secondFieldInsn.should == secondFieldInsn
+    first_field_insn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
+    second_field_insn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
 
-    anotherFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 4)
-    firstFieldInsn.should_not == anotherFieldInsn
+    another_field_insn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 4)
+    first_field_insn.should_not == another_field_insn
   end
 
   it 'compares ldc instruction' do
-    firstFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
-    secondFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
-    firstFieldInsn.should == firstFieldInsn
-    secondFieldInsn.should == secondFieldInsn
+    first_field_insn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
+    second_field_insn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
 
-    anotherFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 4)
-    firstFieldInsn.should_not == anotherFieldInsn
+    another_field_insn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 4)
+    first_field_insn.should_not == another_field_insn
   end
 end
 

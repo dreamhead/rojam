@@ -1,13 +1,13 @@
 module Rojam
   class JumpInsn < Instruction
-    attr_reader :offset # TODO use label instread
-    def initialize opcode, offset
+    attr_reader :label
+    def initialize opcode, label
       super(opcode)
-      @offset = offset
+      @label = label
     end
 
     def ==(insn)
-      super(insn) && @offset == insn.offset
+      super(insn) && @label == insn.label
     end
   end
 end

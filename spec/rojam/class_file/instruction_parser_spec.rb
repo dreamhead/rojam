@@ -4,7 +4,8 @@ require File.expand_path(File.dirname(__FILE__) + '/constant_pool_reader_stub')
 describe Rojam::InstructionParser do
   before(:each) do
     @pool = ConstantPoolReaderStub.new
-    @parser = Rojam::InstructionParser.new @pool
+    @labels = Rojam::LabelManager.new
+    @parser = Rojam::InstructionParser.new @pool, @labels
   end
   
   it "parses instruction sequentially" do
@@ -110,8 +111,10 @@ describe Rojam::InstructionParser do
   end
 
   it 'parses IF_ICMPNE' do
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPNE, 0x00, 0x03])
+    @labels[7].line = 19
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPNE, 0x00, 0x03], 4)
     instruction.opcode.should == Rojam::Opcode::IF_ICMPNE
-    instruction.offset.should == 3
+    instruction.label.should_not be_nil
+    instruction.label.line.should == 19
   end
 end
