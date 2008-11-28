@@ -8,6 +8,13 @@ describe Rojam::Instruction do
     firstReturnInstruction.should == secondReturnInstruction
   end
 
+  it 'fails to compare instruction with another kind of instruction' do
+    methodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
+    instruction = Rojam::Instruction.new(Rojam::Opcode::INVOKESPECIAL)
+    
+    instruction.should_not == methodInsn
+  end
+
   it 'compares method instruction' do
     firstMethodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
     secondMethodInsn = Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V")
@@ -25,6 +32,26 @@ describe Rojam::Instruction do
     secondFieldInsn.should == secondFieldInsn
 
     anotherFieldInsn = Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "BasicClass", "text", "Ljava/lang/String;")
+    firstFieldInsn.should_not == anotherFieldInsn
+  end
+
+  it 'compares jump instruction' do
+    firstFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
+    secondFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3)
+    firstFieldInsn.should == firstFieldInsn
+    secondFieldInsn.should == secondFieldInsn
+
+    anotherFieldInsn = Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 4)
+    firstFieldInsn.should_not == anotherFieldInsn
+  end
+
+  it 'compares ldc instruction' do
+    firstFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
+    secondFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 3)
+    firstFieldInsn.should == firstFieldInsn
+    secondFieldInsn.should == secondFieldInsn
+
+    anotherFieldInsn = Rojam::LdcInsn.new(Rojam::Opcode::LDC, 4)
     firstFieldInsn.should_not == anotherFieldInsn
   end
 end

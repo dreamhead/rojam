@@ -59,7 +59,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with methods" do
-      @node.methods.should have(3).items
+      @node.methods.should have(4).items
       constructor = @node.methods[0]
       constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
       constructor.name.should == '<init>'
@@ -96,6 +96,20 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
         Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+
+      conditional = @node.methods[3]
+      conditional.name.should == 'conditional'
+      conditional.desc.should == '()V'
+      conditional.max_stack.should == 2
+      conditional.max_locals.should == 2
+      conditional.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, 3),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

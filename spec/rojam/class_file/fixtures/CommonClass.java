@@ -11,4 +11,10 @@ public class CommonClass implements CommonInterface {
 		int i = 1;
 		int j = i;
 	}
+
+	public void conditional() {
+		int i = 1;
+		if (i == 1) {
+		}
+	}
 }

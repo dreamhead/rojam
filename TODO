@@ -1,3 +1,9 @@
+Rojam Release Plan
+* 0.1 Class Reader
+* 0.2 Class Writer
+* 0.3 Class Builder
+* 0.4 Generator Adapter
+
 RBits
 * Unsigned
 ** endian
@@ -23,7 +29,6 @@ Rojam
 ** String
 ** Class
 
-
 * Attribute Parser
 ** Exceptions
 ** InnerClasses
@@ -39,6 +44,10 @@ Rojam
 ** RuntimeVisibleParameterAnnotations
 ** RuntimeInvisibleParameterAnnotations
 ** AnnotationsDefault
+** StackMapTable(for Java 1.6)
+
+* Instruction
+** Create label for jump instruction
 
 * Class Node
 ** class node to class file

@@ -36,7 +36,7 @@ describe Rojam::InstructionParser do
         6 => Struct.new(:name_index).new(0x02)
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([0xB7, 0x00, 0x01])
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::INVOKESPECIAL, 0x00, 0x01])
     instruction.opcode.should == Rojam::Opcode::INVOKESPECIAL
     consumed_byte_size.should == 3
     instruction.owner.should == "java/lang/Object"
@@ -54,7 +54,7 @@ describe Rojam::InstructionParser do
         0x1C => '(Ljava/lang/String;)V'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([0xB6, 0x00, 0x04])
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::INVOKEVIRTUAL, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::INVOKEVIRTUAL
     consumed_byte_size.should == 3
     instruction.owner.should == 'java/io/PrintStream'
@@ -67,7 +67,7 @@ describe Rojam::InstructionParser do
         3 => Struct.new(:string_index).new(0x12),
         0x12 => 'Hello, World!'
       })
-    instruction, consumed_byte_size = @parser.parse_instruction([0x12, 0x03])
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
     instruction.opcode.should == Rojam::Opcode::LDC
     consumed_byte_size.should == 2
     instruction.constant.should == 'Hello, World!'
@@ -83,7 +83,7 @@ describe Rojam::InstructionParser do
         0x1C => 'Ljava/lang/String;'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([0xB4, 0x00, 0x04])
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GETFIELD, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::GETFIELD
     consumed_byte_size.should == 3
     instruction.owner.should == 'CommonClass'
@@ -101,11 +101,17 @@ describe Rojam::InstructionParser do
         0x1C => 'Ljava/io/PrintStream;'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([0xB2, 0x00, 0x04])
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GETSTATIC, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::GETSTATIC
     consumed_byte_size.should == 3
     instruction.owner.should == 'java/lang/System'
     instruction.name.should == 'out'
     instruction.desc.should == 'Ljava/io/PrintStream;'
+  end
+
+  it 'parses IF_ICMPNE' do
+    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPNE, 0x00, 0x03])
+    instruction.opcode.should == Rojam::Opcode::IF_ICMPNE
+    instruction.offset.should == 3
   end
 end

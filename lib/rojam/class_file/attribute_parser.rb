@@ -63,6 +63,9 @@ module Rojam
       node.value = @pool.value(attr.constantvalue_index)
     end
 
+    attribute('StackMapTable') do |infoes, node|
+    end
+
     def attribute_from_bytes(bytes, klass)
       klass.new { |attr| attr.read_bytes(bytes) }
     end

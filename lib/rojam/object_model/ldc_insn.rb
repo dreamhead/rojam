@@ -6,5 +6,9 @@ module Rojam
       super(code)
       @constant = constant
     end
+
+    def == insn
+      super(insn) && @constant == insn.constant
+    end
   end
 end

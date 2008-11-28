@@ -57,5 +57,10 @@ module Rojam
     instructions(Opcode::LDC) do |instruction_bytes|
       [LdcInsn.new(instruction_bytes[0], @pool.string_value(instruction_bytes[1])), 2]
     end
+
+    instructions(Opcode::IF_ICMPNE) do |instruction_bytes|
+      offset = instruction_bytes[1..2].to_unsigned
+      [JumpInsn.new(instruction_bytes[0], offset), 3]
+    end
   end
 end

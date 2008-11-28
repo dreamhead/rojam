@@ -6,6 +6,7 @@ module Rojam
     ALOAD_0       = 0x2A
     ISTORE_1      = 0x3C
     ISTORE_2      = 0x3D
+    IF_ICMPNE     = 0xA0
     ARETURN       = 0xB0
     RETURN        = 0xB1
     GETSTATIC     = 0xB2

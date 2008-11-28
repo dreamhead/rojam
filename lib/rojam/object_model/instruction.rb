@@ -7,7 +7,7 @@ module Rojam
     end
     
     def ==(insn)
-      @opcode == insn.opcode
+      (self.class == insn.class) && (@opcode == insn.opcode)
     end
   end
 end
