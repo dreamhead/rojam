@@ -21,12 +21,11 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
-      instruction, consumed_byte_size = @parser.parse_instruction([opcode])
-      consumed_byte_size.should == 1
+      instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
     end
   end
-  
+
   it 'parses INVOKESPECIAL' do
     @pool.constants({
         1 => Struct.new(:class_index, :name_and_type_index).new(0x06, 0x03),
@@ -37,9 +36,8 @@ describe Rojam::InstructionParser do
         6 => Struct.new(:name_index).new(0x02)
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::INVOKESPECIAL, 0x00, 0x01])
+    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKESPECIAL, 0x00, 0x01])
     instruction.opcode.should == Rojam::Opcode::INVOKESPECIAL
-    consumed_byte_size.should == 3
     instruction.owner.should == "java/lang/Object"
     instruction.name.should == "<init>"
     instruction.desc.should == "()V"
@@ -55,9 +53,8 @@ describe Rojam::InstructionParser do
         0x1C => '(Ljava/lang/String;)V'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::INVOKEVIRTUAL, 0x00, 0x04])
+    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKEVIRTUAL, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::INVOKEVIRTUAL
-    consumed_byte_size.should == 3
     instruction.owner.should == 'java/io/PrintStream'
     instruction.name.should == 'println'
     instruction.desc.should == '(Ljava/lang/String;)V'
@@ -68,9 +65,8 @@ describe Rojam::InstructionParser do
         3 => Struct.new(:string_index).new(0x12),
         0x12 => 'Hello, World!'
       })
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
+    instruction = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
     instruction.opcode.should == Rojam::Opcode::LDC
-    consumed_byte_size.should == 2
     instruction.constant.should == 'Hello, World!'
   end
 
@@ -84,9 +80,8 @@ describe Rojam::InstructionParser do
         0x1C => 'Ljava/lang/String;'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GETFIELD, 0x00, 0x04])
+    instruction = @parser.parse_instruction([Rojam::Opcode::GETFIELD, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::GETFIELD
-    consumed_byte_size.should == 3
     instruction.owner.should == 'CommonClass'
     instruction.name.should == 'text'
     instruction.desc.should == 'Ljava/lang/String;'
@@ -102,9 +97,8 @@ describe Rojam::InstructionParser do
         0x1C => 'Ljava/io/PrintStream;'
       })
 
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GETSTATIC, 0x00, 0x04])
+    instruction = @parser.parse_instruction([Rojam::Opcode::GETSTATIC, 0x00, 0x04])
     instruction.opcode.should == Rojam::Opcode::GETSTATIC
-    consumed_byte_size.should == 3
     instruction.owner.should == 'java/lang/System'
     instruction.name.should == 'out'
     instruction.desc.should == 'Ljava/io/PrintStream;'
@@ -112,15 +106,15 @@ describe Rojam::InstructionParser do
 
   it 'parses IF_ICMPNE' do
     @labels[7].line = 19
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPNE, 0x00, 0x03], 4)
+    instruction = @parser.parse_instruction([Rojam::Opcode::IF_ICMPNE, 0x00, 0x03], 4)
     instruction.opcode.should == Rojam::Opcode::IF_ICMPNE
     instruction.label.should_not be_nil
     instruction.label.line.should == 19
   end
-  
+
   it 'parses IF_ICMPGE' do
     @labels[7].line = 19
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IF_ICMPGE, 0x00, 0x03], 4)
+    instruction = @parser.parse_instruction([Rojam::Opcode::IF_ICMPGE, 0x00, 0x03], 4)
     instruction.opcode.should == Rojam::Opcode::IF_ICMPGE
     instruction.label.should_not be_nil
     instruction.label.line.should == 19
@@ -128,23 +122,21 @@ describe Rojam::InstructionParser do
 
   it 'parses GOTO' do
     @labels[14].line = 22
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::GOTO, 0x00, 0x05], 9)
+    instruction = @parser.parse_instruction([Rojam::Opcode::GOTO, 0x00, 0x05], 9)
     instruction.opcode.should == Rojam::Opcode::GOTO
     instruction.label.should_not be_nil
     instruction.label.line.should == 22
   end
 
   it 'parses BIPUSH' do
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::BIPUSH, 0x0A])
+    instruction = @parser.parse_instruction([Rojam::Opcode::BIPUSH, 0x0A])
     instruction.opcode.should == Rojam::Opcode::BIPUSH
-    consumed_byte_size.should == 2
     instruction.operand.should == 0x0A
   end
 
   it 'parses IINC' do
-    instruction, consumed_byte_size = @parser.parse_instruction([Rojam::Opcode::IINC, 0x01, 0x01])
+    instruction = @parser.parse_instruction([Rojam::Opcode::IINC, 0x01, 0x01])
     instruction.opcode.should == Rojam::Opcode::IINC
-    consumed_byte_size.should == 3
     instruction.var.should == 0x01
     instruction.incr.should == 0x01
   end
