@@ -27,4 +27,9 @@ public class CommonClass implements CommonInterface {
 		for (int i = 0; i < 10; i++) {
 		}
 	}
+
+	public void arith() {
+		int a = 1;
+		int b = a + 1;
+	}
 }

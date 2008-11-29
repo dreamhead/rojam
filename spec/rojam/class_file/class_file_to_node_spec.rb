@@ -157,14 +157,33 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
+
+    def compare_arith arith
+      arith.access.should == Rojam::Java::Access::ACC_PUBLIC
+      arith.name.should == 'arith'
+      arith.desc.should == '()V'
+      arith.max_stack.should == 2
+      arith.max_locals.should == 3
+
+      arith.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::IADD),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(5).items
+      @node.methods.should have(6).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
       compare_conditional(@node.methods[3])
       compare_loop(@node.methods[4])
+      compare_arith(@node.methods[5])
     end
 
     it "creates node with attributes" do

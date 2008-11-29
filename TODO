@@ -48,6 +48,10 @@ Rojam
 
 * Instruction
 ** Create label for jump instruction
+** float/double/long instruction
+** logical operation
+** switch
+** exception 
 
 * Class Node
 ** class node to class file

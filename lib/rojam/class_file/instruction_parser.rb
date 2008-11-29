@@ -54,6 +54,7 @@ module Rojam
     instructions(1, Opcode::ICONST_0, Opcode::ICONST_1, Opcode::ICONST_2, Opcode::ICONST_3, Opcode::ICONST_4,
       Opcode::ILOAD_1, Opcode::ALOAD_0,
       Opcode::ISTORE_1, Opcode::ISTORE_2,
+      Opcode::IADD,
       Opcode::RETURN, Opcode::ARETURN) do |bytes, current|
       Instruction.new(bytes[0])
     end

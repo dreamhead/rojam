@@ -11,6 +11,7 @@ module Rojam
     ALOAD_0       = 0x2A
     ISTORE_1      = 0x3C
     ISTORE_2      = 0x3D
+    IADD          = 0x60
     IINC          = 0x84
     IF_ICMPNE     = 0xA0
     IF_ICMPGE     = 0xA2

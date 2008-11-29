@@ -20,6 +20,7 @@ describe Rojam::InstructionParser do
     [Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
       Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2,
+      Rojam::Opcode::IADD,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
