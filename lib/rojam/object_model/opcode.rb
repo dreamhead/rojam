@@ -9,9 +9,14 @@ module Rojam
     LDC           = 0x12
     ILOAD_1       = 0x1B
     ALOAD_0       = 0x2A
+    ISTORE        = 0x36
     ISTORE_1      = 0x3C
     ISTORE_2      = 0x3D
+    ISTORE_3      = 0x3E
     IADD          = 0x60
+    ISUB          = 0x64
+    IMUL          = 0x68
+    IDIV          = 0x6C
     IINC          = 0x84
     IF_ICMPNE     = 0xA0
     IF_ICMPGE     = 0xA2

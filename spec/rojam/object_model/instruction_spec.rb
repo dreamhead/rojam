@@ -77,5 +77,14 @@ describe Rojam::Instruction do
     another_field_insn = Rojam::IincInsn.new(Rojam::Opcode::IINC, 2, 1)
     first_field_insn.should_not == another_field_insn
   end
-end
 
+  it 'compares var instruction' do
+    first_field_insn = Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1)
+    second_field_insn = Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1)
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
+
+    another_field_insn = Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2)
+    first_field_insn.should_not == another_field_insn
+  end
+end

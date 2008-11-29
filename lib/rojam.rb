@@ -13,6 +13,7 @@ require File.dirname(__FILE__) + '/rojam/object_model/ldc_insn'
 require File.dirname(__FILE__) + '/rojam/object_model/jump_insn'
 require File.dirname(__FILE__) + '/rojam/object_model/int_insn'
 require File.dirname(__FILE__) + '/rojam/object_model/iinc_insn'
+require File.dirname(__FILE__) + '/rojam/object_model/var_insn'
 require File.dirname(__FILE__) + '/rojam/object_model/label'
 
 require File.dirname(__FILE__) + '/rojam/class_file/cp_info'

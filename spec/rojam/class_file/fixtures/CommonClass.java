@@ -31,5 +31,8 @@ public class CommonClass implements CommonInterface {
 	public void arith() {
 		int a = 1;
 		int b = a + 1;
+		int c = a - 1;
+		int d = a * 1;
+		int e = a / 1;
 	}
 }

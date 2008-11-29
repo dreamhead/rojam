@@ -19,8 +19,8 @@ describe Rojam::InstructionParser do
   it 'parses unary instruction' do
     [Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
       Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
-      Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2,
-      Rojam::Opcode::IADD,
+      Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2, Rojam::Opcode::ISTORE_3,
+      Rojam::Opcode::IADD, Rojam::Opcode::ISUB, Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
@@ -140,5 +140,11 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::IINC
     instruction.var.should == 0x01
     instruction.incr.should == 0x01
+  end
+
+  it 'parses ISTORE' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::ISTORE, 0x04])
+    instruction.opcode.should == Rojam::Opcode::ISTORE
+    instruction.var.should == 0x04
   end
 end

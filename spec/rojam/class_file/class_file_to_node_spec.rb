@@ -163,7 +163,7 @@ describe Rojam::ClassFile do
       arith.name.should == 'arith'
       arith.desc.should == '()V'
       arith.max_stack.should == 2
-      arith.max_locals.should == 3
+      arith.max_locals.should == 6
 
       arith.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
@@ -172,6 +172,18 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::IADD),
         Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ISUB),
+        Rojam::Instruction.new(Rojam::Opcode::ISTORE_3),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::IMUL),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 4),
+        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::IDIV),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 5),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
