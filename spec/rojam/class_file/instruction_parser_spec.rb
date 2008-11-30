@@ -18,8 +18,7 @@ describe Rojam::InstructionParser do
 
   it 'parses unary instruction' do
     [Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
-      Rojam::Opcode::ILOAD_1, Rojam::Opcode::ALOAD_0,
-      Rojam::Opcode::ISTORE_1, Rojam::Opcode::ISTORE_2, Rojam::Opcode::ISTORE_3,
+      Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::IADD, Rojam::Opcode::ISUB, Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
@@ -146,5 +145,29 @@ describe Rojam::InstructionParser do
     instruction = @parser.parse_instruction([Rojam::Opcode::ISTORE, 0x04])
     instruction.opcode.should == Rojam::Opcode::ISTORE
     instruction.var.should == 0x04
+  end
+
+  it 'parses implicit ISTORE' do
+    [Rojam::Opcode::ISTORE_0, Rojam::Opcode::ISTORE_1,
+      Rojam::Opcode::ISTORE_2, Rojam::Opcode::ISTORE_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::ISTORE
+    instruction.var.should == index
+    end
+  end
+
+  it 'parses ILOAD' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::ILOAD, 0x04])
+    instruction.opcode.should == Rojam::Opcode::ILOAD
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit ILOAD' do
+    [Rojam::Opcode::ILOAD_0, Rojam::Opcode::ILOAD_1,
+      Rojam::Opcode::ILOAD_2, Rojam::Opcode::ILOAD_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::ILOAD
+    instruction.var.should == index
+    end
   end
 end

@@ -53,7 +53,6 @@ module Rojam
 
     instructions(1, Opcode::ICONST_0, Opcode::ICONST_1, Opcode::ICONST_2, Opcode::ICONST_3, Opcode::ICONST_4,
       Opcode::ILOAD_1, Opcode::ALOAD_0,
-      Opcode::ISTORE_1, Opcode::ISTORE_2, Opcode::ISTORE_3,
       Opcode::IADD, Opcode::ISUB, Opcode::IMUL, Opcode::IDIV,
       Opcode::RETURN, Opcode::ARETURN) do |bytes, current|
       Instruction.new(bytes[0])
@@ -85,6 +84,18 @@ module Rojam
 
     instructions(2, Opcode::ISTORE) do |bytes, current|
       VarInsn.new(bytes[0], bytes[1])
+    end
+
+    instructions(1, Opcode::ISTORE_0, Opcode::ISTORE_1, Opcode::ISTORE_2, Opcode::ISTORE_3) do |bytes, current|
+      VarInsn.new(Opcode::ISTORE, (bytes[0] - Opcode::ISTORE_0))
+    end
+
+    instructions(2, Opcode::ILOAD) do |bytes, current|
+      VarInsn.new(bytes[0], bytes[1])
+    end
+
+    instructions(1, Opcode::ILOAD_0, Opcode::ILOAD_1, Opcode::ILOAD_2, Opcode::ILOAD_3) do |bytes, current|
+      VarInsn.new(Opcode::ILOAD, (bytes[0] - Opcode::ILOAD_0))
     end
   end
 end

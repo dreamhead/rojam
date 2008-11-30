@@ -7,9 +7,14 @@ module Rojam
     ICONST_4      = 0x07
     BIPUSH        = 0x10
     LDC           = 0x12
+    ILOAD         = 0x15
+    ILOAD_0       = 0x1A
     ILOAD_1       = 0x1B
+    ILOAD_2       = 0x1C
+    ILOAD_3       = 0x1D
     ALOAD_0       = 0x2A
     ISTORE        = 0x36
+    ISTORE_0      = 0x3B
     ISTORE_1      = 0x3C
     ISTORE_2      = 0x3D
     ISTORE_3      = 0x3E

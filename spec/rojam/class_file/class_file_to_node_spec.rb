@@ -93,9 +93,9 @@ describe Rojam::ClassFile do
       assignment.max_locals.should == 3
       assignment.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
@@ -116,21 +116,21 @@ describe Rojam::ClassFile do
 
       conditional.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, jump_label),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::JumpInsn.new(Rojam::Opcode::GOTO, goto_label),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
         Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, second_jump_label),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_3),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::JumpInsn.new(Rojam::Opcode::GOTO, second_goto_label),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_4),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
@@ -148,8 +148,8 @@ describe Rojam::ClassFile do
 
       loop.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::IntInsn.new(Rojam::Opcode::BIPUSH, 10),
         Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, jump_label),
         Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1),
@@ -167,20 +167,20 @@ describe Rojam::ClassFile do
 
       arith.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_1),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::IADD),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_2),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::ISUB),
-        Rojam::Instruction.new(Rojam::Opcode::ISTORE_3),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 3),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::IMUL),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 4),
-        Rojam::Instruction.new(Rojam::Opcode::ILOAD_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::Instruction.new(Rojam::Opcode::IDIV),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 5),
