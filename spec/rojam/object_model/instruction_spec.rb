@@ -87,4 +87,14 @@ describe Rojam::Instruction do
     another_field_insn = Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2)
     first_field_insn.should_not == another_field_insn
   end
+
+  it 'compares type instruction' do
+    first_field_insn = Rojam::TypeInsn.new(Rojam::Opcode::NEW, 'java/lang/Object')
+    second_field_insn = Rojam::VarInsn.new(Rojam::Opcode::NEW, 'java/lang/Object')
+    first_field_insn.should == first_field_insn
+    second_field_insn.should == second_field_insn
+
+    another_field_insn = Rojam::VarInsn.new(Rojam::Opcode::NEW, 'java/lang/String')
+    first_field_insn.should_not == another_field_insn
+  end
 end

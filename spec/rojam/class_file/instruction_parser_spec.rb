@@ -17,9 +17,15 @@ describe Rojam::InstructionParser do
   end
 
   it 'parses unary instruction' do
-    [Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1, Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3, Rojam::Opcode::ICONST_4,
+    [Rojam::Opcode::NOP,
+      Rojam::Opcode::ACONST_NULL, Rojam::Opcode::ICONST_M1,
+      Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1,
+      Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3,
+      Rojam::Opcode::ICONST_4, Rojam::Opcode::ICONST_5,
       Rojam::Opcode::ALOAD_0,
-      Rojam::Opcode::IADD, Rojam::Opcode::ISUB, Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
+      Rojam::Opcode::IADD, Rojam::Opcode::ISUB,
+      Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
+      Rojam::Opcode::DUP,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
@@ -156,6 +162,21 @@ describe Rojam::InstructionParser do
     end
   end
 
+  it 'parses ASTORE' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::ASTORE, 0x04])
+    instruction.opcode.should == Rojam::Opcode::ASTORE
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit ASTORE' do
+    [Rojam::Opcode::ASTORE_0, Rojam::Opcode::ASTORE_1,
+      Rojam::Opcode::ASTORE_2, Rojam::Opcode::ASTORE_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::ASTORE
+    instruction.var.should == index
+    end
+  end
+
   it 'parses ILOAD' do
     instruction = @parser.parse_instruction([Rojam::Opcode::ILOAD, 0x04])
     instruction.opcode.should == Rojam::Opcode::ILOAD
@@ -169,5 +190,16 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::ILOAD
     instruction.var.should == index
     end
+  end
+
+  it 'parses NEW' do
+    @pool.constants({
+        0x04 => Struct.new(:name_index).new(0x13),
+        0x13 => 'java/lang/String',
+      })
+
+    instruction = @parser.parse_instruction([Rojam::Opcode::NEW, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::NEW
+    instruction.type.should == 'java/lang/String'
   end
 end

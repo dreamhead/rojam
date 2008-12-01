@@ -59,7 +59,6 @@ describe Rojam::ClassFile do
     end
 
     def compare_constructor constructor
-
       constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
       constructor.name.should == '<init>'
       constructor.desc.should == '()V'
@@ -115,7 +114,7 @@ describe Rojam::ClassFile do
       second_goto_label.line = 24
 
       conditional.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_M1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
@@ -166,7 +165,7 @@ describe Rojam::ClassFile do
       arith.max_locals.should == 6
 
       arith.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_5),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
@@ -187,15 +186,33 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
+
+    def compare_object object
+      object.access.should == Rojam::Java::Access::ACC_PUBLIC
+      object.name.should == 'object'
+      object.desc.should == '()V'
+      object.max_stack.should == 2
+      object.max_locals.should == 3
+      object.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ACONST_NULL),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, 'java/lang/Object'),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 2),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN),
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(6).items
+      @node.methods.should have(7).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
       compare_conditional(@node.methods[3])
       compare_loop(@node.methods[4])
       compare_arith(@node.methods[5])
+      compare_object(@node.methods[6])
     end
 
     it "creates node with attributes" do

@@ -13,7 +13,7 @@ public class CommonClass implements CommonInterface {
 	}
 
 	public void conditional() {
-		int i = 1;
+		int i = -1;
 		if (i == 1) {
 			i = 2;
 		} else if (i == 2) {
@@ -29,10 +29,15 @@ public class CommonClass implements CommonInterface {
 	}
 
 	public void arith() {
-		int a = 1;
+		int a = 5;
 		int b = a + 1;
 		int c = a - 1;
 		int d = a * 1;
 		int e = a / 1;
+	}
+
+	public void object() {
+		Object a = null;
+		Object b = new Object();
 	}
 }
