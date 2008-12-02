@@ -38,8 +38,7 @@ module RBits
     end
   
     def value_type(value)
-      item_type = self.class.value_types[value]
-      item_type ||= (raise "Unknown reference value #{value}")
+      self.class.value_types[value] ||= (raise "Unknown reference value #{value}")
     end
   
     def value_descriptors

@@ -11,6 +11,10 @@ module RBits
         add_field_desc(field_id, type_desc)
       end
     end
+
+    def __fields__
+      @fields ||= {}
+    end
   
     module ClassMethods
       FieldDescriptor = Struct.new(:field_id, :descriptor)
@@ -28,6 +32,16 @@ module RBits
     
       def field_descriptors
         @field_descriptors ||= []
+      end
+
+      def field_desc_added field_id
+        define_method(field_id) do
+          __fields__[field_id]
+        end
+
+        define_method("#{field_id}=") do |value|
+          __fields__[field_id] = value
+        end
       end
     end
   end

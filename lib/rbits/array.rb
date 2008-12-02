@@ -30,8 +30,8 @@ module RBits
       size_from_io = self.class.size_descriptor.read(io)
       size = actual_read_size(size_from_io)
       array = []
-      size.times do
-        array << self.class.value_descriptor.read(io)
+      size.times do |i|
+        array[i] = self.class.value_descriptor.read(io)
       end
       array
     end

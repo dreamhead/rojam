@@ -7,6 +7,10 @@ end
 class SubStructhDesc < RBits::Struct
   u1 :bit1
   u1 :bit2
+
+  def text
+    "#{self.bit1} #{self.bit2}"
+  end
 end
 
 describe RBits::Struct do
@@ -31,6 +35,12 @@ describe RBits::Struct do
       @bits = @desc.read(@io)
       @bits.bit1.should == 1
       @bits.bit2.should == 2
+    end
+
+    it 'reads same struct type' do
+      @io.bytes = [0x01, 0x02]
+      @bits = @desc.read(@io)
+      @bits.text.should == '1 2'
     end
   end
   
