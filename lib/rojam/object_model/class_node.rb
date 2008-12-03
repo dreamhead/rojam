@@ -1,4 +1,4 @@
-  module Rojam
+module Rojam
   class ClassNode
     attr_accessor :version, :access, 
       :source_file, :source_debug,

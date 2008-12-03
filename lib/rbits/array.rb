@@ -19,11 +19,8 @@ module RBits
     end
   
     def write(io, array)
-      size_to_io = actual_write_size(array.size)
-      self.class.size_descriptor.write(io, size_to_io)
-      array.each do |value|
-        self.class.value_descriptor.write(io, value)
-      end
+      write_size(array.size, io)
+      write_array(array, io)
     end
   
     def read(io)
@@ -45,10 +42,14 @@ module RBits
       actual_read_size(size_from_io)
     end
 
+    def write_size(size, io)
+      size_to_io = actual_write_size(size)
+      self.class.size_descriptor.write(io, size_to_io)
+    end
+
     def read_array(size, io)
       array = []
       i = 0
-
       desc = self.class.value_descriptor
 
       while (i < size)
@@ -57,6 +58,15 @@ module RBits
       end
       
       array
+    end
+
+    def write_array(array, io)
+      i = 0
+      while (i < array.size)
+        value = array[i]
+        self.class.value_descriptor.write(io, value)
+        i += slots(value)
+      end
     end
 
     def slots(value)

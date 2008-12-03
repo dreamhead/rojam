@@ -12,11 +12,15 @@ module Rojam
   end
   
   RBits::Type.struct(:constant_long) do
+    slots_in_array(2)
+    
     u4 :high_bytes
     u4 :low_bytes
   end
   
   RBits::Type.struct(:constant_double) do
+    slots_in_array(2)
+    
     u4 :high_bytes
     u4 :low_bytes
   end

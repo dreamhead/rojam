@@ -72,7 +72,7 @@ describe RBits::Array do
 
   describe 'slots in array' do
     before(:each) do
-      RBits::Type.struct(:slots_struct) do
+      @slots_klass = RBits::Type.struct(:slots_struct) do
         slots_in_array(2)
 
         u1 :bit
@@ -93,6 +93,16 @@ describe RBits::Array do
       bits[1].should be_nil
       bits[2].bit.should == 2
       bits[3].should be_nil
+    end
+
+    it 'ignores more slots' do
+      first_slots_object = @slots_klass.new
+      first_slots_object.bit = 1
+      second_slots_object = @slots_klass.new
+      second_slots_object.bit = 2
+      bits = [first_slots_object, nil, second_slots_object, nil]
+      @desc.write(@io, bits)
+      @io.bytes.should == [0x04, 0x01, 0x02]
     end
   end
 end

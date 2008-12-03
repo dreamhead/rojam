@@ -8,7 +8,7 @@ module RBits
       end
 
       def __slots_in_array__
-        @slots_in_array
+        @slots_in_array ||= 1
       end
 
       def field_type name, type_class = self

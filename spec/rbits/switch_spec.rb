@@ -107,5 +107,11 @@ describe RBits::Switch do
       bits = @desc.read(@io)
       bits.slots_in_array.should == 2
     end
+
+    it 'has 1 as slots_in_array to value without slots_in_array' do
+      @io.bytes = [0x01, 0x02]
+      bits = @desc.read(@io)
+      bits.slots_in_array.should == 1
+    end
   end
 end
