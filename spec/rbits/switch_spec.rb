@@ -63,7 +63,7 @@ describe RBits::Switch do
     end
   end
   
-  describe 'struct type' do
+  describe 'switch type' do
     before(:each) do
       klass = RBits::Type.switch(:new_switch) do      
         tag :switch_tag, :type => :u1
@@ -82,6 +82,30 @@ describe RBits::Switch do
       bits = @desc.read(@io)
       bits.switch_tag.should == 1
       bits.switch_value.should == 1
+    end
+  end
+
+  describe 'slots in array' do
+    before(:each) do
+      RBits::Type.struct(:slots_struct) do
+        slots_in_array(2)
+
+        u1 :bit
+      end
+
+      klass = RBits::Type.switch(:slots_switch) do
+        tag :switch_tag, :type => :u1
+        value :switch_value, :types => {1 => :u1, 2 => :slots_struct}
+      end
+
+      @desc = klass.new
+      @io = RBits::BytesIO.new
+    end
+
+    it 'has same slots_in_array to slots_in_array in value' do
+      @io.bytes = [0x02, 0x02]
+      bits = @desc.read(@io)
+      bits.slots_in_array.should == 2
     end
   end
 end

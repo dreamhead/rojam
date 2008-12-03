@@ -50,7 +50,17 @@ module RBits
       object = self.class.new
       object.send("#{self.class.tag_name}=", tag)
       object.send("#{self.class.value_name}=", value)
+      if (value.respond_to?(:slots_in_array))
+        object.extend(Slots)
+      end
       object
+    end
+
+    module Slots
+      def slots_in_array
+        value = self.send("#{self.class.value_name}")
+        value.slots_in_array
+      end
     end
   end
 end
