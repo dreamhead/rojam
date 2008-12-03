@@ -3,6 +3,14 @@ module RBits
     @@field_types = {}
   
     class << self
+      def slots_in_array(size)
+        @slots_in_array = size
+      end
+
+      def __slots_in_array__
+        @slots_in_array
+      end
+
       def field_type name, type_class = self
         @@field_types[name] = type_class
         Sequential.define_field_type(name)
@@ -32,6 +40,10 @@ module RBits
         klass.instance_eval(&block) if block_given?
         field_type(name, klass)
       end
+    end
+
+    def slots_in_array
+      self.class.__slots_in_array__
     end
   end
 end

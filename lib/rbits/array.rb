@@ -27,13 +27,8 @@ module RBits
     end
   
     def read(io)
-      size_from_io = self.class.size_descriptor.read(io)
-      size = actual_read_size(size_from_io)
-      array = []
-      size.times do |i|
-        array[i] = self.class.value_descriptor.read(io)
-      end
-      array
+      size = read_size(io)
+      read_array(size, io)
     end
   
     private
@@ -43,6 +38,33 @@ module RBits
   
     def actual_read_size size
       self.class.read_size_proc.call(size)
+    end
+
+    def read_size(io)
+      size_from_io = self.class.size_descriptor.read(io)
+      actual_read_size(size_from_io)
+    end
+
+    def read_array(size, io)
+      array = []
+      i = 0
+
+      desc = self.class.value_descriptor
+
+      while (i < size)
+        array[i] = desc.read(io)
+        i += slots(array[i])
+      end
+      
+      array
+    end
+
+    def slots(value)
+      slots_value(value) || 1
+    end
+
+    def slots_value(value)
+      value.respond_to?(:slots_in_array) && value.slots_in_array
     end
   end
 end

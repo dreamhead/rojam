@@ -7,16 +7,17 @@ module RBits
       def tag(name, options)
         @tag_name = name
         @tag_descriptor = Type.create_field(options[:type])
+        self.send(:attr_accessor, name.to_sym)
       end
     
       def value(name, options)
         @value_name = name
         @value_types = options[:types]
+        self.send(:attr_accessor, name.to_sym)
       end
     end
 
     def initialize(options = {})
-      @object_class = ::Struct.new(self.class.tag_name, self.class.value_name)
     end
   
     def write(io, object)
@@ -28,7 +29,7 @@ module RBits
     def read(io)
       tag = self.class.tag_descriptor.read(io)
       value = value_descriptor(tag).read(io)
-      @object_class.new(tag, value)
+      create_switch_object(tag, value)
     end
   
     private
@@ -43,6 +44,13 @@ module RBits
   
     def value_descriptors
       self.class.value_descriptors ||= {}
+    end
+
+    def create_switch_object(tag, value)
+      object = self.class.new
+      object.send("#{self.class.tag_name}=", tag)
+      object.send("#{self.class.value_name}=", value)
+      object
     end
   end
 end
