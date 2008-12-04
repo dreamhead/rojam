@@ -54,10 +54,16 @@ describe Rojam::ConstantPoolReader do
 
     it 'parses int' do
       @pool.infoes({
-          0x07 => Struct.new(:tag, :info).new(3, Struct.new(:bytes).new(0x05)),
+          0x07 => Struct.new(:tag, :info).new(Rojam::CONSTANT_INTEGER_TAG, Struct.new(:bytes).new(0x05)),
         })
       @pool.int_value(0x07).should == 5
       @pool.value(0x07).should == 5
+    end
+
+    it 'parses long' do
+      @pool.infoes({0x07 => Struct.new(:tag, :info).new(Rojam::CONSTANT_LONG_TAG, Struct.new(:high_bytes, :low_bytes).new(0x00, 0x0A))})
+      @pool.long_value(0x07).should == 10
+      @pool.value(0x07).should == 10
     end
   end
 end

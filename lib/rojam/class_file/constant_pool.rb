@@ -31,11 +31,18 @@ module Rojam
       value.bytes if value
     end
 
+    def long_value index
+      value = constant_value(index)
+      [value.high_bytes, value.low_bytes].to_unsigned if value
+    end
+
     def value index
       info = constant_info(index)
       case info.tag
-      when 3
+      when CONSTANT_INTEGER_TAG
         int_value(index)
+      when CONSTANT_LONG_TAG
+        long_value(index)
       else
         string_value(index)
       end

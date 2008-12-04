@@ -33,7 +33,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should have(3).items
+      @node.fields.should have(4).items
       string_constant_field = @node.fields[0]
       string_constant_field.access.should ==
         Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
@@ -50,7 +50,15 @@ describe Rojam::ClassFile do
       int_constant_field.signature.should be_nil
       int_constant_field.value.should == 5
 
-      instance_field = @node.fields[2]
+      long_constant_field = @node.fields[2]
+      long_constant_field.access.should ==
+        Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
+      long_constant_field.name.should == 'LONG'
+      long_constant_field.desc.should == 'J'
+      long_constant_field.signature.should be_nil
+      long_constant_field.value.should == 10
+
+      instance_field = @node.fields[3]
       instance_field.access.should == Rojam::Java::Access::ACC_PRIVATE
       instance_field.name.should == 'text'
       instance_field.desc.should == 'Ljava/lang/String;'
@@ -105,13 +113,13 @@ describe Rojam::ClassFile do
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
       jump_label = Rojam::Label.new
-      jump_label.line = 19
+      jump_label.line = 20
       goto_label = Rojam::Label.new
-      goto_label.line = 24
+      goto_label.line = 25
       second_jump_label = Rojam::Label.new
-      second_jump_label.line = 22
+      second_jump_label.line = 23
       second_goto_label = Rojam::Label.new
-      second_goto_label.line = 24
+      second_goto_label.line = 25
 
       conditional.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_M1),
@@ -142,7 +150,7 @@ describe Rojam::ClassFile do
       loop.max_locals.should == 2
 
       jump_label = Rojam::Label.new
-      jump_label.line = 29
+      jump_label.line = 30
       goto_label = Rojam::Label.new
 
       loop.instructions.should == [

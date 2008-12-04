@@ -52,14 +52,17 @@ module Rojam
     u2 :class_index
     u2 :name_and_type_index
   end
+
+  CONSTANT_INTEGER_TAG  = 3
+  CONSTANT_LONG_TAG     = 5
   
   RBits::Type.switch(:cp_info) do
     tag :tag, :type => :u1
     value :info, :types => {
       1   => :constant_utf8,
-      3   => :constant_integer,
+      CONSTANT_INTEGER_TAG  => :constant_integer,
       4   => :constant_float,
-      5   => :constant_long,
+      CONSTANT_LONG_TAG     => :constant_long,
       6   => :constant_double,
       7   => :constant_class,
       8   => :constant_string,

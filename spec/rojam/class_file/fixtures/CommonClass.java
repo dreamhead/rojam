@@ -1,6 +1,7 @@
 public class CommonClass implements CommonInterface {
 	private static final String CONSTANT = "constant";
 	private static final int INT = 5;
+	private static final long LONG = 10L;
 	private String text;
 
 	public String getText() {
