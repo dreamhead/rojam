@@ -22,9 +22,12 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1,
       Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3,
       Rojam::Opcode::ICONST_4, Rojam::Opcode::ICONST_5,
+      Rojam::Opcode::LCONST_0, Rojam::Opcode::LCONST_1,
       Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::IADD, Rojam::Opcode::ISUB,
       Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
+      Rojam::Opcode::LADD, Rojam::Opcode::LSUB,
+      Rojam::Opcode::LMUL, Rojam::Opcode::LDIV,
       Rojam::Opcode::DUP,
       Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
@@ -74,6 +77,15 @@ describe Rojam::InstructionParser do
     instruction = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
     instruction.opcode.should == Rojam::Opcode::LDC
     instruction.constant.should == 'Hello, World!'
+  end
+
+  it 'parses LDC2_W' do
+   @pool.infoes({
+       0x04 => Struct.new(:tag, :info).new(Rojam::CONSTANT_LONG_TAG, Struct.new(:high_bytes, :low_bytes).new(0x00, 0x05))
+     })
+    instruction = @parser.parse_instruction([Rojam::Opcode::LDC2_W, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::LDC2_W
+    instruction.constant.should == 5
   end
 
   it 'parses GETFIELD' do
@@ -162,6 +174,21 @@ describe Rojam::InstructionParser do
     end
   end
 
+  it 'parses LSTORE' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::LSTORE, 0x04])
+    instruction.opcode.should == Rojam::Opcode::LSTORE
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit LSTORE' do
+    [Rojam::Opcode::LSTORE_0, Rojam::Opcode::LSTORE_1,
+      Rojam::Opcode::LSTORE_2, Rojam::Opcode::LSTORE_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::LSTORE
+    instruction.var.should == index
+    end
+  end
+
   it 'parses ASTORE' do
     instruction = @parser.parse_instruction([Rojam::Opcode::ASTORE, 0x04])
     instruction.opcode.should == Rojam::Opcode::ASTORE
@@ -188,6 +215,21 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ILOAD_2, Rojam::Opcode::ILOAD_3].each_with_index do |opcode, index|
       instruction = @parser.parse_instruction([opcode])
     instruction.opcode.should == Rojam::Opcode::ILOAD
+    instruction.var.should == index
+    end
+  end
+
+  it 'parses LLOAD' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::LLOAD, 0x04])
+    instruction.opcode.should == Rojam::Opcode::LLOAD
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit ILOAD' do
+    [Rojam::Opcode::LLOAD_0, Rojam::Opcode::LLOAD_1,
+      Rojam::Opcode::LLOAD_2, Rojam::Opcode::LLOAD_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::LLOAD
     instruction.var.should == index
     end
   end

@@ -41,4 +41,12 @@ public class CommonClass implements CommonInterface {
 		Object a = null;
 		Object b = new Object();
 	}
+
+	public void arith_for_long() {
+		long a = 5;
+		long b = a + 1;
+		long c = a - 1;
+		long d = a * 1;
+		long e = a / 1;
+	}
 }

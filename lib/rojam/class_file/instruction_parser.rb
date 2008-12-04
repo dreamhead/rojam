@@ -8,6 +8,7 @@ module Rojam
         :var          => 2,
         :implicit_var => 1,
         :ldc          => 2,
+        :ldc_w        => 3,
         :label        => 3,
         :method       => 3,
         :field        => 3,
@@ -75,8 +76,10 @@ module Rojam
     no_arg_instructions(NOP,
       ACONST_NULL,
       ICONST_M1, ICONST_0, ICONST_1, ICONST_2, ICONST_3, ICONST_4, ICONST_5,
+      LCONST_0, LCONST_1,
       ILOAD_1, ALOAD_0,
       IADD, ISUB, IMUL, IDIV,
+      LADD, LSUB, LMUL, LDIV,
       DUP,
       RETURN, ARETURN) do |bytes, current|
       Instruction.new(bytes[0])
@@ -93,6 +96,10 @@ module Rojam
       LdcInsn.new(bytes[0], @pool.string_value(bytes[1]))
     end
 
+    ldc_w_instructions(LDC2_W) do |bytes, current|
+      LdcInsn.new(bytes[0], @pool.value(bytes[1..2].to_unsigned))
+    end
+
     label_instructions(IF_ICMPNE, IF_ICMPGE, GOTO) do |bytes, current|
       offset = bytes[1..2].to_unsigned
       JumpInsn.new(bytes[0], @labels[current + offset])
@@ -106,12 +113,16 @@ module Rojam
       IincInsn.new(bytes[0], bytes[1], bytes[2])
     end
 
-    var_instructions(ISTORE, ILOAD, ASTORE) do |bytes, current|
+    var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE) do |bytes, current|
       VarInsn.new(bytes[0], bytes[1])
     end
 
     implicit_var_instructions(ISTORE_0, ISTORE_1, ISTORE_2, ISTORE_3) do |bytes, current|
       VarInsn.new(ISTORE, (bytes[0] - ISTORE_0))
+    end
+
+    implicit_var_instructions(LSTORE_0, LSTORE_1, LSTORE_2, LSTORE_3) do |bytes, current|
+      VarInsn.new(LSTORE, (bytes[0] - LSTORE_0))
     end
 
     implicit_var_instructions(ASTORE_0, ASTORE_1, ASTORE_2, ASTORE_3) do |bytes, current|
@@ -120,6 +131,10 @@ module Rojam
 
     implicit_var_instructions(ILOAD_0, ILOAD_1, ILOAD_2, ILOAD_3) do |bytes, current|
       VarInsn.new(ILOAD, (bytes[0] - ILOAD_0))
+    end
+
+    implicit_var_instructions(LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3) do |bytes, current|
+      VarInsn.new(LLOAD, (bytes[0] - LLOAD_0))
     end
 
     type_instructions(NEW) do |bytes, current|

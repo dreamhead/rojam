@@ -211,9 +211,39 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN),
       ]
     end
+
+    def compare_arith_for_long arith
+      arith.access.should == Rojam::Java::Access::ACC_PUBLIC
+      arith.name.should == 'arith_for_long'
+      arith.desc.should == '()V'
+      arith.max_stack.should == 4
+      arith.max_locals.should == 11
+
+      arith.instructions.should == [
+        Rojam::LdcInsn.new(Rojam::Opcode::LDC2_W, 5),
+        Rojam::VarInsn.new(Rojam::Opcode::LSTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::LLOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::LCONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::LADD),
+        Rojam::VarInsn.new(Rojam::Opcode::LSTORE, 3),
+        Rojam::VarInsn.new(Rojam::Opcode::LLOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::LCONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::LSUB),
+        Rojam::VarInsn.new(Rojam::Opcode::LSTORE, 5),
+        Rojam::VarInsn.new(Rojam::Opcode::LLOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::LCONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::LMUL),
+        Rojam::VarInsn.new(Rojam::Opcode::LSTORE, 7),
+        Rojam::VarInsn.new(Rojam::Opcode::LLOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::LCONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::LDIV),
+        Rojam::VarInsn.new(Rojam::Opcode::LSTORE, 9),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(7).items
+      @node.methods.should have(8).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -221,6 +251,7 @@ describe Rojam::ClassFile do
       compare_loop(@node.methods[4])
       compare_arith(@node.methods[5])
       compare_object(@node.methods[6])
+      compare_arith_for_long(@node.methods[7])
     end
 
     it "creates node with attributes" do
