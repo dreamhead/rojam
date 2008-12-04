@@ -13,6 +13,8 @@ RBits
 * Enum
 
 Rojam
+* Float <=> Int / Double <=> Long
+
 * Class File Format
 ** UTF 8 string besides English
 ** Exception handling
