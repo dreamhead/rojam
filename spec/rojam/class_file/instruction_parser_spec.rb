@@ -29,7 +29,7 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::LADD, Rojam::Opcode::LSUB,
       Rojam::Opcode::LMUL, Rojam::Opcode::LDIV,
       Rojam::Opcode::DUP,
-      Rojam::Opcode::RETURN, Rojam::Opcode::ARETURN].each do |opcode|
+      Rojam::Opcode::RETURN, Rojam::Opcode::IRETURN, Rojam::Opcode::LRETURN, Rojam::Opcode::ARETURN].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
     end
@@ -76,6 +76,16 @@ describe Rojam::InstructionParser do
       })
     instruction = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
     instruction.opcode.should == Rojam::Opcode::LDC
+    instruction.constant.should == 'Hello, World!'
+  end
+
+  it 'parses LDC_W' do
+    @pool.constants({
+        3 => Struct.new(:string_index).new(0x12),
+        0x12 => 'Hello, World!'
+      })
+    instruction = @parser.parse_instruction([Rojam::Opcode::LDC_W, 0x00, 0x03])
+    instruction.opcode.should == Rojam::Opcode::LDC_W
     instruction.constant.should == 'Hello, World!'
   end
 

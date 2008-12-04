@@ -81,7 +81,7 @@ module Rojam
       IADD, ISUB, IMUL, IDIV,
       LADD, LSUB, LMUL, LDIV,
       DUP,
-      RETURN, ARETURN) do |bytes, current|
+      RETURN, IRETURN, LRETURN, ARETURN) do |bytes, current|
       Instruction.new(bytes[0])
     end
 
@@ -93,10 +93,10 @@ module Rojam
     end
 
     ldc_instructions(LDC) do |bytes, current|
-      LdcInsn.new(bytes[0], @pool.string_value(bytes[1]))
+      LdcInsn.new(bytes[0], @pool.value(bytes[1]))
     end
 
-    ldc_w_instructions(LDC2_W) do |bytes, current|
+    ldc_w_instructions(LDC_W, LDC2_W) do |bytes, current|
       LdcInsn.new(bytes[0], @pool.value(bytes[1..2].to_unsigned))
     end
 

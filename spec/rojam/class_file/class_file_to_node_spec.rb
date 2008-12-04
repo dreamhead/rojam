@@ -241,9 +241,35 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
+
+    def compare_return_for_int method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'return_for_int'
+      method.desc.should == '()I'
+      method.max_stack.should == 1
+      method.max_locals.should == 1
+
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::IRETURN)
+      ]
+    end
+
+    def compare_return_for_long method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'return_for_long'
+      method.desc.should == '()J'
+      method.max_stack.should == 2
+      method.max_locals.should == 1
+
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::LCONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::LRETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(8).items
+      @node.methods.should have(10).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -252,6 +278,8 @@ describe Rojam::ClassFile do
       compare_arith(@node.methods[5])
       compare_object(@node.methods[6])
       compare_arith_for_long(@node.methods[7])
+      compare_return_for_int(@node.methods[8])
+      compare_return_for_long(@node.methods[9])
     end
 
     it "creates node with attributes" do

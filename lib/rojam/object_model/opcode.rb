@@ -13,6 +13,7 @@ module Rojam
     LCONST_1      = 0x0A
     BIPUSH        = 0x10
     LDC           = 0x12
+    LDC_W         = 0x13
     LDC2_W        = 0x14
     ILOAD         = 0x15
     LLOAD         = 0x16
@@ -53,6 +54,8 @@ module Rojam
     IF_ICMPNE     = 0xA0
     IF_ICMPGE     = 0xA2
     GOTO          = 0xA7
+    IRETURN       = 0xAC
+    LRETURN       = 0xAD
     ARETURN       = 0xB0
     RETURN        = 0xB1
     GETSTATIC     = 0xB2

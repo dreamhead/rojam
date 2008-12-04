@@ -49,4 +49,12 @@ public class CommonClass implements CommonInterface {
 		long d = a * 1;
 		long e = a / 1;
 	}
+
+	public int return_for_int() {
+		return 1;
+	}
+
+	public long return_for_long() {
+		return 1L;
+	}
 }
