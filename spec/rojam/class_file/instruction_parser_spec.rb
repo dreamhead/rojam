@@ -16,7 +16,7 @@ describe Rojam::InstructionParser do
     node.instructions[1].opcode.should == Rojam::Opcode::ALOAD_0
   end
 
-  it 'parses unary instruction' do
+  it 'parses no arg instruction' do
     [Rojam::Opcode::NOP,
       Rojam::Opcode::ACONST_NULL, Rojam::Opcode::ICONST_M1,
       Rojam::Opcode::ICONST_0, Rojam::Opcode::ICONST_1,

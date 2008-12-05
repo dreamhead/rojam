@@ -1,4 +1,4 @@
-Rojam Hacking Guide
+Rojam Hacking Guid
 
 Ye Zheng (dreamhead.cn@gmail.com)
 
@@ -7,8 +7,115 @@ Table of Content
 * Commit Code
 * Reference
 
-Introduction
+* Introduction
 The goal of the document is to help developers understand Rojam's internals.
+
+* How to Parse Instruction
+
+JVM has a lot of instructions. As a Rojam hacker, we have to parse these instructions one by one. In the section, we are going to parse IRETURN as example. We assume any other instructions have been implemented.
+
+First of all, we need REAL code to make sure the instruction is real. In Rojam, we can add some Java code in spec/rojam/class_file/fixtures/CommonClass.java.
+
+The following is new code:
+class CommonClass extends CommonInterface {
+    ...
+
+    public int return_for_int() {
+        return 1;
+    }
+
+    ...
+}
+
+It's time to compile.
+    javac CommandClass.java
+
+Now, we have a brand new class file: CommonClass.class. We could use javap to see what is in this file.
+    javap -c CommondClass
+
+Our new method is like the following in bytecode format:
+public int return_for_int();
+  Code:
+   0:	iconst_1
+   1:	ireturn
+
+You've seen IRETURN which is our current target.
+
+If you are interested in binary format, xxd will help you.
+    xxd CommonClass.class
+
+Run rake which will run all tests and it will tell you that
+    Instruction 172(0xac) can not be parsed
+
+172(0xAC) is the opcode for IRETURN.
+
+Now, We've finished preparation and we are going to write code.
+
+The first step for writing code is adding opcode for IRETURN in lib/rojam/object_model/opcode.rb. As you will see, the opcode is sorted by number. What we need to do is find the right position for new opcode.
+
+module Rojam
+  module  Opcode
+  ...
+    IRETURN       = 0xAC
+  ...
+  end
+end
+
+After that, we'll write test for new instruction. But before that, we should know more about our new instruction. Whatever resource(book or website) we read, we know IRETURN instruction does not need any other arguments, so we will view IRETURN as NO ARG Instruction.
+
+Our new test will be put into spec/rojam/class_file/instruction_parser_spec.rb which is instruction parser test file. Here we find there are a lot of NO ARG instructions, so we can make them as a family.
+  it 'parses no arg instruction' do
+    [Rojam::Opcode::NOP,
+      ...
+      Rojam::Opcode::IRETURN].each do |opcode|
+      instruction = @parser.parse_instruction([opcode])
+      instruction.opcode.should == opcode
+    end
+  end 
+
+If we run this spec separately, we will get the same error message:
+    Instruction 172(0xac) can not be parsed
+
+We have to implement our parser to make test pass. The instruction parser is in lib/rojam/class_file/instruction_parser.rb. We have NO ARG instruction test family and we also have NO ARG instruction parser family.
+  no_arg_instructions(NOP,...
+    IRETURN) do |bytes, current|
+    Instruction.new(bytes[0])
+  end
+
+Now run instruction spec again, the good news is this spec have been passed and the bad news is there are still one failure test. Actually, this failure test is caused by adding new method into Java code. The failure test is in spec/rojam/class_file/class_file_to_node_spec.rb. What we are going to do is just to fix it.
+
+Firstly, we increase the size of method. We will change the code from
+  it "creates node with methods" do
+    @node.methods.should have(8).items
+    ...
+  end
+to
+  it "creates node with methods" do
+    @node.methods.should have(9).items
+    ...
+  end
+
+Furthermore, we will add more tests to make sure we integrate all code correctly.
+  def compare_return_for_int method
+    method.access.should == Rojam::Java::Access::ACC_PUBLIC
+    method.name.should == 'return_for_int'
+    method.desc.should == '()I'
+    method.max_stack.should == 1
+    method.max_locals.should == 1
+
+    method.instructions.should == [
+      Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+      Rojam::Instruction.new(Rojam::Opcode::IRETURN)
+    ]
+  end
+
+Since we have new method, we are going to use it.
+  it "creates node with methods" do
+    ...
+    compare_return_for_int(@node.methods[8])
+  end
+
+It's time to enjoy! Run rake. If you are lucky enough, all tests should be passed. Otherwise, maybe something are wrong. Try your best to fix it. :)
 
 Commit Code
 You should use rake:commit to commit your change to repository. It will
@@ -19,3 +126,4 @@ You should use rake:commit to commit your change to repository. It will
 Reference
 * http://asm.objectweb.org/
 * http://java.sun.com/docs/books/jvms/second_edition/ClassFileFormat-Java5.pdf
+* Inside the Java Virtual Machine, 2nd Edition
