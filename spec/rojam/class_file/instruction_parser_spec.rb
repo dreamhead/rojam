@@ -23,6 +23,8 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3,
       Rojam::Opcode::ICONST_4, Rojam::Opcode::ICONST_5,
       Rojam::Opcode::LCONST_0, Rojam::Opcode::LCONST_1,
+      Rojam::Opcode::IALOAD, Rojam::Opcode::IASTORE,
+      Rojam::Opcode::AALOAD, Rojam::Opcode::AASTORE,
       Rojam::Opcode::IADD, Rojam::Opcode::ISUB,
       Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
       Rojam::Opcode::LADD, Rojam::Opcode::LSUB,

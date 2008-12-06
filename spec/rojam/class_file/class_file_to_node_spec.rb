@@ -272,8 +272,8 @@ describe Rojam::ClassFile do
       method.access.should == Rojam::Java::Access::ACC_PUBLIC
       method.name.should == 'array'
       method.desc.should == '()V'
-      method.max_stack.should == 1
-      method.max_locals.should == 4
+      method.max_stack.should == 3
+      method.max_locals.should == 6
 
       method.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
@@ -285,6 +285,22 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ARRAYLENGTH),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 3),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::Instruction.new(Rojam::Opcode::IASTORE),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
+        Rojam::Instruction.new(Rojam::Opcode::IALOAD),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 4),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 2),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
+        Rojam::Instruction.new(Rojam::Opcode::ACONST_NULL),
+        Rojam::Instruction.new(Rojam::Opcode::AASTORE),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 2),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
+        Rojam::Instruction.new(Rojam::Opcode::AALOAD),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 5),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

@@ -30,6 +30,8 @@ module Rojam
     ALOAD_1       = 0x2B
     ALOAD_2       = 0x2C
     ALOAD_3       = 0x2D
+    IALOAD        = 0x2E
+    AALOAD        = 0x32
     ISTORE        = 0x36
     LSTORE        = 0x37
     ASTORE        = 0x3A
@@ -45,6 +47,8 @@ module Rojam
     ASTORE_1      = 0x4C
     ASTORE_2      = 0x4D
     ASTORE_3      = 0x4E
+    IASTORE       = 0x4F
+    AASTORE       = 0x53
     DUP           = 0x59
     IADD          = 0x60
     LADD          = 0x61

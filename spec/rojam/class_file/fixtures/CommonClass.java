@@ -62,5 +62,9 @@ public class CommonClass implements CommonInterface {
 		int[] int_array = new int[1];
 		Object[] object_array = new Object[1];
 		int length = int_array.length;
+		int_array[0] = 1;
+		int int_element = int_array[0];
+		object_array[0] = null;
+		Object object_element = object_array[0];
 	}
 }
