@@ -17,6 +17,7 @@ module Rojam
     LDC2_W        = 0x14
     ILOAD         = 0x15
     LLOAD         = 0x16
+    ALOAD         = 0x19
     ILOAD_0       = 0x1A
     ILOAD_1       = 0x1B
     ILOAD_2       = 0x1C
@@ -26,6 +27,9 @@ module Rojam
     LLOAD_2       = 0x20
     LLOAD_3       = 0x21
     ALOAD_0       = 0x2A
+    ALOAD_1       = 0x2B
+    ALOAD_2       = 0x2C
+    ALOAD_3       = 0x2D
     ISTORE        = 0x36
     LSTORE        = 0x37
     ASTORE        = 0x3A
@@ -65,6 +69,7 @@ module Rojam
     NEW           = 0xBB
     NEWARRAY      = 0xBC
     ANEWARRAY     = 0xBD
+    ARRAYLENGTH   = 0xBE
   end
 
   module ArrayType

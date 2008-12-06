@@ -77,11 +77,12 @@ module Rojam
       ACONST_NULL,
       ICONST_M1, ICONST_0, ICONST_1, ICONST_2, ICONST_3, ICONST_4, ICONST_5,
       LCONST_0, LCONST_1,
-      ILOAD_1, ALOAD_0,
       IADD, ISUB, IMUL, IDIV,
       LADD, LSUB, LMUL, LDIV,
       DUP,
-      RETURN, IRETURN, LRETURN, ARETURN) do |bytes, current|
+      RETURN, IRETURN, LRETURN, ARETURN,
+      ARRAYLENGTH
+    ) do |bytes, current|
       Instruction.new(bytes[0])
     end
 
@@ -113,7 +114,7 @@ module Rojam
       IincInsn.new(bytes[0], bytes[1], bytes[2])
     end
 
-    var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE) do |bytes, current|
+    var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE, ALOAD) do |bytes, current|
       VarInsn.new(bytes[0], bytes[1])
     end
 
@@ -135,6 +136,10 @@ module Rojam
 
     implicit_var_instructions(LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3) do |bytes, current|
       VarInsn.new(LLOAD, (bytes[0] - LLOAD_0))
+    end
+
+    implicit_var_instructions(ALOAD_0, ALOAD_1, ALOAD_2, ALOAD_3) do |bytes, current|
+      VarInsn.new(ALOAD, (bytes[0] - ALOAD_0))
     end
 
     type_instructions(NEW, ANEWARRAY) do |bytes, current|

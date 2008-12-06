@@ -10,10 +10,10 @@ describe Rojam::InstructionParser do
   
   it "parses instruction sequentially" do
     node = Rojam::MethodNode.new
-    @parser.parse(node, [0x2A, 0x2A])
+    @parser.parse(node, [Rojam::Opcode::NOP, Rojam::Opcode::NOP])
     node.instructions.should have(2).items
-    node.instructions[0].opcode.should == Rojam::Opcode::ALOAD_0
-    node.instructions[1].opcode.should == Rojam::Opcode::ALOAD_0
+    node.instructions[0].opcode.should == Rojam::Opcode::NOP
+    node.instructions[1].opcode.should == Rojam::Opcode::NOP
   end
 
   it 'parses no arg instruction' do
@@ -23,13 +23,14 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ICONST_2, Rojam::Opcode::ICONST_3,
       Rojam::Opcode::ICONST_4, Rojam::Opcode::ICONST_5,
       Rojam::Opcode::LCONST_0, Rojam::Opcode::LCONST_1,
-      Rojam::Opcode::ALOAD_0,
       Rojam::Opcode::IADD, Rojam::Opcode::ISUB,
       Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
       Rojam::Opcode::LADD, Rojam::Opcode::LSUB,
       Rojam::Opcode::LMUL, Rojam::Opcode::LDIV,
       Rojam::Opcode::DUP,
-      Rojam::Opcode::RETURN, Rojam::Opcode::IRETURN, Rojam::Opcode::LRETURN, Rojam::Opcode::ARETURN].each do |opcode|
+      Rojam::Opcode::RETURN, Rojam::Opcode::IRETURN, Rojam::Opcode::LRETURN, Rojam::Opcode::ARETURN,
+      Rojam::Opcode::ARRAYLENGTH
+    ].each do |opcode|
       instruction = @parser.parse_instruction([opcode])
       instruction.opcode.should == opcode
     end
@@ -235,11 +236,26 @@ describe Rojam::InstructionParser do
     instruction.var.should == 0x04
   end
 
-  it 'parses implicit ILOAD' do
+  it 'parses implicit LLOAD' do
     [Rojam::Opcode::LLOAD_0, Rojam::Opcode::LLOAD_1,
       Rojam::Opcode::LLOAD_2, Rojam::Opcode::LLOAD_3].each_with_index do |opcode, index|
       instruction = @parser.parse_instruction([opcode])
     instruction.opcode.should == Rojam::Opcode::LLOAD
+    instruction.var.should == index
+    end
+  end
+
+  it 'parses ALOAD' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::ALOAD, 0x04])
+    instruction.opcode.should == Rojam::Opcode::ALOAD
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit LLOAD' do
+    [Rojam::Opcode::ALOAD_0, Rojam::Opcode::ALOAD_1,
+      Rojam::Opcode::ALOAD_2, Rojam::Opcode::ALOAD_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::ALOAD
     instruction.var.should == index
     end
   end

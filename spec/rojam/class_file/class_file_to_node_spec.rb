@@ -73,7 +73,7 @@ describe Rojam::ClassFile do
       constructor.max_stack.should == 1
       constructor.max_locals.should == 1
       constructor.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 0),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
@@ -86,7 +86,7 @@ describe Rojam::ClassFile do
       getter.max_stack.should == 1
       getter.max_locals.should == 1
       getter.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::ALOAD_0),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 0),
         Rojam::FieldInsn.new(Rojam::Opcode::GETFIELD, "CommonClass", "text", "Ljava/lang/String;"),
         Rojam::Instruction.new(Rojam::Opcode::ARETURN)
       ]
@@ -113,7 +113,7 @@ describe Rojam::ClassFile do
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
       jump_label = Rojam::Label.new
-      jump_label.line = 20
+      jump_label.line = 65
       goto_label = Rojam::Label.new
       goto_label.line = 25
       second_jump_label = Rojam::Label.new
@@ -273,7 +273,7 @@ describe Rojam::ClassFile do
       method.name.should == 'array'
       method.desc.should == '()V'
       method.max_stack.should == 1
-      method.max_locals.should == 3
+      method.max_locals.should == 4
 
       method.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
@@ -282,6 +282,9 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::TypeInsn.new(Rojam::Opcode::ANEWARRAY, 'java/lang/Object'),
         Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 2),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::ARRAYLENGTH),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 3),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
