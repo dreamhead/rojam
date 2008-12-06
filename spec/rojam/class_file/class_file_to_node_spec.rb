@@ -267,9 +267,24 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::LRETURN)
       ]
     end
+
+    def compare_array(method)
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'array'
+      method.desc.should == '()V'
+      method.max_stack.should == 1
+      method.max_locals.should == 2
+
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::IntInsn.new(Rojam::Opcode::NEWARRAY, Rojam::ArrayType::T_INT),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(10).items
+      @node.methods.should have(11).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -280,6 +295,7 @@ describe Rojam::ClassFile do
       compare_arith_for_long(@node.methods[7])
       compare_return_for_int(@node.methods[8])
       compare_return_for_long(@node.methods[9])
+      compare_array(@node.methods[10])
     end
 
     it "creates node with attributes" do

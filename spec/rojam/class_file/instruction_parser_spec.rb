@@ -254,4 +254,10 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::NEW
     instruction.type.should == 'java/lang/String'
   end
+
+  it 'parses NEWARRAY' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::NEWARRAY, Rojam::ArrayType::T_INT])
+    instruction.opcode.should == Rojam::Opcode::NEWARRAY
+    instruction.operand.should == Rojam::ArrayType::T_INT
+  end
 end

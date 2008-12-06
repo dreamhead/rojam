@@ -105,7 +105,7 @@ module Rojam
       JumpInsn.new(bytes[0], @labels[current + offset])
     end
 
-    int_instructions(BIPUSH) do |bytes, current|
+    int_instructions(BIPUSH, NEWARRAY) do |bytes, current|
       IntInsn.new(bytes[0], bytes[1])
     end
 

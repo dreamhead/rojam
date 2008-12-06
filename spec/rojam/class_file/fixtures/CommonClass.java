@@ -57,4 +57,8 @@ public class CommonClass implements CommonInterface {
 	public long return_for_long() {
 		return 1L;
 	}
+
+	public void array() {
+		int[] int_array = new int[1];
+	}
 }
