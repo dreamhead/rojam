@@ -273,12 +273,15 @@ describe Rojam::ClassFile do
       method.name.should == 'array'
       method.desc.should == '()V'
       method.max_stack.should == 1
-      method.max_locals.should == 2
+      method.max_locals.should == 3
 
       method.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::IntInsn.new(Rojam::Opcode::NEWARRAY, Rojam::ArrayType::T_INT),
         Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::TypeInsn.new(Rojam::Opcode::ANEWARRAY, 'java/lang/Object'),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 2),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

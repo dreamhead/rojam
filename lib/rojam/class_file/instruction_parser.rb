@@ -137,7 +137,7 @@ module Rojam
       VarInsn.new(LLOAD, (bytes[0] - LLOAD_0))
     end
 
-    type_instructions(NEW) do |bytes, current|
+    type_instructions(NEW, ANEWARRAY) do |bytes, current|
       type = @pool.type_name(bytes[1..2].to_unsigned)
       TypeInsn.new(bytes[0], type)
     end

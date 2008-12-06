@@ -60,5 +60,6 @@ public class CommonClass implements CommonInterface {
 
 	public void array() {
 		int[] int_array = new int[1];
+		Object[] object_array = new Object[1];
 	}
 }

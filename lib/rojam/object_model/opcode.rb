@@ -64,6 +64,7 @@ module Rojam
     INVOKESPECIAL = 0xB7
     NEW           = 0xBB
     NEWARRAY      = 0xBC
+    ANEWARRAY     = 0xBD
   end
 
   module ArrayType

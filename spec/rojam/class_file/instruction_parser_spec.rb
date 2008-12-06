@@ -260,4 +260,15 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::NEWARRAY
     instruction.operand.should == Rojam::ArrayType::T_INT
   end
+
+  it 'parses ANEWARRAY' do
+    @pool.constants({
+        0x05 => Struct.new(:name_index).new(0x13),
+        0x13 => 'java/lang/Object',
+      })
+
+    instruction = @parser.parse_instruction([Rojam::Opcode::ANEWARRAY, 0x00, 0x05])
+    instruction.opcode.should == Rojam::Opcode::ANEWARRAY
+    instruction.type.should == 'java/lang/Object'
+  end
 end
