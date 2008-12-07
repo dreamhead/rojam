@@ -152,22 +152,24 @@ module Rojam
     end
 
     def create_case_table(bytes, current)
-      pairs_size = bytes[8..11].reverse.to_unsigned
-      case_current = 12
+      pairs_size = bytes[5..8].to_unsigned
+      case_current = 9
       case_table = {}
       pairs_size.times do
-        case_offset = bytes[(case_current + 1)..(case_current + 4)].to_unsigned
-        case_table[bytes[case_current]] = @labels[current + case_offset]
-        case_current += 5
+        case_value = bytes[case_current..(case_current + 3)].to_unsigned
+        case_offset = bytes[(case_current + 4)..(case_current + 7)].to_unsigned
+        case_table[case_value] = @labels[current + case_offset]
+        case_current += 8
       end
       case_table
     end
 
+    #TODO fix padding problem
     lookup_switch_instructions(LOOKUPSWITCH) do |bytes, current|
-      default_offset = bytes[4..7].reverse.to_unsigned
+      default_offset = bytes[1..4].to_unsigned
       case_table = create_case_table(bytes, current)
       insn = LookupSwitchInsn.new(bytes[0], @labels[current + default_offset], case_table)
-      [insn, 12 + case_table.size * 5]
+      [insn, 9 + case_table.size * 8]
     end
   end
 end
