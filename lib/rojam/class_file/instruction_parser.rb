@@ -83,7 +83,8 @@ module Rojam
       LADD, LSUB, LMUL, LDIV,
       DUP,
       RETURN, IRETURN, LRETURN, ARETURN,
-      ARRAYLENGTH
+      ARRAYLENGTH,
+      ATHROW
     ) do |bytes, current|
       Instruction.new(bytes[0])
     end

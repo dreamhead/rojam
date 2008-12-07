@@ -323,11 +323,15 @@ describe Rojam::ClassFile do
       method.desc.should == '()V'
       method.exceptions.should have(1).items
       method.exceptions[0].should == 'java/lang/Exception'
-      method.max_stack.should == 0
+      method.max_stack.should == 3
       method.max_locals.should == 1
 
       method.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, 'java/lang/Exception'),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::LdcInsn.new(Rojam::Opcode::LDC, 'exception'),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, 'java/lang/Exception', '<init>', '(Ljava/lang/String;)V'),
+        Rojam::Instruction.new(Rojam::Opcode::ATHROW)
       ]
     end
     

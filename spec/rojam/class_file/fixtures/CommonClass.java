@@ -69,5 +69,6 @@ public class CommonClass implements CommonInterface {
 	}
 
 	public void exception() throws Exception {
+		throw new Exception("exception");
 	}
 }

@@ -74,6 +74,7 @@ module Rojam
     NEWARRAY      = 0xBC
     ANEWARRAY     = 0xBD
     ARRAYLENGTH   = 0xBE
+    ATHROW        = 0xBF
   end
 
   module ArrayType

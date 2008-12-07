@@ -21,7 +21,7 @@ module Rojam
     :Jump   => [:label],
     :Ldc    => [:constant],
   }.each do |type, args|
-    module_eval <<-INSTRUCDTION
+    module_eval <<-INSTRUCTION
     class #{type}Insn < Instruction
       attr_accessor #{args.collect{|item| ":#{item}"}.join(',')}
 
@@ -34,6 +34,6 @@ module Rojam
         super(insn) && #{args.collect{|item| "@#{item} == insn.#{item}"}.join('&&')}
       end
     end
-    INSTRUCDTION
+    INSTRUCTION
   end
 end
