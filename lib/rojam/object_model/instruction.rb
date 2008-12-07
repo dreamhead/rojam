@@ -20,6 +20,7 @@ module Rojam
     :Iinc   => [:var, :incr],
     :Jump   => [:label],
     :Ldc    => [:constant],
+    :LookupSwitch => [:default_label, :case_table]
   }.each do |type, args|
     module_eval <<-INSTRUCTION
     class #{type}Insn < Instruction

@@ -14,7 +14,8 @@ module Rojam
         :field        => 3,
         :int          => 2,
         :iinc         => 3,
-        :type         => 3
+        :type         => 3,
+        :lookup_switch  => -1
       }.each do |type, size|
         class_eval %Q{
           def #{type}_instructions(*opcode, &block)
@@ -53,9 +54,9 @@ module Rojam
       current = 0
       
       while (current < bytes.size)
-        instruction = parse_instruction(bytes[current..-1], current)
+        instruction, consumed_size = parse_instruction(bytes[current..-1], current)
         node.instructions << instruction
-        current += InstructionParser.consumed_byte_size(bytes[current])
+        current += (consumed_size || InstructionParser.consumed_byte_size(bytes[current]))
       end
     end
 
@@ -148,6 +149,25 @@ module Rojam
     type_instructions(NEW, ANEWARRAY) do |bytes, current|
       type = @pool.type_name(bytes[1..2].to_unsigned)
       TypeInsn.new(bytes[0], type)
+    end
+
+    def create_case_table(bytes, current)
+      pairs_size = bytes[8..11].reverse.to_unsigned
+      case_current = 12
+      case_table = {}
+      pairs_size.times do
+        case_offset = bytes[(case_current + 1)..(case_current + 4)].to_unsigned
+        case_table[bytes[case_current]] = @labels[current + case_offset]
+        case_current += 5
+      end
+      case_table
+    end
+
+    lookup_switch_instructions(LOOKUPSWITCH) do |bytes, current|
+      default_offset = bytes[4..7].reverse.to_unsigned
+      case_table = create_case_table(bytes, current)
+      insn = LookupSwitchInsn.new(bytes[0], @labels[current + default_offset], case_table)
+      [insn, 12 + case_table.size * 5]
     end
   end
 end

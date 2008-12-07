@@ -71,4 +71,14 @@ public class CommonClass implements CommonInterface {
 	public void exception() throws Exception {
 		throw new Exception("exception");
 	}
+
+	public void switch_case() {
+		int a = 1;
+		switch(a) {
+		case 1:
+			break;
+		default:
+			break;
+		}
+	}
 }

@@ -117,30 +117,22 @@ describe Rojam::ClassFile do
       conditional.exceptions.should be_empty
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
-      jump_label = Rojam::Label.new
-      jump_label.line = 65
-      goto_label = Rojam::Label.new
-      goto_label.line = 25
-      second_jump_label = Rojam::Label.new
-      second_jump_label.line = 23
-      second_goto_label = Rojam::Label.new
-      second_goto_label.line = 25
 
       conditional.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_M1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, jump_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(65)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, goto_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(25)),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, second_jump_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(23)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_3),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, second_goto_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(25)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_4),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
@@ -155,18 +147,14 @@ describe Rojam::ClassFile do
       loop.max_stack.should == 2
       loop.max_locals.should == 2
 
-      jump_label = Rojam::Label.new
-      jump_label.line = 30
-      goto_label = Rojam::Label.new
-
       loop.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_0),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::IntInsn.new(Rojam::Opcode::BIPUSH, 10),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, jump_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, Rojam::Label.new(30)),
         Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, goto_label),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
@@ -334,9 +322,31 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::ATHROW)
       ]
     end
+
+    def compare_switch_case method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'switch_case'
+      method.desc.should == '()V'
+      method.exceptions.should be_empty
+      method.max_stack.should == 1
+      method.max_locals.should == 2
+
+      case_table = {
+        1 => Rojam::Label.new(79)
+      }
+
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
+        Rojam::LookupSwitchInsn.new(Rojam::Opcode::LOOKUPSWITCH, Rojam::Label.new(83), case_table),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(83)),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(12).items
+      @node.methods.should have(13).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -349,6 +359,7 @@ describe Rojam::ClassFile do
       compare_return_for_long(@node.methods[9])
       compare_array(@node.methods[10])
       compare_exception(@node.methods[11])
+      compare_switch_case(@node.methods[12])
     end
 
     it "creates node with attributes" do

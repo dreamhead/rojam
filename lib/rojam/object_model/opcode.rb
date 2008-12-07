@@ -62,6 +62,7 @@ module Rojam
     IF_ICMPNE     = 0xA0
     IF_ICMPGE     = 0xA2
     GOTO          = 0xA7
+    LOOKUPSWITCH  = 0xAB
     IRETURN       = 0xAC
     LRETURN       = 0xAD
     ARETURN       = 0xB0

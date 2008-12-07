@@ -290,4 +290,16 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::ANEWARRAY
     instruction.type.should == 'java/lang/Object'
   end
+
+  it 'parses LOOKUPSWITCH' do
+    @labels[20].line = 38
+    @labels[23].line = 51
+    
+    instruction, bytes_size = @parser.parse_instruction([Rojam::Opcode::LOOKUPSWITCH, 0, 0, 0, 20, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 17], 3)
+    instruction.opcode.should == Rojam::Opcode::LOOKUPSWITCH
+    bytes_size.should == 17
+    instruction.default_label.line.should == 51
+    instruction.case_table.should have(1).item
+    instruction.case_table[1].line.should == 38
+  end
 end
