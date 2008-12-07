@@ -53,19 +53,26 @@ module Rojam
       end
     end
     
-    attribute('LineNumberTable') do |infoes, node|
-      attr = attribute_from_bytes(infoes, LineNumberTableAttribute)
+    attribute('LineNumberTable') do |bytes, node|
+      attr = attribute_from_bytes(bytes, LineNumberTableAttribute)
       attr.table.each do |info|
         @labels[info.start_pc].line = info.line_number
       end
     end
 
-    attribute('ConstantValue') do |infoes, node|
-      attr = attribute_from_bytes(infoes, ConstantValueAttribute)
+    attribute('ConstantValue') do |bytes, node|
+      attr = attribute_from_bytes(bytes, ConstantValueAttribute)
       node.value = @pool.value(attr.constantvalue_index)
     end
 
-    attribute('StackMapTable') do |infoes, node|
+    attribute('Exceptions') do |bytes, node|
+      attr = attribute_from_bytes(bytes, ExceptionAttribute)
+      attr.table.each do |index|
+        node.exceptions << @pool.type_name(index)
+      end
+    end
+
+    attribute('StackMapTable') do |bytes, node|
     end
 
     def attribute_from_bytes(bytes, klass)

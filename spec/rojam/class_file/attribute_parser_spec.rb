@@ -45,6 +45,16 @@ describe Rojam::AttributeParser do
       @node.max_stack.should == 0x01
       @node.max_locals.should == 0x01
     end
+
+    it 'parses Exceptions' do
+      @pool.constants({
+          0x02 => 'java/lang/Exception',
+          0x28 => Struct.new(:name_index).new(0x02)
+        })
+      @parser.parse_attribute('Exceptions', [0x00, 0x01, 0x00, 0x28], @node)
+      @node.exceptions.should have(1).items
+      @node.exceptions[0].should == 'java/lang/Exception'
+    end
   end
 
   describe 'Field Attribute' do

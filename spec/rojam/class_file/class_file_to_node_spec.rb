@@ -70,6 +70,7 @@ describe Rojam::ClassFile do
       constructor.access.should == Rojam::Java::Access::ACC_PUBLIC
       constructor.name.should == '<init>'
       constructor.desc.should == '()V'
+      constructor.exceptions.should be_empty
       constructor.max_stack.should == 1
       constructor.max_locals.should == 1
       constructor.instructions.should == [
@@ -83,6 +84,7 @@ describe Rojam::ClassFile do
       getter.access.should == Rojam::Java::Access::ACC_PUBLIC
       getter.name.should == 'getText'
       getter.desc.should == '()Ljava/lang/String;'
+      getter.exceptions.should be_empty
       getter.max_stack.should == 1
       getter.max_locals.should == 1
       getter.instructions.should == [
@@ -96,6 +98,7 @@ describe Rojam::ClassFile do
       assignment.access.should == Rojam::Java::Access::ACC_PUBLIC
       assignment.name.should == 'assignment'
       assignment.desc.should == '()V'
+      assignment.exceptions.should be_empty
       assignment.max_stack.should == 1
       assignment.max_locals.should == 3
       assignment.instructions.should == [
@@ -108,8 +111,10 @@ describe Rojam::ClassFile do
     end
 
     def compare_conditional conditional
+      conditional.access.should == Rojam::Java::Access::ACC_PUBLIC
       conditional.name.should == 'conditional'
       conditional.desc.should == '()V'
+      conditional.exceptions.should be_empty
       conditional.max_stack.should == 2
       conditional.max_locals.should == 2
       jump_label = Rojam::Label.new
@@ -146,6 +151,7 @@ describe Rojam::ClassFile do
       loop.access.should == Rojam::Java::Access::ACC_PUBLIC
       loop.name.should == 'loop'
       loop.desc.should == '()V'
+      loop.exceptions.should be_empty
       loop.max_stack.should == 2
       loop.max_locals.should == 2
 
@@ -169,6 +175,7 @@ describe Rojam::ClassFile do
       arith.access.should == Rojam::Java::Access::ACC_PUBLIC
       arith.name.should == 'arith'
       arith.desc.should == '()V'
+      arith.exceptions.should be_empty
       arith.max_stack.should == 2
       arith.max_locals.should == 6
 
@@ -199,6 +206,7 @@ describe Rojam::ClassFile do
       object.access.should == Rojam::Java::Access::ACC_PUBLIC
       object.name.should == 'object'
       object.desc.should == '()V'
+      object.exceptions.should be_empty
       object.max_stack.should == 2
       object.max_locals.should == 3
       object.instructions.should == [
@@ -216,6 +224,7 @@ describe Rojam::ClassFile do
       arith.access.should == Rojam::Java::Access::ACC_PUBLIC
       arith.name.should == 'arith_for_long'
       arith.desc.should == '()V'
+      arith.exceptions.should be_empty
       arith.max_stack.should == 4
       arith.max_locals.should == 11
 
@@ -246,6 +255,7 @@ describe Rojam::ClassFile do
       method.access.should == Rojam::Java::Access::ACC_PUBLIC
       method.name.should == 'return_for_int'
       method.desc.should == '()I'
+      method.exceptions.should be_empty
       method.max_stack.should == 1
       method.max_locals.should == 1
 
@@ -259,6 +269,7 @@ describe Rojam::ClassFile do
       method.access.should == Rojam::Java::Access::ACC_PUBLIC
       method.name.should == 'return_for_long'
       method.desc.should == '()J'
+      method.exceptions.should be_empty
       method.max_stack.should == 2
       method.max_locals.should == 1
 
@@ -272,6 +283,7 @@ describe Rojam::ClassFile do
       method.access.should == Rojam::Java::Access::ACC_PUBLIC
       method.name.should == 'array'
       method.desc.should == '()V'
+      method.exceptions.should be_empty
       method.max_stack.should == 3
       method.max_locals.should == 6
 
@@ -304,9 +316,23 @@ describe Rojam::ClassFile do
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
+
+    def compare_exception method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'exception'
+      method.desc.should == '()V'
+      method.exceptions.should have(1).items
+      method.exceptions[0].should == 'java/lang/Exception'
+      method.max_stack.should == 0
+      method.max_locals.should == 1
+
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
     
     it "creates node with methods" do
-      @node.methods.should have(11).items
+      @node.methods.should have(12).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -318,6 +344,7 @@ describe Rojam::ClassFile do
       compare_return_for_int(@node.methods[8])
       compare_return_for_long(@node.methods[9])
       compare_array(@node.methods[10])
+      compare_exception(@node.methods[11])
     end
 
     it "creates node with attributes" do

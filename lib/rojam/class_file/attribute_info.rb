@@ -8,6 +8,15 @@ module Rojam
     size :type => :u2
     values :type => :u1
   end
+
+  RBits::Type.array(:exception_index_table) do
+    size :type => :u2
+    values :type => :u2
+  end
+
+  class ExceptionAttribute < RBits::Base
+    exception_index_table :table
+  end
   
   class CodeAttribute < RBits::Base
     u2 :max_stack

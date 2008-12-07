@@ -67,4 +67,7 @@ public class CommonClass implements CommonInterface {
 		object_array[0] = null;
 		Object object_element = object_array[0];
 	}
+
+	public void exception() throws Exception {
+	}
 }
