@@ -3,9 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Rojam::ClassFile do
   describe 'read' do
     before(:all) do
-      @java_class = Rojam::ClassFile.new
       @class_io = File.new(File.dirname(__FILE__) + "/fixtures/Blank.class", "rb")
-      @java_class.read(@class_io)
+      @java_class = Rojam::ClassFile.read(@class_io)
     end
     
     after(:all) do

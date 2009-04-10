@@ -40,7 +40,7 @@ module Rojam
     end
     
     attribute('Code') do |infoes, node|
-      code_attr = attribute_from_bytes(infoes, CodeAttribute)
+      code_attr = CodeAttribute.read_bytes(infoes)
       
       node.max_stack = code_attr.max_stack
       node.max_locals = code_attr.max_locals
@@ -54,29 +54,25 @@ module Rojam
     end
     
     attribute('LineNumberTable') do |bytes, node|
-      attr = attribute_from_bytes(bytes, LineNumberTableAttribute)
+      attr = LineNumberTableAttribute.read_bytes(bytes)
       attr.table.each do |info|
         @labels[info.start_pc].line = info.line_number
       end
     end
 
     attribute('ConstantValue') do |bytes, node|
-      attr = attribute_from_bytes(bytes, ConstantValueAttribute)
+      attr = ConstantValueAttribute.read_bytes(bytes)
       node.value = @pool.value(attr.constantvalue_index)
     end
 
     attribute('Exceptions') do |bytes, node|
-      attr = attribute_from_bytes(bytes, ExceptionAttribute)
+      attr = ExceptionAttribute.read_bytes(bytes)
       attr.table.each do |index|
         node.exceptions << @pool.type_name(index)
       end
     end
 
     attribute('StackMapTable') do |bytes, node|
-    end
-
-    def attribute_from_bytes(bytes, klass)
-      klass.new { |attr| attr.read_bytes(bytes) }
     end
   end
 end

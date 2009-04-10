@@ -14,11 +14,15 @@ module Rojam
     values :type => :u2
   end
 
-  class ExceptionAttribute < RBits::Base
+  class ExceptionAttribute
+    include RBits
+    
     exception_index_table :table
   end
   
-  class CodeAttribute < RBits::Base
+  class CodeAttribute
+    include RBits
+    
     u2 :max_stack
     u2 :max_locals
     code :code
@@ -36,11 +40,15 @@ module Rojam
     values :type => :line_number_info
   end
   
-  class LineNumberTableAttribute < RBits::Base
+  class LineNumberTableAttribute
+    include RBits
+    
     line_number_table :table
   end
 
-  class ConstantValueAttribute < RBits::Base
+  class ConstantValueAttribute
+    include RBits
+    
     u2 :constantvalue_index
   end
 end

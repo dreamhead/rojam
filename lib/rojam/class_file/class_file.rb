@@ -1,5 +1,7 @@
 module Rojam
-  class ClassFile < RBits::Base
+  class ClassFile
+    include RBits
+    
     u4 :magic, :const => 0xCAFEBABE
     u2 :minor_version
     u2 :major_version

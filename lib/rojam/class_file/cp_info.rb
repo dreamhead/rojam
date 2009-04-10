@@ -1,3 +1,5 @@
+require 'rbits/extension/slots_in_array'
+
 module Rojam
   RBits::Type.string(:constant_utf8) do
     size :type => :u2
