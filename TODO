@@ -4,14 +4,6 @@ Rojam Release Plan
 * 0.3 Class Builder
 * 0.4 Generator Adapter
 
-RBits
-* Unsigned
-** endian
-
-* Byte, Signed
-
-* Enum
-
 Rojam
 * Float <=> Int / Double <=> Long
 
@@ -68,6 +60,3 @@ Developement
 Document
 * Rojam Hacking Guide
 * User Guide
-
-Release
-* Create GEM package

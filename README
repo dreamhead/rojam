@@ -1,7 +1,3 @@
 == rojam
 
 Rojam is a Java bytecode manipulation framework in Ruby.
-
-The project actually contains two parts:
-* RBits: provides easy way to access binary in Ruby.
-* Rojam: actual Java bytecode manipulation framework.
