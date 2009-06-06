@@ -28,7 +28,7 @@ class CommonClass extends CommonInterface {
 }
 
 It's time to compile.
-    javac CommandClass.java
+    javac CommonClass.java
 
 Now, we have a brand new class file: CommonClass.class. We could use javap to see what is in this file.
     javap -c CommondClass
