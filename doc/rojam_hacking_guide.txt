@@ -115,7 +115,7 @@ Since we have new method, we are going to use it.
     compare_return_for_int(@node.methods[8])
   end
 
-It's time to enjoy! Run rake. If you are lucky enough, all tests should be passed. Otherwise, maybe something are wrong. Try your best to fix it. :)
+It's time to enjoy! Run rake. If you are lucky enough, all tests should be passed. Otherwise, maybe something goes wrong. Try your best to fix it. :)
 
 Commit Code
 You should use rake:commit to commit your change to repository. It will
