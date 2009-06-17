@@ -3,6 +3,7 @@ public class CommonClass implements CommonInterface {
 	private static final int INT = 5;
 	private static final long LONG = 10L;
 	private String text;
+	private static final float FLOAT = 3.5F;
 
 	public String getText() {
 		return this.text;

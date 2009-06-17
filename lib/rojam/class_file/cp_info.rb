@@ -56,6 +56,7 @@ module Rojam
   end
 
   CONSTANT_INTEGER_TAG  = 3
+  CONSTANT_FLOAT_TAG    = 4
   CONSTANT_LONG_TAG     = 5
   
   RBits::Type.switch(:cp_info) do
@@ -63,7 +64,7 @@ module Rojam
     value :info, :types => {
       1   => :constant_utf8,
       CONSTANT_INTEGER_TAG  => :constant_integer,
-      4   => :constant_float,
+      CONSTANT_FLOAT_TAG   => :constant_float,
       CONSTANT_LONG_TAG     => :constant_long,
       6   => :constant_double,
       7   => :constant_class,

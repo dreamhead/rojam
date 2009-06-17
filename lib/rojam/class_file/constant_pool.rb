@@ -35,6 +35,20 @@ module Rojam
       value = constant_value(index)
       [value.high_bytes, value.low_bytes].to_unsigned if value
     end
+    
+    # follow JVM spec
+    # TODO: positive infinity, negative infinity and NaN
+    def int_bits_to_float(bits)
+        s = bits >>31 == 0 ? 1 : -1
+        e = (bits >> 23) & 0xff
+        m = (e == 0) ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000
+        s * m * 2 ** (e - 150)
+    end
+
+    def float_value index
+      value = constant_value(index)
+      int_bits_to_float value.bytes if value 
+    end
 
     def value index
       info = constant_info(index)
@@ -43,6 +57,8 @@ module Rojam
         int_value(index)
       when CONSTANT_LONG_TAG
         long_value(index)
+      when CONSTANT_FLOAT_TAG
+        float_value(index)
       else
         string_value(index)
       end
