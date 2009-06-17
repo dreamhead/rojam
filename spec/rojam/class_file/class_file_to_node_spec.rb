@@ -126,21 +126,24 @@ describe Rojam::ClassFile do
     def compare_arraylist arraylist
       arraylist.access.should == Rojam::Java::Access::ACC_PUBLIC
       arraylist.name.should == 'arraylist'
-      arraylist.desc.should == '()V'
+      arraylist.desc.should == '()Ljava/util/ArrayList;'
+      arraylist.signature.should == "()Ljava/util/ArrayList<Ljava/lang/Integer;>;"
       arraylist.exceptions.should be_empty
       arraylist.max_stack.should == 2
       arraylist.max_locals.should == 2
+      
       arraylist.instructions.should == [
         Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/util/ArrayList"),
         Rojam::Instruction.new(Rojam::Opcode::DUP),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/util/ArrayList","<init>","()V"),
-        Rojam::VarInsn.new(Rojam::Opcode::ASTORE,1),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESTATIC, "java/lang/Integer","valueOf","(I)Ljava/lang/Integer;"),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKEVIRTUAL, "java/util/ArrayList","add","(Ljava/lang/Object;)Z"),
         Rojam::Instruction.new(Rojam::Opcode::POP),
-        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
+        Rojam::Instruction.new(Rojam::Opcode::ARETURN)
       ]
     end
 

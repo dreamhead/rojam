@@ -49,10 +49,16 @@ module Rojam
       value = constant_value(index)
       int_bits_to_float value.bytes if value 
     end
+    
+    def utf_value(index)
+      value = constant_value(index)
+    end
 
     def value index
       info = constant_info(index)
       case info.tag
+      when CONSTANT_UTF8_TAG
+        utf_value(index)
       when CONSTANT_INTEGER_TAG
         int_value(index)
       when CONSTANT_LONG_TAG

@@ -51,4 +51,10 @@ module Rojam
     
     u2 :constantvalue_index
   end
+  
+  class SignatureAttribute
+    include RBits
+    
+    u2 :signature_index;
+  end
 end

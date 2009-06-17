@@ -74,5 +74,10 @@ module Rojam
 
     attribute('StackMapTable') do |bytes, node|
     end
+    
+    attribute('Signature') do |bytes, node|
+      attr = SignatureAttribute.read_bytes(bytes)
+      node.signature = @pool.value(attr.signature_index)
+    end
   end
 end

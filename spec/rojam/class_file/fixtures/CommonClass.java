@@ -85,8 +85,9 @@ public class CommonClass implements CommonInterface {
 		}
 	}
 
-	public void arraylist(){
-		ArrayList arrayList = new ArrayList();
-		arrayList.add(1);
+	public ArrayList<Integer> arraylist(){
+		ArrayList<Integer> thearrayList = new ArrayList<Integer>();
+		thearrayList.add(1);
+		return thearrayList;
 	}
 }
