@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 public class CommonClass implements CommonInterface {
 	private static final String CONSTANT = "constant";
 	private static final int INT = 5;
 	private static final long LONG = 10L;
 	private String text;
 	private static final float FLOAT = 3.5F;
-
+	
 	public String getText() {
 		return this.text;
 	}
@@ -12,7 +13,9 @@ public class CommonClass implements CommonInterface {
 	public void assignment() {
 		int i = 1;
 		int j = i;
-		float f = 8.5f;
+		float f = 8f;
+		ArrayList arrayList = new ArrayList();
+		arrayList.add(1);
 	}
 
 	public void conditional() {

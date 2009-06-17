@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-
-
 describe Rojam::ClassFile do
   describe 'to_node' do
     
@@ -13,7 +11,7 @@ describe Rojam::ClassFile do
       # Everytime we add a line to the Java code, the label value in the JumpInsn which locates in the method below the line added will be changed
       # so we add a variable here presenting how many lines are added above all the methods, note that when you add a line to CommanClass.java
       # above all the methods, you should add the variable by 1
-      @all_methods_off_set = 0
+      @all_methods_off_set = 3
     end
     
     it "creates node with version" do
@@ -112,15 +110,24 @@ describe Rojam::ClassFile do
       assignment.name.should == 'assignment'
       assignment.desc.should == '()V'
       assignment.exceptions.should be_empty
-      assignment.max_stack.should == 1
-      assignment.max_locals.should == 4
+      assignment.max_stack.should == 2
+      assignment.max_locals.should == 5
       assignment.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
-        Rojam::LdcInsn.new(Rojam::Opcode::LDC, 8.5),
+        Rojam::LdcInsn.new(Rojam::Opcode::LDC, 8),
         Rojam::VarInsn.new(Rojam::Opcode::FSTORE,3),
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/util/ArrayList"),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/util/ArrayList","<init>","()V"),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE,4),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 4),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESTATIC, "java/lang/Integer","valueOf","(I)Ljava/lang/Integer;"),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKEVIRTUAL, "java/util/ArrayList","add","(Ljava/lang/Object;)Z"),
+        Rojam::Instruction.new(Rojam::Opcode::POP),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

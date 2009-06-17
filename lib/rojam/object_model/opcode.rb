@@ -54,6 +54,7 @@ module Rojam
     ASTORE_3      = 0x4E
     IASTORE       = 0x4F
     AASTORE       = 0x53
+    POP           = 0x57
     DUP           = 0x59
     IADD          = 0x60
     LADD          = 0x61
@@ -76,6 +77,7 @@ module Rojam
     GETFIELD      = 0xB4
     INVOKEVIRTUAL = 0xB6
     INVOKESPECIAL = 0xB7
+    INVOKESTATIC  = 0xB8
     NEW           = 0xBB
     NEWARRAY      = 0xBC
     ANEWARRAY     = 0xBD

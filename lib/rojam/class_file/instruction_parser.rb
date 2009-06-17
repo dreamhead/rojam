@@ -67,7 +67,7 @@ module Rojam
     end
     
     private
-    method_instructions(INVOKESPECIAL, INVOKEVIRTUAL) do |bytes, current|
+    method_instructions(INVOKESPECIAL, INVOKEVIRTUAL, INVOKESTATIC) do |bytes, current|
       owner_index = bytes[1..2].to_unsigned
       owner_name = @pool.method_owner_name(owner_index)
       name, desc = @pool.name_and_desc(owner_index)
@@ -82,7 +82,7 @@ module Rojam
       AALOAD, AASTORE,
       IADD, ISUB, IMUL, IDIV,
       LADD, LSUB, LMUL, LDIV,
-      DUP,
+      POP, DUP,
       RETURN, IRETURN, LRETURN, ARETURN,
       ARRAYLENGTH,
       ATHROW
