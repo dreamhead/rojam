@@ -1,12 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+
+
 describe Rojam::ClassFile do
   describe 'to_node' do
+    
     before(:all) do
       File.open(File.dirname(__FILE__) + "/fixtures/CommonClass.class", "rb") do |f|
         java_class = Rojam::ClassFile.read(f)
         @node = java_class.to_node
       end
+      # Everytime we add a line to the Java code, the label value in the JumpInsn which locates in the method below the line added will be changed
+      # so we add a variable here presenting how many lines are added above all the methods, note that when you add a line to CommanClass.java
+      # above all the methods, you should add the variable by 1
+      @all_methods_off_set = 0
     end
     
     it "creates node with version" do
@@ -131,16 +138,16 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(67)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(67 + @all_methods_off_set)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27)),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27 + @all_methods_off_set)),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(25)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(25 + @all_methods_off_set)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_3),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27)),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27 + @all_methods_off_set)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_4),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
@@ -160,7 +167,7 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::IntInsn.new(Rojam::Opcode::BIPUSH, 10),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, Rojam::Label.new(32)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, Rojam::Label.new(32 + @all_methods_off_set)),
         Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1),
         Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
@@ -340,15 +347,15 @@ describe Rojam::ClassFile do
       method.max_locals.should == 2
 
       case_table = {
-        1 => Rojam::Label.new(81)
+        1 => Rojam::Label.new(81 + @all_methods_off_set)
       }
 
       method.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
-        Rojam::LookupSwitchInsn.new(Rojam::Opcode::LOOKUPSWITCH, Rojam::Label.new(85), case_table),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(85)),
+        Rojam::LookupSwitchInsn.new(Rojam::Opcode::LOOKUPSWITCH, Rojam::Label.new(85 + @all_methods_off_set), case_table),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(85 + @all_methods_off_set)),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
