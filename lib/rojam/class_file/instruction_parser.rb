@@ -118,7 +118,7 @@ module Rojam
       IincInsn.new(bytes[0], bytes[1], bytes[2])
     end
 
-    var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE, ALOAD) do |bytes, current|
+    var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE, ALOAD, FSTORE) do |bytes, current|
       VarInsn.new(bytes[0], bytes[1])
     end
 
@@ -128,6 +128,10 @@ module Rojam
 
     implicit_var_instructions(LSTORE_0, LSTORE_1, LSTORE_2, LSTORE_3) do |bytes, current|
       VarInsn.new(LSTORE, (bytes[0] - LSTORE_0))
+    end
+    
+    implicit_var_instructions(FSTORE_0, FSTORE_1, FSTORE_2, FSTORE_3) do |bytes, current|
+      VarInsn.new(FSTORE, (bytes[0] - FSTORE_0))
     end
 
     implicit_var_instructions(ASTORE_0, ASTORE_1, ASTORE_2, ASTORE_3) do |bytes, current|

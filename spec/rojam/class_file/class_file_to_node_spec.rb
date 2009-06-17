@@ -106,12 +106,14 @@ describe Rojam::ClassFile do
       assignment.desc.should == '()V'
       assignment.exceptions.should be_empty
       assignment.max_stack.should == 1
-      assignment.max_locals.should == 3
+      assignment.max_locals.should == 4
       assignment.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
+        Rojam::LdcInsn.new(Rojam::Opcode::LDC, 8.5),
+        Rojam::VarInsn.new(Rojam::Opcode::FSTORE,3),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
@@ -129,16 +131,16 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(66)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(67)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(26)),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27)),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_2),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(24)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPNE, Rojam::Label.new(25)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_3),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(26)),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(27)),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_4),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
@@ -158,7 +160,7 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::IntInsn.new(Rojam::Opcode::BIPUSH, 10),
-        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, Rojam::Label.new(31)),
+        Rojam::JumpInsn.new(Rojam::Opcode::IF_ICMPGE, Rojam::Label.new(32)),
         Rojam::IincInsn.new(Rojam::Opcode::IINC, 1, 1),
         Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
@@ -338,15 +340,15 @@ describe Rojam::ClassFile do
       method.max_locals.should == 2
 
       case_table = {
-        1 => Rojam::Label.new(80)
+        1 => Rojam::Label.new(81)
       }
 
       method.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
-        Rojam::LookupSwitchInsn.new(Rojam::Opcode::LOOKUPSWITCH, Rojam::Label.new(84), case_table),
-        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(84)),
+        Rojam::LookupSwitchInsn.new(Rojam::Opcode::LOOKUPSWITCH, Rojam::Label.new(85), case_table),
+        Rojam::JumpInsn.new(Rojam::Opcode::GOTO, Rojam::Label.new(85)),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

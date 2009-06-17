@@ -34,6 +34,7 @@ module Rojam
     AALOAD        = 0x32
     ISTORE        = 0x36
     LSTORE        = 0x37
+    FSTORE        = 0x38
     ASTORE        = 0x3A
     ISTORE_0      = 0x3B
     ISTORE_1      = 0x3C
@@ -43,6 +44,10 @@ module Rojam
     LSTORE_1      = 0x40
     LSTORE_2      = 0x41
     LSTORE_3      = 0x42
+    FSTORE_0      = 0x43
+    FSTORE_1      = 0x44
+    FSTORE_2      = 0x45
+    FSTORE_3      = 0X46
     ASTORE_0      = 0x4B
     ASTORE_1      = 0x4C
     ASTORE_2      = 0x4D
