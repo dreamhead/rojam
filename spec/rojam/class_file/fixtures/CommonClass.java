@@ -14,10 +14,8 @@ public class CommonClass implements CommonInterface {
 		int i = 1;
 		int j = i;
 		float f = 8f;
-		ArrayList arrayList = new ArrayList();
-		arrayList.add(1);
 	}
-
+	
 	public void conditional() {
 		int i = -1;
 		if (i == 1) {
@@ -85,5 +83,10 @@ public class CommonClass implements CommonInterface {
 		default:
 			break;
 		}
+	}
+
+	public void arraylist(){
+		ArrayList arrayList = new ArrayList();
+		arrayList.add(1);
 	}
 }

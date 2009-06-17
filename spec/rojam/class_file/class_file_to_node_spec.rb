@@ -11,7 +11,7 @@ describe Rojam::ClassFile do
       # Everytime we add a line to the Java code, the label value in the JumpInsn which locates in the method below the line added will be changed
       # so we add a variable here presenting how many lines are added above all the methods, note that when you add a line to CommanClass.java
       # above all the methods, you should add the variable by 1
-      @all_methods_off_set = 3
+      @all_methods_off_set = 1
     end
     
     it "creates node with version" do
@@ -110,8 +110,8 @@ describe Rojam::ClassFile do
       assignment.name.should == 'assignment'
       assignment.desc.should == '()V'
       assignment.exceptions.should be_empty
-      assignment.max_stack.should == 2
-      assignment.max_locals.should == 5
+      assignment.max_stack.should == 1
+      assignment.max_locals.should == 4
       assignment.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
@@ -119,11 +119,23 @@ describe Rojam::ClassFile do
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
         Rojam::LdcInsn.new(Rojam::Opcode::LDC, 8),
         Rojam::VarInsn.new(Rojam::Opcode::FSTORE,3),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
+    
+    def compare_arraylist arraylist
+      arraylist.access.should == Rojam::Java::Access::ACC_PUBLIC
+      arraylist.name.should == 'arraylist'
+      arraylist.desc.should == '()V'
+      arraylist.exceptions.should be_empty
+      arraylist.max_stack.should == 2
+      arraylist.max_locals.should == 2
+      arraylist.instructions.should == [
         Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/util/ArrayList"),
         Rojam::Instruction.new(Rojam::Opcode::DUP),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/util/ArrayList","<init>","()V"),
-        Rojam::VarInsn.new(Rojam::Opcode::ASTORE,4),
-        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 4),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE,1),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESTATIC, "java/lang/Integer","valueOf","(I)Ljava/lang/Integer;"),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKEVIRTUAL, "java/util/ArrayList","add","(Ljava/lang/Object;)Z"),
@@ -368,7 +380,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with methods" do
-      @node.methods.should have(13).items
+      @node.methods.should have(14).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -382,6 +394,7 @@ describe Rojam::ClassFile do
       compare_array(@node.methods[10])
       compare_exception(@node.methods[11])
       compare_switch_case(@node.methods[12])
+      compare_arraylist(@node.methods[13])
     end
 
     it "creates node with attributes" do
