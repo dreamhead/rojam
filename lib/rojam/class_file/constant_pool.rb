@@ -38,6 +38,7 @@ module Rojam
     
     # follow JVM spec
     # TODO: positive infinity, negative infinity and NaN
+    # TODO: it cannot parse 8.9f now, should be fixed
     def int_bits_to_float(bits)
         s = bits >>31 == 0 ? 1 : -1
         e = (bits >> 23) & 0xff
