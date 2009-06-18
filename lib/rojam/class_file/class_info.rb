@@ -42,4 +42,11 @@ module Rojam
     size :type => :u2
     values :type => :method_info
   end
+  
+  RBits::Type.struct(:classes) do
+    u2  :inner_class_info_index
+    u2  :outer_class_info_index
+    u2  :inner_name_index
+    u2  :inner_class_access_flags
+  end
 end

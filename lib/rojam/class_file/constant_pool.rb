@@ -55,6 +55,11 @@ module Rojam
       constant_value(index)
     end
 
+    def class_value(index)
+      cp_value = constant_value(index)
+      constant_value(cp_value.name_index) if cp_value
+    end
+    
     def value index
       info = constant_info(index)
       case info.tag
@@ -69,6 +74,8 @@ module Rojam
       when CONSTANT_METHODREF_TAG
         # To be implemented
         puts "methodref-tag"
+      when CONSTANT_CLASS_TAG
+        class_value(index)
       else
         string_value(index)
       end

@@ -101,4 +101,8 @@ public class CommonClass implements CommonInterface {
 		Integer one = new Integer(1);
 		return one instanceof Integer;
 	}
+	
+	class TheInnerClass{
+		
+	}
 }

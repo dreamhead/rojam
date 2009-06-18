@@ -79,5 +79,12 @@ module Rojam
       attr = SignatureAttribute.read_bytes(bytes)
       node.signature = @pool.value(attr.signature_index)
     end
+    
+    attribute('InnerClasses') do |bytes, node|
+      attr = InnerClassesAttribute.read_bytes(bytes)
+      attr.table.each do |classinfo|
+        node.inner_classes << @pool.value(classinfo.inner_class_info_index)
+      end
+    end
   end
 end

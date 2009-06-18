@@ -57,4 +57,15 @@ module Rojam
     
     u2 :signature_index;
   end
+  
+  RBits::Type.array(:classes_table) do
+    size :type => :u2
+    values :type => :classes
+  end
+  
+  class InnerClassesAttribute
+    include RBits
+    
+    classes_table :table
+  end
 end

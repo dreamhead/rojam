@@ -36,6 +36,11 @@ describe Rojam::ClassFile do
       @node.interfaces[0].should == 'CommonInterface'
     end
     
+    it "creates node with inner classes" do
+      @node.inner_classes.should have(1).items
+      @node.inner_classes[0].should == "CommonClass$TheInnerClass"
+    end
+    
     it "creates node with fields" do
       @node.fields.should have(6).items
       string_constant_field = @node.fields[0]
