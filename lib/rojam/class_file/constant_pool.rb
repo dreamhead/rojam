@@ -52,7 +52,7 @@ module Rojam
     end
     
     def utf_value(index)
-      value = constant_value(index)
+      constant_value(index)
     end
 
     def value index
