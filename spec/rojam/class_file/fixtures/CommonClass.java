@@ -105,4 +105,7 @@ public class CommonClass implements CommonInterface {
 	class TheInnerClass{
 		
 	}
+	
+	@RuntimeVisibleAnnotation
+	public void use_annotation(){}
 }

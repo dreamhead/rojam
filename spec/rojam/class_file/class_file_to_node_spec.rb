@@ -426,25 +426,25 @@ describe Rojam::ClassFile do
     def compare_check_instance_of method
       method.access.should == Rojam::Java::Access::ACC_PUBLIC
       method.name.should == 'check_instance_of'
-      method.desc.should == '()Ljava/lang/Boolean'
+      method.desc.should == '()Z'
       method.exceptions.should be_empty
-      method.max_stack.should == 1
+      method.max_stack.should == 3
       method.max_locals.should == 2
       
       method.instructions.should == [
-        Rojam::Instruction.new(Rojam::Opcode::NEW),
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/lang/Integer"),
         Rojam::Instruction.new(Rojam::Opcode::DUP),
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Integer","<init>","(I)V"),
         Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
         Rojam::TypeInsn.new(Rojam::Opcode::INSTANCEOF, "java/lang/Integer"),
-        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+        Rojam::Instruction.new(Rojam::Opcode::IRETURN)
       ]
     end
     
     it "creates node with methods" do
-      @node.methods.should have(16).items
+      @node.methods.should have(17).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -460,6 +460,8 @@ describe Rojam::ClassFile do
       compare_switch_case(@node.methods[12])
       compare_return_for_arraylist(@node.methods[13])
       compare_use_arraylist(@node.methods[14])
+      compare_check_instance_of(@node.methods[15])
+      # do nothing about @node.methods[16]
     end
 
     it "creates node with attributes" do

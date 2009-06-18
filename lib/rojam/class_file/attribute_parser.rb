@@ -86,5 +86,9 @@ module Rojam
         node.inner_classes << @pool.value(classinfo.inner_class_info_index)
       end
     end
+    
+    attribute('RuntimeVisibleAnnotations') do |bytes, note|
+      attr = RuntimeVisibleAnnotationsAttribute.read_bytes(bytes)
+    end
   end
 end
