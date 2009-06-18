@@ -11,7 +11,7 @@ describe Rojam::ClassFile do
       # Everytime we add a line to the Java code, the label value in the JumpInsn which locates in the method below the line added will be changed
       # so we add a variable here presenting how many lines are added above all the methods, note that when you add a line to CommanClass.java
       # above all the methods, you should add the variable by 1
-      @all_methods_off_set = 1
+      @all_methods_off_set = 2
     end
     
     it "creates node with version" do
@@ -37,7 +37,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with fields" do
-      @node.fields.should have(5).items
+      @node.fields.should have(6).items
       string_constant_field = @node.fields[0]
       string_constant_field.access.should ==
         Rojam::Java::Access::ACC_PRIVATE | Rojam::Java::Access::ACC_STATIC | Rojam::Java::Access::ACC_FINAL
@@ -75,6 +75,13 @@ describe Rojam::ClassFile do
       float_constant_field.desc.should == 'F'
       float_constant_field.signature.should be_nil
       float_constant_field.value.should == 3.5
+      
+      arraylist_field = @node.fields[5]
+      arraylist_field.access.should == Rojam::Java::Access::ACC_PRIVATE
+      arraylist_field.name.should == 'theArrayList'
+      arraylist_field.desc.should == 'Ljava/util/ArrayList;'
+      arraylist_field.signature.should == "Ljava/util/ArrayList<Ljava/lang/String;>;"
+      arraylist_field.value.should be_nil
     end
 
     def compare_constructor constructor
@@ -82,11 +89,17 @@ describe Rojam::ClassFile do
       constructor.name.should == '<init>'
       constructor.desc.should == '()V'
       constructor.exceptions.should be_empty
-      constructor.max_stack.should == 1
+      constructor.max_stack.should == 3
       constructor.max_locals.should == 1
+      
       constructor.instructions.should == [
         Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 0),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>", "()V"),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 0),
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/util/ArrayList"),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/util/ArrayList", "<init>", "()V"),
+        Rojam::FieldInsn.new(Rojam::Opcode::PUTFIELD, "CommonClass","theArrayList","Ljava/util/ArrayList;"),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

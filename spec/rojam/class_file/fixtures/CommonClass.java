@@ -5,6 +5,7 @@ public class CommonClass implements CommonInterface {
 	private static final long LONG = 10L;
 	private String text;
 	private static final float FLOAT = 3.5F;
+	private ArrayList<String> theArrayList = new ArrayList<String>();
 	
 	public String getText() {
 		return this.text;

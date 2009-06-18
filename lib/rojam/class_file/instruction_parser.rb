@@ -90,7 +90,7 @@ module Rojam
       Instruction.new(bytes[0])
     end
 
-    field_instructions(GETSTATIC, GETFIELD) do |bytes, current|
+    field_instructions(GETSTATIC, GETFIELD, PUTFIELD) do |bytes, current|
       owner_index = bytes[1..2].to_unsigned
       owner_name = @pool.method_owner_name(owner_index)
       name, desc = @pool.name_and_desc(owner_index)
