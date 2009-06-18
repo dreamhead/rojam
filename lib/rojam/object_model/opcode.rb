@@ -90,6 +90,7 @@ module Rojam
     ARRAYLENGTH   = 0xBE
     ATHROW        = 0xBF
     CHECKCAST     = 0xC0
+    INSTANCEOF    = 0xC1
   end
 
   module ArrayType

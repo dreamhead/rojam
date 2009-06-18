@@ -66,6 +66,9 @@ module Rojam
         long_value(index)
       when CONSTANT_FLOAT_TAG
         float_value(index)
+      when CONSTANT_METHODREF_TAG
+        # To be implemented
+        puts "methodref-tag"
       else
         string_value(index)
       end

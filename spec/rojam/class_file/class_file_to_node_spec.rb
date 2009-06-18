@@ -418,8 +418,28 @@ describe Rojam::ClassFile do
       ]
     end
     
+    def compare_check_instance_of method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'check_instance_of'
+      method.desc.should == '()Ljava/lang/Boolean'
+      method.exceptions.should be_empty
+      method.max_stack.should == 1
+      method.max_locals.should == 2
+      
+      method.instructions.should == [
+        Rojam::Instruction.new(Rojam::Opcode::NEW),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Integer","<init>","(I)V"),
+        Rojam::VarInsn.new(Rojam::Opcode::ASTORE, 1),
+        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
+        Rojam::TypeInsn.new(Rojam::Opcode::INSTANCEOF, "java/lang/Integer"),
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
+      ]
+    end
+    
     it "creates node with methods" do
-      @node.methods.should have(15).items
+      @node.methods.should have(16).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])

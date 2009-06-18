@@ -59,6 +59,7 @@ module Rojam
   CONSTANT_INTEGER_TAG  = 3
   CONSTANT_FLOAT_TAG    = 4
   CONSTANT_LONG_TAG     = 5
+  CONSTANT_METHODREF_TAG = 10
   
   RBits::Type.switch(:cp_info) do
     tag :tag, :type => :u1
@@ -71,7 +72,7 @@ module Rojam
       7   => :constant_class,
       8   => :constant_string,
       9   => :constant_fieldref,
-      10  => :constant_methodref,
+      CONSTANT_METHODREF_TAG  => :constant_methodref,
       11  => :constant_interfacemethodref,
       12  => :constant_name_and_type
     }

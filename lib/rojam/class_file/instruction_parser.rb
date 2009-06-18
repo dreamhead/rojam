@@ -117,7 +117,7 @@ module Rojam
     iinc_instructions(IINC) do |bytes, current|
       IincInsn.new(bytes[0], bytes[1], bytes[2])
     end
-
+    
     var_instructions(ISTORE, ILOAD, LSTORE, LLOAD, ASTORE, ALOAD, FSTORE, FLOAD) do |bytes, current|
       VarInsn.new(bytes[0], bytes[1])
     end
@@ -154,7 +154,7 @@ module Rojam
       VarInsn.new(FLOAD, (bytes[0] - FLOAD_0))
     end
     
-    type_instructions(NEW, ANEWARRAY, CHECKCAST) do |bytes, current|
+    type_instructions(NEW, ANEWARRAY, CHECKCAST, INSTANCEOF) do |bytes, current|
       type = @pool.type_name(bytes[1..2].to_unsigned)
       TypeInsn.new(bytes[0], type)
     end

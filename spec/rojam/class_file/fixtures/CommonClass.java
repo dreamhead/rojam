@@ -96,4 +96,9 @@ public class CommonClass implements CommonInterface {
 		theArrayList.add(1);
 		Integer one = theArrayList.get(0);
 	}
+	
+	public boolean check_instance_of(){
+		Integer one = new Integer(1);
+		return one instanceof Integer;
+	}
 }
