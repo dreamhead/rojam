@@ -123,11 +123,28 @@ describe Rojam::ClassFile do
       ]
     end
     
-    def compare_arraylist arraylist
+    def compare_return_for_arraylist arraylist
       arraylist.access.should == Rojam::Java::Access::ACC_PUBLIC
-      arraylist.name.should == 'arraylist'
+      arraylist.name.should == 'return_for_arraylist'
       arraylist.desc.should == '()Ljava/util/ArrayList;'
       arraylist.signature.should == "()Ljava/util/ArrayList<Ljava/lang/Integer;>;"
+      arraylist.exceptions.should be_empty
+      arraylist.max_stack.should == 2
+      arraylist.max_locals.should == 1
+      
+      arraylist.instructions.should == [
+        Rojam::TypeInsn.new(Rojam::Opcode::NEW, "java/util/ArrayList"),
+        Rojam::Instruction.new(Rojam::Opcode::DUP),
+        Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/util/ArrayList","<init>","()V"),
+        Rojam::Instruction.new(Rojam::Opcode::ARETURN)
+      ]
+    end
+    
+    def compare_use_arraylist arraylist
+      arraylist.access.should == Rojam::Java::Access::ACC_PUBLIC
+      arraylist.name.should == 'use_arraylist'
+      arraylist.desc.should == '()V'
+      arraylist.signature.should be_nil
       arraylist.exceptions.should be_empty
       arraylist.max_stack.should == 2
       arraylist.max_locals.should == 2
@@ -142,8 +159,7 @@ describe Rojam::ClassFile do
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKESTATIC, "java/lang/Integer","valueOf","(I)Ljava/lang/Integer;"),
         Rojam::MethodInsn.new(Rojam::Opcode::INVOKEVIRTUAL, "java/util/ArrayList","add","(Ljava/lang/Object;)Z"),
         Rojam::Instruction.new(Rojam::Opcode::POP),
-        Rojam::VarInsn.new(Rojam::Opcode::ALOAD, 1),
-        Rojam::Instruction.new(Rojam::Opcode::ARETURN)
+        Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end
 
@@ -383,7 +399,7 @@ describe Rojam::ClassFile do
     end
     
     it "creates node with methods" do
-      @node.methods.should have(14).items
+      @node.methods.should have(15).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -397,7 +413,8 @@ describe Rojam::ClassFile do
       compare_array(@node.methods[10])
       compare_exception(@node.methods[11])
       compare_switch_case(@node.methods[12])
-      compare_arraylist(@node.methods[13])
+      compare_return_for_arraylist(@node.methods[13])
+      compare_use_arraylist(@node.methods[14])
     end
 
     it "creates node with attributes" do
