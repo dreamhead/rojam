@@ -91,7 +91,8 @@ public class CommonClass implements CommonInterface {
 	}
 	
 	public void use_arraylist(){
-		ArrayList<Integer> thearrayList = new ArrayList<Integer>();
-		thearrayList.add(1);
+		ArrayList<Integer> theArrayList = new ArrayList<Integer>();
+		theArrayList.add(1);
+		Integer one = theArrayList.get(0);
 	}
 }

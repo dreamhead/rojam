@@ -84,6 +84,7 @@ module Rojam
     ANEWARRAY     = 0xBD
     ARRAYLENGTH   = 0xBE
     ATHROW        = 0xBF
+    CHECKCAST     = 0xC0
   end
 
   module ArrayType
