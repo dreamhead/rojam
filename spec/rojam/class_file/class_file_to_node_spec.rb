@@ -11,7 +11,7 @@ describe Rojam::ClassFile do
       # Everytime we add a line to the Java code, the label value in the JumpInsn which locates in the method below the line added will be changed
       # so we add a variable here presenting how many lines are added above all the methods, note that when you add a line to CommanClass.java
       # above all the methods, you should add the variable by 1
-      @all_methods_off_set = 2
+      @all_methods_off_set = 3
     end
     
     it "creates node with version" do
@@ -124,14 +124,16 @@ describe Rojam::ClassFile do
       assignment.desc.should == '()V'
       assignment.exceptions.should be_empty
       assignment.max_stack.should == 1
-      assignment.max_locals.should == 4
+      assignment.max_locals.should == 5
       assignment.instructions.should == [
         Rojam::Instruction.new(Rojam::Opcode::ICONST_1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ILOAD, 1),
         Rojam::VarInsn.new(Rojam::Opcode::ISTORE, 2),
         Rojam::LdcInsn.new(Rojam::Opcode::LDC, 8),
-        Rojam::VarInsn.new(Rojam::Opcode::FSTORE,3),
+        Rojam::VarInsn.new(Rojam::Opcode::FSTORE, 3),
+        Rojam::VarInsn.new(Rojam::Opcode::FLOAD, 3),
+        Rojam::VarInsn.new(Rojam::Opcode::FSTORE, 4),
         Rojam::Instruction.new(Rojam::Opcode::RETURN)
       ]
     end

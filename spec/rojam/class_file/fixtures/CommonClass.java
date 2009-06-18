@@ -14,7 +14,8 @@ public class CommonClass implements CommonInterface {
 	public void assignment() {
 		int i = 1;
 		int j = i;
-		float f = 8f;
+		float k = 8f;
+		float g = k;
 	}
 	
 	public void conditional() {

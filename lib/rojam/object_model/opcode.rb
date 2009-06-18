@@ -17,6 +17,7 @@ module Rojam
     LDC2_W        = 0x14
     ILOAD         = 0x15
     LLOAD         = 0x16
+    FLOAD         = 0x17
     ALOAD         = 0x19
     ILOAD_0       = 0x1A
     ILOAD_1       = 0x1B
@@ -26,6 +27,10 @@ module Rojam
     LLOAD_1       = 0x1F
     LLOAD_2       = 0x20
     LLOAD_3       = 0x21
+    FLOAD_0       = 0x22
+    FLOAD_1       = 0x23
+    FLOAD_2       = 0x24
+    FLOAD_3       = 0x25
     ALOAD_0       = 0x2A
     ALOAD_1       = 0x2B
     ALOAD_2       = 0x2C
