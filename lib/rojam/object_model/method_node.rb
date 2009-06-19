@@ -3,7 +3,7 @@ module Rojam
     include MemberNode
     
     attr_accessor :access, :name, :desc, :signature, :annotationDefault, 
-      :max_stack, :max_locals,
+      :max_stack, :max_locals, :deprecated, 
       :start_pc, :line_number # TODO: REMOVED
     
     attr_reader :exceptions, 

@@ -443,8 +443,18 @@ describe Rojam::ClassFile do
       ]
     end
     
+    def compare_deprecated_method method
+      method.access.should == Rojam::Java::Access::ACC_PUBLIC
+      method.name.should == 'deprecated_method'
+      method.desc.should == '()V'
+      method.exceptions.should be_empty
+      method.max_stack.should == 0
+      method.max_locals.should == 1
+      method.deprecated.should == true
+    end
+    
     it "creates node with methods" do
-      @node.methods.should have(17).items
+      @node.methods.should have(18).items
       compare_constructor(@node.methods[0])
       compare_getter(@node.methods[1])
       compare_assignment(@node.methods[2])
@@ -461,7 +471,8 @@ describe Rojam::ClassFile do
       compare_return_for_arraylist(@node.methods[13])
       compare_use_arraylist(@node.methods[14])
       compare_check_instance_of(@node.methods[15])
-      # do nothing about @node.methods[16]
+      # TODO check @node.methods[16]
+      compare_deprecated_method(@node.methods[17])
     end
 
     it "creates node with attributes" do

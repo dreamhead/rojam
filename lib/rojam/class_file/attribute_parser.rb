@@ -87,8 +87,12 @@ module Rojam
       end
     end
     
-    attribute('RuntimeVisibleAnnotations') do |bytes, note|
+    attribute('RuntimeVisibleAnnotations') do |bytes, node|
       attr = RuntimeVisibleAnnotationsAttribute.read_bytes(bytes)
+    end
+    
+    attribute('Deprecated') do |bytes, node|
+      node.deprecated = true
     end
   end
 end

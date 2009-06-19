@@ -108,4 +108,7 @@ public class CommonClass implements CommonInterface {
 	
 	@RuntimeVisibleAnnotation
 	public void use_annotation(){}
+	
+	@Deprecated
+	public void deprecated_method(){}
 }
