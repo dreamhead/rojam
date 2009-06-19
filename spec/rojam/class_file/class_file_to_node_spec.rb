@@ -33,12 +33,15 @@ describe Rojam::ClassFile do
     
     it "creates node with interfaces" do
       @node.interfaces.should have(1).items
-      @node.interfaces[0].should == 'CommonInterface'
+      
     end
     
     it "creates node with inner classes" do
       @node.inner_classes.should have(1).items
-      @node.inner_classes[0].should == "CommonClass$TheInnerClass"
+      @node.inner_classes[0].name.should == "CommonClass$TheInnerClass"
+      @node.inner_classes[0].outer_name.should == "CommonClass"
+      @node.inner_classes[0].inner_name.should == "TheInnerClass"
+      @node.inner_classes[0].access.should == Rojam::Java::Access::ACC_PUBLIC
     end
     
     it "creates node with fields" do

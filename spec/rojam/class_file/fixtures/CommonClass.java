@@ -102,8 +102,8 @@ public class CommonClass implements CommonInterface {
 		return one instanceof Integer;
 	}
 	
-	class TheInnerClass{
-		
+	public class TheInnerClass{
+		public void innerClassVoidMethod(){}
 	}
 	
 	@RuntimeVisibleAnnotation

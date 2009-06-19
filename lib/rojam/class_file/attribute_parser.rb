@@ -80,10 +80,19 @@ module Rojam
       node.signature = @pool.value(attr.signature_index)
     end
     
+    def parse_inner_class classinfo
+      name = @pool.value(classinfo.inner_class_info_index)
+      outer_name = @pool.value(classinfo.outer_class_info_index)
+      inner_name = @pool.value(classinfo.inner_name_index)
+      access = classinfo.inner_class_access_flags
+      InnerClassNode.new(name, outer_name, inner_name, access)
+    end
+    
     attribute('InnerClasses') do |bytes, node|
       attr = InnerClassesAttribute.read_bytes(bytes)
       attr.table.each do |classinfo|
-        node.inner_classes << @pool.value(classinfo.inner_class_info_index)
+        inner_class_node = parse_inner_class classinfo
+        node.inner_classes << inner_class_node
       end
     end
     
