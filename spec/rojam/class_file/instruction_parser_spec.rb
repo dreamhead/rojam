@@ -323,6 +323,17 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::NEW
     instruction.type.should == 'java/lang/String'
   end
+  
+  it 'parses CHECKCAST' do
+    @pool.constants({
+        0x04 => Struct.new(:name_index).new(0x13),
+        0x13 => 'java/lang/Object',
+      })
+
+    instruction = @parser.parse_instruction([Rojam::Opcode::CHECKCAST, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::CHECKCAST
+    instruction.type.should == 'java/lang/Object'
+  end
 
   it 'parses NEWARRAY' do
     instruction = @parser.parse_instruction([Rojam::Opcode::NEWARRAY, Rojam::ArrayType::T_INT])
