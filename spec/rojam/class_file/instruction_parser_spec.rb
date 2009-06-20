@@ -73,6 +73,23 @@ describe Rojam::InstructionParser do
     instruction.desc.should == '(Ljava/lang/String;)V'
   end
 
+  it 'parses INVOKESTATIC' do
+    @pool.constants({
+      4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),
+      0x13 => Struct.new(:name_index).new(0x1A),
+      0x14 => Struct.new(:name_index, :descriptor_index).new(0x1B, 0x1C),
+      0x1A => "java/lang/Integer",
+      0x1B => "valueOf",
+      0x1C => "(I)Ljava/lang/Integer;"
+    })
+    
+    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKESTATIC, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::INVOKESTATIC
+    instruction.owner.should == "java/lang/Integer"
+    instruction.name.should == "valueOf"
+    instruction.desc.should == "(I)Ljava/lang/Integer;"
+  end
+  
   it 'parses LDC' do
     @pool.constants({
         3 => Struct.new(:string_index).new(0x12),
