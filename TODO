@@ -22,6 +22,11 @@ Rojam
 ** String
 ** Class
 
+* Unit Test
+** Signature Attribute
+** InnerClasses Attribute
+** Deprecated Attribute
+
 * Attribute Parser
 ** EnclosingMethod
 ** Synthetic
