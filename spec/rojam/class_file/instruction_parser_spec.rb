@@ -29,7 +29,7 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::IMUL, Rojam::Opcode::IDIV,
       Rojam::Opcode::LADD, Rojam::Opcode::LSUB,
       Rojam::Opcode::LMUL, Rojam::Opcode::LDIV,
-      Rojam::Opcode::DUP,
+      Rojam::Opcode::POP,  Rojam::Opcode::DUP,
       Rojam::Opcode::RETURN, Rojam::Opcode::IRETURN, Rojam::Opcode::LRETURN, Rojam::Opcode::ARETURN,
       Rojam::Opcode::ARRAYLENGTH,
       Rojam::Opcode::ATHROW
