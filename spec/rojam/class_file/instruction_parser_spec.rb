@@ -224,6 +224,15 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::FSTORE
     instruction.var.should == 0x04
   end
+  
+  it 'parses implicit FSTORE' do
+    [Rojam::Opcode::FSTORE_0, Rojam::Opcode::FSTORE_1, 
+      Rojam::Opcode::FSTORE_2, Rojam::Opcode::FSTORE_3].each_with_index do |opcode, index|
+        instruction = @parser.parse_instruction([opcode])
+        instruction.opcode.should == Rojam::Opcode::FSTORE
+        instruction.var.should == index
+    end
+  end
 
   it 'parses ILOAD' do
     instruction = @parser.parse_instruction([Rojam::Opcode::ILOAD, 0x04])
