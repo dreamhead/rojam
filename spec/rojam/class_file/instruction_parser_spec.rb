@@ -193,6 +193,7 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::LSTORE
     instruction.var.should == 0x04
   end
+  
 
   it 'parses implicit LSTORE' do
     [Rojam::Opcode::LSTORE_0, Rojam::Opcode::LSTORE_1,
@@ -216,6 +217,12 @@ describe Rojam::InstructionParser do
     instruction.opcode.should == Rojam::Opcode::ASTORE
     instruction.var.should == index
     end
+  end
+  
+  it 'parses FSTORE' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::FSTORE, 0x04])
+    instruction.opcode.should == Rojam::Opcode::FSTORE
+    instruction.var.should == 0x04
   end
 
   it 'parses ILOAD' do
