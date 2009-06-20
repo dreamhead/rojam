@@ -136,6 +136,23 @@ describe Rojam::InstructionParser do
     instruction.desc.should == 'Ljava/lang/String;'
   end
 
+  it 'parses PUTFIELD' do
+    @pool.constants({
+        4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),
+        0x13 => Struct.new(:name_index).new(0x1A),
+        0x14 => Struct.new(:name_index, :descriptor_index).new(0x1B, 0x1C),
+        0x1A => 'CommonClass',
+        0x1B => 'text',
+        0x1C => 'Ljava/lang/String;'
+      })
+
+    instruction = @parser.parse_instruction([Rojam::Opcode::PUTFIELD, 0x00, 0x04])
+    instruction.opcode.should == Rojam::Opcode::PUTFIELD
+    instruction.owner.should == 'CommonClass'
+    instruction.name.should == 'text'
+    instruction.desc.should == 'Ljava/lang/String;'
+  end
+  
   it 'parses GETSTATIC' do
     @pool.constants({
         4 => Struct.new(:class_index, :name_and_type_index).new(0x13, 0x14),
