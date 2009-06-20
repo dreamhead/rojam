@@ -304,11 +304,26 @@ describe Rojam::InstructionParser do
     instruction.var.should == 0x04
   end
 
-  it 'parses implicit LLOAD' do
+  it 'parses implicit ALOAD' do
     [Rojam::Opcode::ALOAD_0, Rojam::Opcode::ALOAD_1,
       Rojam::Opcode::ALOAD_2, Rojam::Opcode::ALOAD_3].each_with_index do |opcode, index|
       instruction = @parser.parse_instruction([opcode])
     instruction.opcode.should == Rojam::Opcode::ALOAD
+    instruction.var.should == index
+    end
+  end
+  
+  it 'parses FLOAD' do
+    instruction = @parser.parse_instruction([Rojam::Opcode::FLOAD, 0x04])
+    instruction.opcode.should == Rojam::Opcode::FLOAD
+    instruction.var.should == 0x04
+  end
+
+  it 'parses implicit FLOAD' do
+    [Rojam::Opcode::FLOAD_0, Rojam::Opcode::FLOAD_1,
+      Rojam::Opcode::FLOAD_2, Rojam::Opcode::FLOAD_3].each_with_index do |opcode, index|
+      instruction = @parser.parse_instruction([opcode])
+    instruction.opcode.should == Rojam::Opcode::FLOAD
     instruction.var.should == index
     end
   end
