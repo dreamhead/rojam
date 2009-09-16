@@ -1,3 +1,12 @@
 == rojam
 
 Rojam is a Java bytecode manipulation framework in Ruby.
+
+- Prerequisite:
+rojam depends on rbits(http://github.com/dreamhead/rbits/), so you need to install the rbits in the local machine first. Followings are the steps to install rbits:
+1. clone the rbits to local from git://github.com/dreamhead/rbits.git using this command
+  > git clone git://github.com/dreamhead/rbits.git rbits
+2. go to directory rbits in terminal, build ruby gem using this command
+  rbits> gem build rbits.gemspec 
+3. install the generated gem in the current directory using this command
+  rbits> gem install rbits
