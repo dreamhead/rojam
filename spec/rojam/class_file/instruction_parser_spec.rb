@@ -34,8 +34,7 @@ describe Rojam::InstructionParser do
       Rojam::Opcode::ARRAYLENGTH,
       Rojam::Opcode::ATHROW
     ].each do |opcode|
-      instruction = @parser.parse_instruction([opcode])
-      instruction.opcode.should == opcode
+      @parser.parse_instruction([opcode]).should == Rojam::Instruction.new(opcode)
     end
   end
 
@@ -48,12 +47,7 @@ describe Rojam::InstructionParser do
         5 => "()V",
         6 => Struct.new(:name_index).new(0x02)
       })
-
-    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKESPECIAL, 0x00, 0x01])
-    instruction.opcode.should == Rojam::Opcode::INVOKESPECIAL
-    instruction.owner.should == "java/lang/Object"
-    instruction.name.should == "<init>"
-    instruction.desc.should == "()V"
+    @parser.parse_instruction([Rojam::Opcode::INVOKESPECIAL, 0x00, 0x01]).should == Rojam::MethodInsn.new(Rojam::Opcode::INVOKESPECIAL, "java/lang/Object", "<init>","()V")
   end
 
   it 'parses INVOKEVIRTUAL' do
