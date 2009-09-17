@@ -59,12 +59,7 @@ describe Rojam::InstructionParser do
         0x1B => 'println',
         0x1C => '(Ljava/lang/String;)V'
       })
-
-    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKEVIRTUAL, 0x00, 0x04])
-    instruction.opcode.should == Rojam::Opcode::INVOKEVIRTUAL
-    instruction.owner.should == 'java/io/PrintStream'
-    instruction.name.should == 'println'
-    instruction.desc.should == '(Ljava/lang/String;)V'
+    @parser.parse_instruction([Rojam::Opcode::INVOKEVIRTUAL, 0x00, 0x04]).should == Rojam::MethodInsn.new(Rojam::Opcode::INVOKEVIRTUAL, "java/io/PrintStream", "println","(Ljava/lang/String;)V")
   end
 
   it 'parses INVOKESTATIC' do
@@ -76,22 +71,15 @@ describe Rojam::InstructionParser do
       0x1B => "valueOf",
       0x1C => "(I)Ljava/lang/Integer;"
     })
-    
-    instruction = @parser.parse_instruction([Rojam::Opcode::INVOKESTATIC, 0x00, 0x04])
-    instruction.opcode.should == Rojam::Opcode::INVOKESTATIC
-    instruction.owner.should == "java/lang/Integer"
-    instruction.name.should == "valueOf"
-    instruction.desc.should == "(I)Ljava/lang/Integer;"
+    @parser.parse_instruction([Rojam::Opcode::INVOKESTATIC, 0x00, 0x04]).should == Rojam::MethodInsn.new(Rojam::Opcode::INVOKESTATIC, "java/lang/Integer","valueOf","(I)Ljava/lang/Integer;")
   end
   
   it 'parses LDC' do
     @pool.constants({
         3 => Struct.new(:string_index).new(0x12),
         0x12 => 'Hello, World!'
-      })
-    instruction = @parser.parse_instruction([Rojam::Opcode::LDC, 0x03])
-    instruction.opcode.should == Rojam::Opcode::LDC
-    instruction.constant.should == 'Hello, World!'
+    })
+    @parser.parse_instruction([Rojam::Opcode::LDC, 0x03]).should == Rojam::LdcInsn.new(Rojam::Opcode::LDC, 'Hello, World!')
   end
 
   it 'parses LDC_W' do
