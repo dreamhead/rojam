@@ -126,6 +126,12 @@ class SpecStatistics
 end
 
 namespace :spec do
+  desc "Generate code coverage"
+  task :cov do
+    ENV["COVERAGE"] = "true"
+    Rake::Task["spec"].invoke
+  end
+
   desc "Report code statistics on the application and specs code"
   task :stats do
     stats_directories = {
@@ -135,27 +141,3 @@ namespace :spec do
     SpecStatistics.new(*stats_directories).to_s
   end
 end
-
-namespace :svn do
-  task :add do
-    sh %(svn st | grep "^?" | awk -F "      " '{printf "\\"%s\\"\\n", $2}' | xargs -r svn add)
-  end
-
-  task :commit do
-    sh %(svn stat --ignore-externals)
-    require 'readline'
-    comment = prompt 'Comment'
-    sh %(svn ci -m "#{comment}")
-  end
-
-  def prompt(label)
-    Readline.readline("[#{label}]: ")
-  end
-
-  task :up do
-    ignore_externals = "--ignore-externals" if ENV['IGNORE_EXTERNALS']
-    sh %(svn up #{ignore_externals})
-  end
-end
-
-task :commit => %w(svn:up default svn:add svn:commit)
